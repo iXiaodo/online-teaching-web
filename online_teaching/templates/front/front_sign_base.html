@@ -1,0 +1,23 @@
+{% extends "../common/bootstrap_base.html" %}
+
+
+{% block cssblock %}
+    <link rel="stylesheet" href="/static/css/front/front_sign_base.css">
+	{% block css_child_block %}{% end %}
+{% end %}
+
+
+{% block bodyblock %}
+	<div class="container">
+		<div class="front-logo">
+	    	<p class="logo-p">零点一分</p>
+	    	<p class="logo-exp">也许我欠缺的不是运气，而是平常心</p>
+	    </div>
+	    <hr class="hr-sign">
+	    {% block login_regist_block %}{% end %}
+	    
+	    <form action="" class="form sign-form" role='form' method="POST">
+			{% block formblock %}{% end %}
+		</form>
+	</div>
+{% end %}

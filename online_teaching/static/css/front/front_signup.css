@@ -1,0 +1,20 @@
+/*
+* @Author: xiaodong
+* @Date:   2017-12-28 22:51:14
+* @Last Modified by:   xiaodong
+* @Last Modified time: 2018-01-02 14:54:13
+*/
+
+.input-group-addon {
+   padding: 0px 12px;
+}
+#captcha-btn{
+	margin:0px;
+	padding: 0px;
+}
+#captcha-btn img{
+	width:100px;
+	height: 32px;
+	margin:0px;
+	padding: 0px;
+}

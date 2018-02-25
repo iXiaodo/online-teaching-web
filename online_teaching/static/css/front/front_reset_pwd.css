@@ -1,0 +1,20 @@
+/*
+* @Author: xiaodong
+* @Date:   2018-01-02 15:13:02
+* @Last Modified by:   xiaodong
+* @Last Modified time: 2018-01-02 21:42:15
+*/
+#reset-pwd{
+	margin:-8px 98px;
+}
+.form-set{
+	margin-top: 50px;
+}
+.p-error{
+	margin:0 auto;
+}
+.p-error a{
+	text-decoration: none;
+	color:#CDF0F0;
+	font-size:18px;
+}
