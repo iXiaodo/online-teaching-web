@@ -1,8 +1,10 @@
 #coding=utf-8
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from local_config import DATABASE,USERNAME,PASSWORD
 # 连接数据库的数据
+DATABASE = 'online_teaching'
+USERNAME = 'xiaodong'
+PASSWORD = 'xiaoxiao'
 HOSTNAME = '127.0.0.1'
 PORT = '3306'
 DATABASE = DATABASE

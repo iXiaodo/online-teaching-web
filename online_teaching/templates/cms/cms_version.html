@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block header %}
+<style>
+    /* Variations */
+    .bs-callout {
+        padding: 20px;
+        margin: 20px 0;
+        border: 1px solid #eee;
+        border-left-width: 5px;
+        border-radius: 3px;
+    }
+    .bs-callout h4 {
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+    .bs-callout p:last-child {
+        margin-bottom: 0;
+    }
+    .bs-callout code {
+        border-radius: 3px;
+    }
+
+    /* Tighten up space between multiple callouts */
+    .bs-callout + .bs-callout {
+        margin-top: -5px;
+    }
+
+    /* Variations */
+    .bs-callout-info {
+        border-left-color: #5994db;
+    }
+    .bs-callout-info h4 {
+        color: #1b809e;
+    }
+
+    #version-info{
+        display:inline-block;
+        margin-top:5px;
+        font-size: 20px;
+    }
+</style>
+{% end %}
+
+{% block content %}
+<div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-xs-offset-1 col-md-offset-1 col-lg-offset-1">
+
+    <div class="row">
+        <header class="panel-heading no-border">
+            <h3 class="header-h3">版本信息</h3>
+            <div class="boundary"></div>
+        </header>
+        <div style="padding:15px;padding-top:0;">
+            <div class="bs-callout bs-callout-info" id="callout-helper-context-color-specificity">
+                <h4>当前版本：</h4>
+                <p><span id="version-info">初级版</span></p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% end %} 
+

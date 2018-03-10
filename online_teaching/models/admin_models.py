@@ -1,15 +1,13 @@
 #coding=utf-8
 from uuid import uuid4
 from datetime import datetime
-
-from pbkdf2 import PBKDF2
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import ( Column, Integer, String,
                         Boolean, DateTime)
 
 from libs.db.dbsession import engine
 from libs.db.dbsession import dbSession
-
+from utils.hashers import make_password,check_password
 Base = declarative_base(engine)
 
 
@@ -20,19 +18,23 @@ class CmsUsers(Base):
 
     uuid = Column(String(36), unique=True, nullable=False, default=lambda: str(uuid4()))
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String(50), nullable=False)
-    email = Column(String(50),unique=True)
-    _password = Column('password', String(64))
+    admin_name = Column(String(50), nullable=True)
+    email = Column(String(50),unique=False,nullable=False)
+    _password = Column('password', String(128))
     create_time = Column(DateTime, default=datetime.now)
     update_time = Column(DateTime)
     last_login = Column(DateTime)
-    loginnum = Column(Integer, default=0)
+    loginnum = Column(Integer, default=False)
     _locked = Column(Boolean, default=False, nullable=False)
     avatar = Column(String(128))
 
+    # set_password
+    def set_password(self, raw_password):
+        if not raw_password:
+            return None
+        temp_password = make_password(raw_password, self.email)
+        return temp_password
 
-    def _hash_password(self, password):
-        return PBKDF2.crypt(password, iterations=0x2537)
 
 
     @property
@@ -41,13 +43,11 @@ class CmsUsers(Base):
 
     @password.setter
     def password(self, password):
-        self._password = self._hash_password(password)
+        self._password = self.set_password(password)
 
-    def auth_password(self, other_password):
-        if self._password:
-            return self.password == PBKDF2.crypt(other_password, self.password)
-        else:
-            return False
+    # check_password
+    def auth_password(self, raw_password):
+        return check_password(raw_password, self.password, self.email)
 
 
     @classmethod
@@ -76,7 +76,7 @@ class CmsUsers(Base):
 
     @classmethod
     def by_name(cls, name):
-        return dbSession.query(cls).filter(cls.username == name).first()
+        return dbSession.query(cls).filter(cls.admin_name == name).first()
 
     @property
     def locked(self):
@@ -93,9 +93,9 @@ class CmsUsers(Base):
     def to_dict(self):
         return {
             'id': self.id,
-            'username': self.username,
+            'email': self.email,
             'last_login': self.last_login,
         }
 
     def __repr__(self):
-        return u'<CmsUser - id: %s  name: %s>' % (self.id,self.username)
+        return u'<CmsUser - id: %s  email: %s>' % (self.id,self.email)

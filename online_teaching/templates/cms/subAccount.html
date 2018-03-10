@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block header %}
+<style>
+
+</style>
+{% end %}
+{% block content %}
+<div style="margin:20px 1% 0" id="sub-account-block">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3>子账户管理</h3>
+                </div>
+                <div class="panel-body row">
+                    <div class="col-sm-9 col-md-8 col-sm-offset-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="搜索子账户" id="search-sub-input"/>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" id="search-sub-btn">搜索</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-offset-1">
+                        <span id="add-sub-btn" class="iconfont" title="添加子账号" style="cursor: pointer;">&#xe648;</span>
+                    </div>
+                </div>
+                <ul class="list-group" id="sub-account-list">
+
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3>详细信息&nbsp;&nbsp;&nbsp;<span id="editor-sub-btn" class="iconfont" title="修改子账户" style="cursor: pointer;">&#xe738;</span><span class="close" id="close_add_page" style="display:none;">&times;</span></h3>
+                </div>
+                <div id="right-subaccount-info" class="hidden panel-body">
+                    <div id="sub-info-list">
+                        <form id="form1" action="">
+                        <div class="row">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label for="sub_name">登录名 &nbsp;&nbsp;<span>*</span></label>
+                            </div>
+                            <div class="col-sm-8 col-md-6">
+                                <input type="text" id="sub_name" class="form-control" required="required"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label for="user_name">昵称 &nbsp;&nbsp;<span>*</span></label>
+                            </div>
+                            <div class="col-sm-8 col-md-6">
+                                <input type="text" id="user_name" class="form-control" required="required"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label for="tel">电话 &nbsp;&nbsp;<span>*</span></label>
+                            </div>
+                            <div class="col-sm-8 col-md-6">
+                                <input type="text" id="tel" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label for="user_email">邮箱 &nbsp;&nbsp;<span>*</span></label>
+                            </div>
+                            <div class="col-sm-8 col-md-6">
+                                <input type="email" id="user_email" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="row" id="password-con" style="display: none">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label for="password">密码 &nbsp;&nbsp;<span>*</span></label>
+                            </div>
+                            <div class="col-sm-8 col-md-6">
+                                <input type="password" id="password" class="form-control" required="required">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label for="select_role">用户角色 &nbsp;&nbsp;<span>*</span></label>
+                            </div>
+                            <div class="col-sm-8 col-md-6" id="select_role">
+
+                            </div>
+                        </div>
+                        <div class="row hidden" id="staff_position">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label for="group">权限分组 &nbsp;&nbsp;<span>*</span></label>
+                            </div>
+                            <div class="col-sm-8 col-md-6" id="group">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label for="permission">个人权限 &nbsp;&nbsp;<span>*</span></label>
+                            </div>
+                            <div class="col-sm-9 col-md-7" id="permission">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2 col-sm-offset-1">
+                                <label for="status">是否启用 &nbsp;&nbsp;<span>*</span></label>
+                            </div>
+                            <div class="col-sm-8 col-md-6" id="status">
+                                <input type="radio" name="status" value="true" id="statustrue" checked/>
+                                <label for="statustrue">是</label>
+                                <input type="radio" name="status" value="false" id="statusfalse"/>
+                                <label for="statusfalse">否</label>
+                            </div>
+                        </div>
+                        </form>
+                        <div class="row" >
+                            <div class="col-sm-offset-1">
+                                <button id="sub-submit-btn" class="btn btn-primary hidden">提交更改</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block footjs %}
+<script type="text/javascript"  src="/static/js/sub_account.js"></script>
+{% end %}

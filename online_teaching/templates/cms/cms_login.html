@@ -2,24 +2,44 @@
 
 {% block cssblock %}
     <link rel="stylesheet" href="/static/css/cms/cms_login.css">
+    <link rel="stylesheet" href="/static/css/cms_login.css">
 {% end %}
 
 {% block bodyblock %}
     <div class="container">
         <h2 class="form-signin-heading">教学网站后台管理系统</h2>
-        <form class="form-signin" method="post">
+        <form class="form-signin" action="/cms/login?next={{ next_url }}" id="form" method="post">
             {% module xsrf_form_html() %}
             <div class="form-group">
-                <input type="email" name="email" class="form-control" placeholder="请输入邮箱账户" required autofocus>
+                <input type="email" name="email" id="username" class="form-control" placeholder="请输入邮箱账户" required autofocus>
             </div>
             <div class="form-group">
-                <input type="password" name="password" class="form-control" placeholder="请输入密码" required>
+                <input type="password" name="password" id="password" class="form-control" placeholder="请输入密码" required>
             </div>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me"> 记住我
-                </label>
+            <p id="login_tip">
+                <i class="icon-font" style="color:orange">&#xe611;</i><span></span>
+            </p>
+            {% if msg %}
+            <p id="error">
+                <i class="icon-font" style="color:orange">&#xe611;</i><span>{{ msg }}</span>
+            </p>
+            {% end %}
+            <div id="embed-captcha"></div>
+            <div id="wait" class="show">
+                <div class="spinner">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                </div>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+            <p id="notice" class="hide">请先拖动验证码到相应位置</p>
+            <br/>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit">登录</button>
         </form>
+    </div>
+{% end %}
+{% block footjs %}
+    <script src="https://static.geetest.com/static/tools/gt.js"></script>
+    <script src="/static/js/geetest_code.js"></script>
+    <script src="/static/js/cms_login.js"></script>
 {% end %}

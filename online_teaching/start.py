@@ -15,9 +15,6 @@ def make_app():
     return web.Application(handlers,**setting)
 
 
-
-
-
 if __name__ == "__main__":
     options.parse_command_line()
     # 创建表

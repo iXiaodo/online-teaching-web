@@ -1,0 +1,58 @@
+
+    .layout-main{
+        padding:0;
+        background:#F5F5F5;
+        overflow-x: auto
+    }
+    #main-content{
+        padding:0;
+        margin:0;
+        min-width:1450px;
+
+    }
+
+    #role th,#role td, #group th, #group td{
+        border-color: #D9EDF7;
+    }
+
+    #role tbody tr:last-child, #group tbody tr:last-child{
+        border-bottom: 1px solid #D9EDF7;
+    }
+
+    p span.icon-font{
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    p span.icon-font:hover{
+        color: #1f8dd6;
+    }
+
+    #role tbody td span.icon-font, #group tbody td span.icon-font{
+        margin: 0 5px;
+        opacity: 0.9;
+        cursor: pointer;
+    }
+
+    #role tbody td span.icon-font.modify:hover, #group tbody span.icon-font.update:hover{
+        opacity: 1;
+        color: #0078D7;
+    }
+
+    #role tbody td span.icon-font.remove:hover, #group tbody span.icon-font.delete:hover{
+        opacity: 1;
+        color: #D71E1E;
+    }
+
+    #role td i{
+        font-size:12px;
+        position:relative;
+        top:-10px;
+        opacity: 0.6;
+        cursor: pointer;
+    }
+
+    #role td i:hover{
+        opacity: 1;
+        color: #0078D7;
+    }
