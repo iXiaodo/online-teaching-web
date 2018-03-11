@@ -11,15 +11,12 @@
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <title>title-{{ title }}</title>
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="/static/css/skins/blue/skin.css"/>
-    <link href="/static/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
-    <link rel="stylesheet" href="/static/css/zeroModal.css">
-
     <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/ot.css">
-    <link rel="stylesheet" href="/static/css/my_ff.css">
+    <link rel="stylesheet" href="/static/css/zeroModal.css">
     <link rel="stylesheet" type="text/css" href="/static/css/iconfont.css">
-    <script src="/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/skins/blue/skin.css"/>
+    <link rel="stylesheet" href="/static/css/cms/cms_base.css">
+    <script src="/static/js/jquery.1.12.4.min.js"></script>
     <script src="/static/bootstrap/bootstrap.min.js"></script>
     {% block header %}{% end %}
 </head>
@@ -34,7 +31,7 @@
         <ul class="header-bar">
             <li class="header-bar-role"><a href="javascript:;">{{ user_type }}</a></li>
             <li class="header-bar-nav">
-                <a href="javascript:void(0);">{{ username}}<i class="iconfont" style="margin-left:5px;">&#xf034e;</i></a>
+                <a href="javascript:void(0);">{{ username}}<i class="iconfont" style="margin-left:5px;">&#xe600;</i></a>
                 <ul class="header-dropdown-menu" id="old_ul">
                     <li><a href="/cms/modifyPwd/">修改主账号密码</a></li>
                     <li><a href="/cms/subAccount">账号管理</a></li>
@@ -45,16 +42,11 @@
     </header>
     <aside class="layout-side" id="layout-aside">
         <ul class="side-menu">
-            <li class="menu-item hidden" id="business-manage" style="cursor: pointer"><a><i class="iconfont">&#xe659;</i><span>业务管理</span></a></li>
-            <div class="hidden" id="drop-business-content">
-                <ul>
-                    <li><a href="/cms/role_group_manage">角色分组管理</a></li>
-                    <li><a href="/cms/subAccount">账号权限设定</a></li>
-                </ul>
-            </div>
-            <li class="menu-item hidden" id="bulletin_manage" style="cursor:pointer"><a href="/cms/bulletinPage/"><i class="iconfont">&#xe61e;</i><span>公告管理</span></a></li>
-            <li class="menu-item" id="sub-account-manage"><a href="/cms/subAccount"><i class="iconfont">&#xe629;</i><span>子账户管理</span></a></li>
-            <li class="menu-item hidden" id="version"><a href="/cms/version/"><i class="iconfont">&#xe63c;</i><span>版本信息</span></a></li>
+            <li class="menu-item hidden" id="topo"><a style="text-decoration:none;" href="#"><i class="iconfont">&#xe612;</i><span>用户详情</span></a></li>
+            <li class="menu-item hidden" id="role-group-manage"><a href="/cms/role_group_manage"><i class="iconfont">&#xe64f;</i><span>角色分组管理</span></a></li>
+            <li class="menu-item hidden" id="account-permission-manage"><a href="/cms/subAccount"><i class="iconfont">&#xe75f;</i><span>帐号权限管理</span></a></li>
+            <li class="menu-item hidden" id="bulletin_manage" style="cursor:pointer"><a href="/cms/bulletinPage/"><i class="iconfont">&#xe64e;</i><span>公告管理</span></a></li>
+            <li class="menu-item hidden" id="version-infomation"><a href="/cms/version/"><i class="iconfont">&#xe6aa;</i><span>版本信息</span></a></li>
         </ul>
     </aside>
     <section class="layout-main">
@@ -66,9 +58,9 @@
     <div class="layout-footer">©2018 宁夏大学信息工程学院14级晓冬 版权所有</div>
 </div>
 <script src="/static/js/zeroModal.min.js"></script>
-<script src="/static/js/base.js"></script>
 <script src="/static/js/alert.min.js"></script>
 <script src="/static/js/md5.js"></script>
+<script src="/static/js/base.js"></script>
 {% block footjs %}{% end %}
 </body>
 </html>

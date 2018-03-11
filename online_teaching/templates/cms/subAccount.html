@@ -1,13 +1,21 @@
 {% extends "base.html" %}
 {% block header %}
 <style>
-
+    #sub-account-block{
+        margin: -8px 2.5% 0;
+    }
+    .col-md-offset-1{
+        margin: 9px 0 0 44px;
+    }
+    #form1 .row{
+        margin-bottom: 20px;
+    }
 </style>
 {% end %}
 {% block content %}
-<div style="margin:20px 1% 0" id="sub-account-block">
+<div id="sub-account-block">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-5">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3>子账户管理</h3>
@@ -22,7 +30,7 @@
                         </div>
                     </div>
                     <div class="col-sm-2 col-md-offset-1">
-                        <span id="add-sub-btn" class="iconfont" title="添加子账号" style="cursor: pointer;">&#xe648;</span>
+                        <span id="add-sub-btn" class="iconfont" title="添加子账号" style="cursor: pointer;">&#xe640;</span>
                     </div>
                 </div>
                 <ul class="list-group" id="sub-account-list">
@@ -30,10 +38,10 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-7">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3>详细信息&nbsp;&nbsp;&nbsp;<span id="editor-sub-btn" class="iconfont" title="修改子账户" style="cursor: pointer;">&#xe738;</span><span class="close" id="close_add_page" style="display:none;">&times;</span></h3>
+                    <h3>详细信息&nbsp;&nbsp;&nbsp;<span id="editor-sub-btn" class="iconfont" title="修改子账户" style="cursor: pointer;">&#xe63a;</span><span class="close" id="close_add_page" style="display:none;">&times;</span></h3>
                 </div>
                 <div id="right-subaccount-info" class="hidden panel-body">
                     <div id="sub-info-list">

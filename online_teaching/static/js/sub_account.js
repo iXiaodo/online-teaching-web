@@ -201,7 +201,7 @@ $(function(){
         var li = $('<li class="list-group-item'+ subStatus +'">'+
             '<div class="row">'+
             '<div class="col-sm-9 col-sm-offset-1" subname="'+ subname+'">'+ jsonObj.user_name +'</div>'+
-            '<div class="col-sm-2 iconfont disabled-account-btn" title="禁用子账户" style="cursor: pointer;">&#xe6ab;</div>'+
+            '<div class="col-sm-2 iconfont disabled-account-btn" title="禁用子账户" style="cursor: pointer;">&#xe6f2;</div>'+
         '</div>'+
         '</li>');
         if(target.length > 0){

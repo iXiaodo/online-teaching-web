@@ -1,57 +1,45 @@
 $(document).ready(function(){
     //前端页面展示权限
     function display_page_nav() {
-        var permission_obj = ['businessManage', 'resourceManage', 'schoolUserPage'];
+        var permission_obj = ['roleGroupManage', 'accountPermissionManage', 'bulletinManage','topo','versionInfo'];
         for (var i in permission_obj){
-            if (permission_obj[i] === 'businessManage') {
-                $('#business-manage').removeClass('hidden');
-                $('#drop-business-content').removeClass('hidden');
+            if (permission_obj[i] === 'roleGroupManage') {
+                $('#role-group-manage').removeClass('hidden');
             }
-            if (permission_obj[i] === 'resourceManage') {
+            if (permission_obj[i] === 'accountPermissionManage') {
+                $('#account-permission-manage').removeClass('hidden');
+            }
+            if (permission_obj[i] === 'bulletinManage') {
                 $('#bulletin_manage').removeClass('hidden');
-                $('#drop-resource-content').removeClass('hidden');
             }
-            if (permission_obj[i] === 'schoolUserPage') {
-                $('#idc-system').removeClass('hidden');
+            if (permission_obj[i] === 'topo') {
+                $('#topo').removeClass('hidden');
+            }
+            if (permission_obj[i] === 'versionInfo') {
+                $('#version-infomation').removeClass('hidden');
             }
         }
         //版本都可见
         $('#version').removeClass('hidden');
 
-        //业务管理
-        $('#business-manage').click(function () {
-            $(".menu-item").removeClass("active");
-            $("#business-manage").addClass("active");
-            $('#drop-resource-content').slideUp();
-            $('#drop-switch-content').slideUp();
-            $('#drop-workorder-content').slideUp();
-            $('#drop-business-content').slideDown();
-
-        });
-
-        //工单管理
-        $('#workorder-manage').click(function () {
-            $(".menu-item").removeClass("active");
-            $("#workorder-manage").addClass("active");
-            $('#drop-resource-content').slideUp();
-            $('#drop-switch-content').slideUp();
-            $('#drop-business-content').slideUp();
-            $('#drop-workorder-content').slideDown();
-
-        });
-
-        //资源管理
-        $('#bulletin_manage').click(function () {
-            $(".menu-item").removeClass("active");
-            $("#bulletin_manage").addClass("active");
-            $('#drop-business-content').slideUp();
-            $('#drop-switch-content').slideUp();
-            $('#drop-workorder-content').slideUp();
-            $('#drop-resource-content').slideDown();
-        });
-
-        $('#workorder-manage').removeClass('hidden');
-        $('#drop-workorder-content').removeClass('hidden');
+        var c_url = window.location.href;
+        var c_index = -1;
+        if (c_url.indexOf('/cms/role_group_manage')>0){
+            c_index = 1;
+        }
+        if(c_url.indexOf('/cms/subAccount')>0){
+            c_index = 2;
+        }
+        if(c_url.indexOf('/cms/bulletinPage/')>0){
+            c_index = 3;
+        }
+        if(c_url.indexOf('/cms/version/')>0){
+            c_index = 4;
+        }
+        console.log(c_index);
+        if (c_index > 0){
+            $('.side-menu').children().eq(c_index).addClass("active").siblings().removeClass("active");
+        }
     }
 
 display_page_nav();
@@ -163,23 +151,6 @@ $("#idc_ul").on("click","li",function(event){
     })
 })
 
-
-function handle_idc_href(name, url){
-    $.ajax({
-        url:'/user/select_idc',
-        type:'post',
-        data:{idc:name},
-        success:function(result){
-            if(result.success==1){
-                window.location.reload();
-                location.href = url;
-            }
-            else{
-                alert(result.err_msg);
-            }
-        }
-    });
-}
 //是否为正整数
 function isPositiveInteger(s){
      var re = /^[0-9]+$/ ;

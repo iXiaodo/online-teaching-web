@@ -131,7 +131,7 @@ $(function(){
                             insert_html += '<tr><td data-name="'+key+'">'+key+'</td><td>默认</td><td></td></tr>';
                         }
                         else{
-                            insert_html += '<tr><td data-name="'+key+'">'+key+'</td><td>自定义</td><td><span class="iconfont modify" title="修改角色名称" style="cursor: pointer;">&#xe738;</span>&nbsp;&nbsp;&nbsp;<span class="iconfont remove" title="删除角色" style="cursor: pointer;">&#xe609;</span></td></tr>';
+                            insert_html += '<tr><td data-name="'+key+'">'+key+'</td><td>自定义</td><td><span class="iconfont modify" title="修改角色名称" style="cursor: pointer;">&#xe63a;</span>&nbsp;&nbsp;&nbsp;<span class="iconfont remove" title="删除角色" style="cursor: pointer;">&#xe713;</span></td></tr>';
                         }
                         if(role!==''){
                             key = role;
@@ -146,7 +146,7 @@ $(function(){
                                         right_html += '<tr><td data-name="'+j+'">'+j+'</td><td>'+data[key]['own_groups'][j]['rank']+'</td><td>默认</td><td></td></tr>';
                                     }
                                     else{
-                                        right_html += '<tr><td data-name="'+j+'">'+j+'</td><td>'+data[key]['own_groups'][j]['rank']+'</td><td>自定义</td><td><span class="iconfont update" title="修改分组">&#xe738;</span>&nbsp;&nbsp;&nbsp;<span class="iconfont delete" title="删除分组">&#xe609;</span></td></tr>';
+                                        right_html += '<tr><td data-name="'+j+'">'+j+'</td><td>'+data[key]['own_groups'][j]['rank']+'</td><td>自定义</td><td><span class="iconfont update" title="修改分组" style="cursor: pointer;">&#xe63a;</span>&nbsp;&nbsp;&nbsp;<span class="iconfont delete" title="删除分组" style="cursor: pointer;">&#xe713;</span></td></tr>';
                                     }
                                 }
                             }
@@ -174,7 +174,7 @@ $(function(){
                                     write_html += '<tr><td data-name="'+i+'">'+i+'</td><td>'+res.data[role]['own_groups'][i]['rank']+'</td><td>默认</td><td></td></tr>';
                                 }
                                 else{
-                                    write_html += '<tr><td data-name="'+i+'">'+i+'</td><td>'+res.data[role]['own_groups'][i]['rank']+'</td><td>自定义</td><td><span class="icon-font update" title="修改分组">&#xe684;</span><span class="icon-font delete" title="删除分组">&#xe60b;</span></td></tr>';
+                                    write_html += '<tr><td data-name="'+i+'">'+i+'</td><td>'+res.data[role]['own_groups'][i]['rank']+'</td><td>自定义</td><td><span class="iconfont update" title="修改分组" style="cursor: pointer;">&#xe63a;</span>&nbsp;&nbsp;&nbsp;<span class="iconfont delete" title="删除分组" style="cursor: pointer;">&#xe713;</span></td></tr>';
                                 }
                             }
                         }

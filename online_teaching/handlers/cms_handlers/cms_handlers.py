@@ -178,7 +178,15 @@ class CmsVersionHandler(BaseHandler):
     @authenticated
     @coroutine
     def get(self):
-        self.render("cms/cms_version.html",title="版本信息")
+        user_type = self.session.get('user_type')
+        username = self.session.get('user_name')
+        args = {
+            'user_type':user_type,
+            'title':'版本信息',
+            'username':username,
+
+        }
+        self.render("cms/cms_version.html",**args)
 
 
 

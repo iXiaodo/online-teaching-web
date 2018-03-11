@@ -10,12 +10,12 @@
     </style>
 {% end %}
 {% block content %}
-<div style="margin:30px 2.5% 0">
+<div style="margin: -8px 2.5% 0;">
     <div class="row">
         <div class="col-sm-6">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <p><i class="iconfont" >&#xe683;</i> 公告管理 <span class="iconfont pull-right" title="发布公告" id="add_bulletin" style="cursor:pointer;">&#xe648;</span></p>
+                    <p><i class="iconfont" >&#xe683;</i> 公告管理 <span class="iconfont pull-right" title="发布公告" id="add_bulletin" style="cursor:pointer;">&#xe640;</span></p>
                 </div>
                 <div class="panel-body">
                     <table class="table table-hover table-striped" id="role">
@@ -31,7 +31,7 @@
                                 <tr>
                                     <td data-bulletin="{{ doc }}">{{doc}}</td>
                                     <td>{{ bulletins[doc]['pub_time']}}</td>
-                                    <td><span class="iconfont remove" style="cursor: pointer;" title="删除公告">&#xe609;</span>&nbsp;&nbsp;&nbsp;<span class="iconfont ban-ico" style="cursor: pointer;" title="禁用公告">&#xe6ab;</span></td>
+                                    <td><span class="iconfont remove" style="cursor: pointer;" title="删除公告">&#xe713;</span>&nbsp;&nbsp;&nbsp;<span class="iconfont ban-ico" style="cursor: pointer;" title="禁用公告">&#xe6f2;</span></td>
                                 </tr>
                             {% end %}
                         </tbody>
@@ -42,7 +42,7 @@
         <div class="col-sm-6">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3>详细内容&nbsp;&nbsp;&nbsp;<span id="editor-sub-btn" class="iconfont" title="修改公告内容">&#xe738;</span><span class="close" id="close_add_page" style="display:none;">&times;</span></h3>
+                    <h3>详细内容&nbsp;&nbsp;&nbsp;<span id="editor-sub-btn" class="iconfont" title="修改公告内容">&#xe63a;</span><span class="close" id="close_add_page" style="display:none;">&times;</span></h3>
                 </div>
                 <div id="right-subaccount-info" class="panel-body hidden">
                     <div id="sub-info-list">
@@ -118,7 +118,7 @@
 			<div class="modal-body">
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
-                        <p><span class="iconfont" style="color:orange;">&#xe628;</span> 公告名称限制为汉字、英文字母和数字组成且长度不得超过12位</p><br>
+                        <p><span class="iconfont" style="color:orange;">&#xe61d;</span> 公告名称限制为汉字、英文字母和数字组成且长度不得超过12位</p><br>
                         <div class="col-sm-4 text-center" style="padding-top:5px;">公告标题</div>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" name="bulletin-title">
