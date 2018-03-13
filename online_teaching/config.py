@@ -29,7 +29,8 @@ BULLETIN_INFOS = "bulletin_infos"
 
 permission_list = ['subAccountManage', 'businessManage', 'resourceManage', ]
 
-
+LOG_DIR = "./log"  # 日志目录
+LOG_FILE = 'online_teaching.log'  # 日志文件
 
 GT_ID = "80ae976be97d4b56ab1ab05d8ed89546"
 GT_KEY = "ec83a1fe5b0031515024b0c89dd72ba5"

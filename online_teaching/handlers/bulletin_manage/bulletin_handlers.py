@@ -7,7 +7,7 @@ from handlers.common_handlers.base_handler import BaseHandler
 from config import BULLETIN_INFOS,MongoBasicInfoDb
 from libs.motor.base import BaseMotor
 from models.account import Account
-from utils.tools import to_string
+from utils.tools import to_string,to_unicode
 
 
 #页面
@@ -81,6 +81,7 @@ class getBulletinInfoHandler(BaseHandler):
             bulletin_title = post_data.get('bulletin_title', None)
             bulletin_content = post_data.get('bulletin_content', None)
             bulletin_author = post_data.get('bulletin_author', None)
+            bulletin_title = to_unicode(bulletin_title)
             if not bulletin_title:
                 self.write_response({}, 0, '公告标题不能为空！')
                 return

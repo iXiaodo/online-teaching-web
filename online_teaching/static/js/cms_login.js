@@ -31,12 +31,12 @@ $(function(){
         var childuser = $("#childuser").val();
         var password = $("#password").val();
         if(username == "" || username == null) {
-            $("#login_tip").css("display", "block").find('span').html('账号或密码错误');
+            $("#login_tip").css("display", "block").find('span').html('邮箱账号不能为空！请重新输入');
             return false;
         }
         else if($(".hidden").css("display") == "block") {
             if(childuser == "" || childuser == null || (!reg.test(childuser))) {
-                $("#login_tip").css("display", "block").find('span').html('子账号或密码错误');
+                $("#login_tip").css("display", "block").find('span').html('子账号不能为空！');
                 return false;
             }
             else if(password == "" || password == null){
@@ -49,7 +49,7 @@ $(function(){
             }
         }
         else if(password == "" || password == null){
-            $("#login_tip").css("display", "block").find('span').html('账号或密码错误');
+            $("#login_tip").css("display", "block").find('span').html('密码输入不能为空！请重新输入');
             return false;
         }
         else {
