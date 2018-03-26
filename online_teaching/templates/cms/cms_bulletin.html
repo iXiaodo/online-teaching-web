@@ -27,13 +27,7 @@
                             </tr>
                         </thead>
                         <tbody id="bulletin-tbody">
-                            {% for doc in bulletins %}
-                                <tr>
-                                    <td data-bulletin="{{ doc }}">{{doc}}</td>
-                                    <td>{{ bulletins[doc]['pub_time']}}</td>
-                                    <td><span class="iconfont remove" style="cursor: pointer;" title="删除公告">&#xe713;</span>&nbsp;&nbsp;&nbsp;<span class="iconfont ban-ico" style="cursor: pointer;" title="禁用公告">&#xe6f2;</span></td>
-                                </tr>
-                            {% end %}
+
                         </tbody>
                     </table>
                 </div>
@@ -42,14 +36,14 @@
         <div class="col-sm-6">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <h3>详细内容&nbsp;&nbsp;&nbsp;<span id="editor-sub-btn" class="iconfont" title="修改公告内容">&#xe63a;</span><span class="close" id="close_add_page" style="display:none;">&times;</span></h3>
+                    <h3>详细内容&nbsp;&nbsp;&nbsp;<span id="editor-sub-btn" class="iconfont" title="修改公告内容" style="cursor: pointer;">&#xe63a;</span><span class="close" id="close_add_page" style="display:none;">&times;</span></h3>
                 </div>
                 <div id="right-subaccount-info" class="panel-body hidden">
                     <div id="sub-info-list">
-                        <form id="form1" action="">
+                        <form id="form1">
                         <div class="row">
                             <div class="col-sm-2 col-sm-offset-1">
-                                <label for="sub_name">公告标题 &nbsp;&nbsp;<span>*</span></label>
+                                <label for="bulletin-title">公告标题 &nbsp;&nbsp;<span>*</span></label>
                             </div>
                             <div class="col-sm-8 col-md-6">
                                 <input type="text" id="bulletin-title" class="form-control" required="required"/>
@@ -57,7 +51,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-2 col-sm-offset-1">
-                                <label for="user_name">公告内容 &nbsp;&nbsp;<span>*</span></label>
+                                <label for="bulletin-content">公告内容 &nbsp;&nbsp;<span>*</span></label>
                             </div>
                             <div class="col-sm-8 col-md-6">
                                 <textarea id="bulletin-content" class="form-control" rows="10" required="required"/>
@@ -66,7 +60,7 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-2 col-sm-offset-1">
-                                <label for="select_role">置顶状态 &nbsp;&nbsp;<span>*</span></label>
+                                <label for="top-status">置顶状态 &nbsp;&nbsp;<span>*</span></label>
                             </div>
                             <div class="col-sm-8 col-md-6" id="top-status">
                                 <input type="radio" name="top-status" value="true" id="top-statustrue" checked/>
@@ -75,26 +69,20 @@
                                 <label for="top-statusfalse">否</label>
                             </div>
                         </div>
-                        <div class="row" id="staff_position">
-                            <div class="col-sm-2 col-sm-offset-1">
-                                <label for="group">移除状态 &nbsp;&nbsp;<span>*</span></label>
-                            </div>
-                            <div class="col-sm-8 col-md-6" id="remove-status">
-                                <input type="radio" name="remove-status" value="true" id="remove-statustrue" checked/>
-                                <label for="remove-statustrue">是</label>
-                                <input type="radio" name="remove-status" value="false" id="remove-statusfalse"/>
-                                <label for="remove-statusfalse">否</label>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-sm-2 col-sm-offset-1">
                                 <label for="status">是否启用 &nbsp;&nbsp;<span>*</span></label>
                             </div>
                             <div class="col-sm-8 col-md-6" id="status">
-                                <input type="radio" name="status" value="true" id="statustrue" checked/>
+                                <input type="radio" name="status" value="true" id="statustrue"/>
                                 <label for="statustrue">是</label>
                                 <input type="radio" name="status" value="false" id="statusfalse"/>
                                 <label for="statusfalse">否</label>
+                            </div>
+                        </div>
+                        <div class="row" >
+                            <div class="col-sm-offset-1">
+                                <button id="sub-submit-btn" class="btn btn-primary hidden">提交更改</button>
                             </div>
                         </div>
                     </form>
@@ -113,7 +101,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close-quick close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title text-center" data-author="{{user}}">创建公告</h4>
+				<h4 class="modal-title text-center" data-author="{{email}}">创建公告</h4>
 			</div>
 			<div class="modal-body">
                 <div class="row">

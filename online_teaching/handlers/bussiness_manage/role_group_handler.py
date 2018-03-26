@@ -1,34 +1,37 @@
 # coding: utf-8
 from tornado.gen import coroutine
 from tornado.web import authenticated
-from handlers.common_handlers.base_handler import BaseHandler
-from libs.decorator.decorator import permission
+from handlers.common_handlers.base_handler import BaseHandler, permission
+from pages.handlers import get_page_permission, permission_list
 from models.account import Account
 import json
-from config import permission_list
-from utils.page import get_page_permission
-from utils.tools import to_string,to_unicode
+from utils.tools import to_string
 
 class RoleGroupIndex(BaseHandler):
     @authenticated
-    @permission("businessManage", 'r')
+    @permission("roleGroupManage", 'r')
     @coroutine
     def get(self):
+        email = self.get_session("main_account_email")
+        account = self.get_session("sub_account")
         args = {
             "title": "角色分组管理",
             "user_type": self.get_session("user_type"),
-            "username": self.get_session("main_account_email") + "::" + self.get_session(
-                "sub_account") if self.get_session("sub_account") else self.get_session("main_account_email"),
-            "subAccount": True if self.get_session('user_type') == '主账号' else
-            self.get_session('permission').get('subAccountManage'),
-            "permission": permission_list if self.get_session('user_type') == '主账号' else get_page_permission(self.get_session('permission'))
+            "email": email,
+            "permission": permission_list if self.get_session('user_type') == '超级管理员' else get_page_permission(self.get_session('permission'))
         }
-        self.render("cms/role_group_manage.html", **args)
-
+        try:
+            if account:
+                email = self.get_session("subaccount_email")
+                args['email'] = email
+            self.render("cms/role_group_manage.html", **args)
+        except Exception as e:
+            print e
+            self.write_response({},0,_err=e)
 
 class RoleInfoHandler(BaseHandler):
     @authenticated
-    @permission("businessManage", 'r')
+    @permission("roleGroupManage", 'r')
     @coroutine
     def get(self):
         try:
@@ -41,7 +44,7 @@ class RoleInfoHandler(BaseHandler):
             self.write_response({}, 0, '获取数据异常')
 
     @authenticated
-    @permission("businessManage", 'w')
+    @permission("roleGroupManage", 'w')
     @coroutine
     def post(self):
         post_data = self.request.body

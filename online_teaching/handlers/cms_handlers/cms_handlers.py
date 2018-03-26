@@ -5,7 +5,7 @@ from tornado.gen import Return, coroutine
 from tornado.web import authenticated
 from config import GT_KEY, GT_ID,PERMISSION_NAME_COLLECTION,MongoBasicInfoDb,USER_NAME_COLLECTION
 from geetest import GeetestLib
-from config import permission_list
+from pages.handlers import permission_list, get_page_permission
 from models.account import Account,AccountNotExistError
 from utils.hashers import make_password
 from libs.motor.base import BaseMotor
@@ -16,17 +16,24 @@ class IndexHandler(BaseHandler):
     @authenticated
     @coroutine
     def get(self):
+        email = self.get_session("main_account_email")
         args = {
             "title": "后台管理系统",
             "user_type": self.get_session("user_type"),
-            "username": self.get_session("main_account_email") + "::" + self.get_session(
-                "sub_account") if self.get_session("sub_account") else self.get_session("main_account_email"),
-            "subAccount": True if self.get_session('user_type') == '主账号' else
-            self.get_session('permission').get('subAccountManage'),
-            "permission": permission_list if self.get_session('user_type') == '主账号' else get_page_permission(
+            "email": email,
+            "permission": permission_list if self.get_session('user_type') == '超级管理员' else get_page_permission(
                 self.get_session('permission'))
         }
-        self.render("cms/base.html", **args)
+        try:
+            email = self.get_session("subaccount_email")
+            if email:
+                args["email"]=email
+            print args['permission']
+            self.render("cms/base.html", **args)
+        except Exception as e:
+            print e
+            logging.exception(e)
+            self.write_response({},0,_err=e)
 
 #管理员登录处理
 class CmsLoginHandler(BaseHandler):
@@ -56,6 +63,7 @@ class CmsLoginHandler(BaseHandler):
             else:
                 verify_res = gt.failback_validate(challenge, validate, seccode)
                 self.session["user_id"] = user_id
+            print verify_res
             if verify_res:
                 try:
                     user_email = self.get_argument('user_email')
@@ -71,6 +79,7 @@ class CmsLoginHandler(BaseHandler):
                     return
                 except Exception as e:
                     logging.exception(e)
+                    print e
                     msg = "账户出现异常！"
                     self.render("cms/user_login.html", msg=msg, next_url=next_url)
                     return
@@ -81,13 +90,18 @@ class CmsLoginHandler(BaseHandler):
                         permision = yield self.getPermission(user_email, subaccount_id)
                     if permision['status']:
                         self.session['raw_permission'] = account.document.get("permission")
-                        self.session['user_type'] = '主账号' if account.is_main_account else '子账号'
+                        self.session['user_type'] = '超级管理员' if account.is_main_account else account.role
                         self.session['user_name'] = account.document.get("user_name")
                         self.session['permission'] = permision
                         self.session['sub_account'] = subaccount_id
                         self.session["role"] = account.role
                         self.session["group"] = account.group
                         self.session['main_account_email'] = user_email
+                        if subaccount_id:
+                            coll = BaseMotor().client[MongoBasicInfoDb][USER_NAME_COLLECTION]
+                            res = yield coll.find_one({'_id': user_email})
+                            email = res["subaccount"][subaccount_id]["user_email"]
+                            self.session['subaccount_email']=email
                         self.set_secure_cookie("user", user_email + subaccount_id if subaccount_id else user_email,
                                                expires_days=1)
                         self.redirect(next_url)
@@ -131,21 +145,7 @@ class CmsLogoutHandler(BaseHandler):
         self.render("cms/user_login.html", msg=msg, next_url='/cms/')
 
 
-# 验证码处理
-class PcGetCaptchaHandler(BaseHandler):
-    @coroutine
-    def get(self):
-        user_id = 'test'
-        try:
-            gt = GeetestLib(GT_ID, GT_KEY)
-            status = gt.pre_process(user_id)
-            self.session[gt.GT_STATUS_SESSION_KEY] = str(status)
-            self.session["user_id"] = user_id
-            response_str = gt.get_response_str()
-            self.write(response_str)
-        except Exception as e:
-            # logging.exception(e)
-            self.write('对不起，请求验证码异常')
+
 
 
 
@@ -156,7 +156,12 @@ class CmsModifyPwdHandler(BaseHandler):
     @authenticated
     @coroutine
     def get(self):
-        self.render("cms/cms_modifyPwd.html",title="修改账户密码")
+        args = {
+            'user_type': self.session.get('user_type'),
+            'username':self.session.get('user_name'),
+            'title':"修改账户密码"
+        }
+        self.render("cms/cms_modifyPwd.html",**args)
 
 
 #版本信息
@@ -165,14 +170,22 @@ class CmsVersionHandler(BaseHandler):
     @coroutine
     def get(self):
         user_type = self.session.get('user_type')
-        username = self.session.get('user_name')
+        email = self.get_session("main_account_email")
+        account_email = self.get_session("subaccount_email")
         args = {
             'user_type':user_type,
             'title':'版本信息',
-            'username':username,
-
+            'email':email,
+            "permission": permission_list if self.get_session('user_type') == '超级管理员' else get_page_permission(
+                self.get_session('permission'))
         }
-        self.render("cms/cms_version.html",**args)
+        try:
+            if account_email:
+                args["email"] = account_email
+            self.render("cms/cms_version.html", **args)
+        except Exception as e:
+            print e
+            self.write_response({},0,_err=e)
 
 
 

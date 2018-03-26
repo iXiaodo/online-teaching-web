@@ -22,18 +22,19 @@
 </head>
 <body>
 <div>
-    <input type="hidden" value="" id="personal_permission">
+    <input type="hidden" value="{{ permission }}" id="personal_permission">
 </div>
 <div class="layout-admin">
     <header class="layout-header col-md-12">
         <span class="header-logo">平台</span>
         <a class="layout-side-arrow"  href="javascript:"><span class="iconfont">&#xe61f;</span> 导航</a>
         <ul class="header-bar">
-            <li class="header-bar-role"><a href="javascript:;">{{ user_type }}</a></li>
+            <li class="header-bar-index"><a href="/">回到首页</a></li>
+            <li class="header-bar-role"><a href="javascript:;">身份：{{ user_type }}</a></li>
             <li class="header-bar-nav">
-                <a href="javascript:void(0);">{{ username}}<i class="iconfont" style="margin-left:5px;">&#xe600;</i></a>
+                <a href="javascript:void(0);">{{ email }}<i class="iconfont" style="margin-left:5px;">&#xe600;</i></a>
                 <ul class="header-dropdown-menu" id="old_ul">
-                    <li><a href="/cms/modifyPwd/">修改主账号密码</a></li>
+                    <li><a href="/cms/modifyPwd/">修改账号密码</a></li>
                     <li><a href="/cms/subAccount">账号管理</a></li>
                     <li><a href="/cms/logout">&nbsp;&nbsp;退出&nbsp;&nbsp;</a></li>
                 </ul>

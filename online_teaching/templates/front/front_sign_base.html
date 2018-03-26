@@ -16,8 +16,10 @@
 	    <hr class="hr-sign">
 	    {% block login_regist_block %}{% end %}
 	    
-	    <form action="" class="form sign-form" role='form' method="POST">
+	    <form action="{{ action_url }}" class="form sign-form" method="post">
 			{% block formblock %}{% end %}
 		</form>
 	</div>
+
 {% end %}
+

@@ -1,0 +1,50 @@
+{% extends "front_sign_base.html" %}
+
+{% block css_child_block %}
+	<link rel="stylesheet" href="/static/css/front/front_signup.css">
+{% end %}
+
+{% block login_regist_block %}
+	<div class="sign-box">
+    	<div class="sign-box-inner">
+    		<a href="/signin">登录</a>
+    		<b>·</b>
+    		<a href="/regist">注册</a>
+    	</div>
+    </div>
+{% end %}
+
+{% block formblock %}
+    <div class="form-group">
+		<div class="input-group">
+			<span class="input-group-addon glyphicon glyphicon-envelope">
+			</span>
+			<input type="email" name="email" id="email" class="form-control" placeholder="邮箱地址">
+		</div>
+	</div>
+    <div class="form-group">
+		<div class="input-group">
+			<span class="input-group-addon glyphicon glyphicon-lock">
+			</span>
+			<input type="password" class="form-control" placeholder="密码" id="password" name="password">
+		</div>
+	</div>
+    <div class="form-group">
+		<div class="input-group">
+			<input type="text" class="form-control" name="captcha" id="captcha" placeholder="请输入邮箱验证码！">
+            <a type="button" class="input-group-addon btn btn-info" id="captcha-btn">免费获取验证码</a>
+		</div>
+	</div>
+    <div class="form-group hidden" id="login_tip">
+        <p >
+            <i class="iconfont" style="color:orange">&#xe61d;</i>&nbsp;&nbsp;<span style="color: red;"></span>
+        </p>
+    </div>
+	<div class="form-group">
+        <input id="submit" class="btn btn-success btn-block" value="注册">
+	</div>
+{% end %}
+{% block frontfootjs %}
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/front/front_regist.js"></script>
+{% end %}

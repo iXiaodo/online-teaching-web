@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import hashlib
-from constants import PASSWORD_SALT
+from config import PASSWORD_SALT
 
 
 def make_password(raw_password,salt=None):
@@ -22,3 +22,8 @@ def check_password(raw_password,password):
         return True
     else:
         return False
+
+
+if __name__ == "__main__":
+    pwd = "zzzzzz"
+    print make_password(pwd)

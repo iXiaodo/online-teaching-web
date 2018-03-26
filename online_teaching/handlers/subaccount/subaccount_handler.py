@@ -20,7 +20,7 @@ class GetAccountPermission(BaseHandler):
 
     """
     @authenticated
-    @permission('subAccountManage', 'r')
+    @permission('accountPermissionManage', 'r')
     @tornado.gen.coroutine
     def get(self):
         try:
@@ -47,7 +47,7 @@ class GetAccountPermission(BaseHandler):
 # 子账户的获取
 class SubAccountHandler(BaseHandler):
     @authenticated
-    @permission('subAccountManage', 'r')
+    @permission('accountPermissionManage', 'r')
     @tornado.gen.coroutine
     def get(self):
         try:
@@ -76,7 +76,7 @@ class SubAccountHandler(BaseHandler):
             self.write_response("", 0, "获取数据失败，请稍后重试")
 
     @authenticated
-    @permission('subAccountManage', 'w')
+    @permission('accountPermissionManage', 'w')
     @tornado.gen.coroutine
     def post(self):
         try:
@@ -225,16 +225,23 @@ class SubAccountHandler(BaseHandler):
 class SubAccountPageHandler(BaseHandler):
     @authenticated
     @tornado.gen.coroutine
-    @permission('subAccountManage', 'r')
+    @permission('accountPermissionManage', 'r')
     def get(self):
+        email = self.get_session("main_account_email")
+        account = self.get_session("sub_account")
         args = {
             "title": "子账户管理",
             "user_type": self.get_session("user_type"),
-            "username": self.get_session("main_account_email")+"::" + self.get_session("sub_account") if self.get_session("sub_account") else self.get_session("main_account_email"),
-            "subAccount": True if self.get_session('user_type') == '主账号' else
-            self.get_session('permission').get('subAccountManage'),
-            "permission": permission_list if self.get_session('user_type') == '主账号' else get_page_permission(self.get_session('permission'))
+            "email": email,
+            "permission": permission_list if self.get_session('user_type') == '超级管理员' else get_page_permission(self.get_session('permission'))
         }
-        self.render("cms/subAccount.html", **args)
+        try:
+            if account:
+                email = self.get_session("subaccount_email")
+                args['email']=email
+            self.render("cms/subAccount.html", **args)
+        except Exception as e:
+            print e
+            self.write_response({},0,_err=e)
 
 

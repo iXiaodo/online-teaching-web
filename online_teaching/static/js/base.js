@@ -1,7 +1,8 @@
 $(document).ready(function(){
     //前端页面展示权限
     function display_page_nav() {
-        var permission_obj = ['roleGroupManage', 'accountPermissionManage', 'bulletinManage','topo','versionInfo'];
+        // var permission_obj = ['roleGroupManage', 'accountPermissionManage', 'bulletinManage','topo','versionInfo'];
+        var permission_obj = eval($('#personal_permission').val());
         for (var i in permission_obj){
             if (permission_obj[i] === 'roleGroupManage') {
                 $('#role-group-manage').removeClass('hidden');
@@ -36,7 +37,6 @@ $(document).ready(function(){
         if(c_url.indexOf('/cms/version/')>0){
             c_index = 4;
         }
-        console.log(c_index);
         if (c_index > 0){
             $('.side-menu').children().eq(c_index).addClass("active").siblings().removeClass("active");
         }

@@ -1,0 +1,22 @@
+<div class="form-group">
+    <p id="login_tip" class="hidden">
+        <i class="iconfont" style="color:orange">&#xe61d;</i>&nbsp;&nbsp;<span style="color: red;"></span>
+    </p>
+</div>
+<div class="form-group">
+    <div id="embed-captcha"></div>
+    <div id="wait" class="show">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    {% if msg %}
+    <p id="error">
+        <i class="iconfont" style="color:orange">&#xe61d;</i><span>{{ msg }}</span>
+    </p>
+    {% end %}
+</div>

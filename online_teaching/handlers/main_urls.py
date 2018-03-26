@@ -5,10 +5,10 @@ from handlers.common_handlers.base_handler import BaseHandler
 from handlers.bussiness_manage.urls import url as bussiness_urls
 from handlers.subaccount.urls import url as subaccount_urls
 from handlers.bulletin_manage.urls import url as bulletin_url
-
+from handlers.common_handlers.captcha_handlers import PcGetCaptchaHandler
 
 handlers = [
-
+    (r"^/geetest/register", PcGetCaptchaHandler),
 ]
 handlers += frontUrls
 handlers += cmsUrls
