@@ -8,32 +8,23 @@ from handlers.common_handlers.base_handler import BaseHandler
 from config import BULLETIN_INFOS,MongoBasicInfoDb
 from libs.motor.base import BaseMotor
 from utils.tools import to_string
-from handlers.common_handlers.base_handler import permission
-from pages.handlers import permission_list, get_page_permission
-
-
 
 #页面
 class BulletinInfoPageHandler(BaseHandler):
     @authenticated
     @coroutine
-    @permission("bulletinManage",'r')
     def get(self):
-        email = self.get_session("main_account_email")
-        account = self.get_session("sub_account")
-        args = {
-            'title': '公告管理',
-            'user_type': self.get_session("user_type"),
-            'email': email,
-            "permission": permission_list if self.get_session('user_type') == '超级管理员' else get_page_permission(
-                self.get_session('permission'))
-        }
         try:
-            if account:
-                email = self.get_session("subaccount_email")
-                args['email']=email
+            email = self.get_session("current_email")
+            args = {
+                'title': '公告管理',
+                'role': self.get_session('role'),
+                'email': email,
+                'permission':self.get_session('permission')
+            }
             self.render("cms/cms_bulletin.html", **args)
         except Exception, e:
+            logging.exception(e)
             print e
 
 
@@ -41,12 +32,8 @@ class BulletinInfoPageHandler(BaseHandler):
 class getBulletinInfoHandler(BaseHandler):
     @authenticated
     @coroutine
-    @permission("bulletinManage", 'r')
     def get(self):
-        email = self.get_session("main_account_email")
-        account = self.get_session("sub_account")
-        if account:
-            email = self.get_session("subaccount_email")
+        email = self.get_session("current_email")
         try:
             coll = BaseMotor().client[MongoBasicInfoDb][BULLETIN_INFOS]
             res = yield coll.find_one({'_id':email })

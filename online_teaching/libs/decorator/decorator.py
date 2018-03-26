@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from constants import ADMIN_IP
+# from config import ADMIN_IP
 import functools
 
 #管理员权限通过IP地址控制，

@@ -1,19 +1,21 @@
 {% extends "front_base.html"%}
 
 {% block cssblock %}
+<script src="/static/js/front/jquery-1.11.1.min.js"></script>
+<script src="/static/js/front/unslider.min.js"></script>
 <style>
-    .panel-title{
+    #bulletin-block .panel-title{
         text-align: center;
     }
-    .panel-body{
+    #bulletin-block .panel-body{
         height: 180px;
     }
-    li{
+    #bulletin-block li{
         list-style: none;
         text-decoration: none;
         cursor: pointer;
     }
-    a{
+    #bulletin-block a{
         text-decoration: none;
     }
     #bulletin-ul li span{
@@ -32,108 +34,81 @@
         bottom: 36px;
         right: 18px;
     }
+    #bulletin-block{
+        margin: 16px 0 0 0;
+    }
+    /*banner-start*/
 
-    /*L轮播图*/
-    .index-banner-box{
-        width: 945px;
-        height: 270px;
-        margin:-20px auto;
-        position: relative;
-    }
-    .banner-box1{
-        width: 630px;
-        height: 100%;
-        float: left;
-    }
-    .erduo{
-        /*改变为块*/
-        display: block;
-        width:40px;
-        height: 51px;
-        font-size: 24px;
+    #b04 ul, ol { padding: 0;}
+    .banner { position: relative;
+        overflow: auto;
         text-align: center;
-        line-height: 51px;
-        background: rgba(0,0,0,0.4);
-        color:white;
-        position: absolute;
-        top:50%;
-        margin-top: -25px;
-
+        margin: 0 auto;
     }
-    .index-banner-box:hover .erduo{
-        display: block;
+    .banner li { list-style: none; }
+    .banner ul li { float: left; }
+    #b04 { width: 640px;}
+    #b04 .dots { position: absolute; left: 0; right: 0; bottom: 20px;}
+    #b04 .dots li
+    {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin: 0 4px;
+        text-indent: -999em;
+        border: 2px solid #fff;
+        border-radius: 6px;
+        cursor: pointer;
+        opacity: .4;
+        -webkit-transition: background .5s, opacity .5s;
+        -moz-transition: background .5s, opacity .5s;
+        transition: background .5s, opacity .5s;
     }
-    .pre{
-        left: 0px;
-        border-radius: 0 10px 10px 0;
-        display: none;
+    #b04 .dots li.active
+    {
+        background: #fff;
+        opacity: 1;
     }
-    .next{
-        right: 0px;
-        border-radius: 10px 0 0 10px;
-        display: none;
+    #b04 .arrow { position: absolute; top: 149px;}
+    #b04 #al { left: 15px;}
+    #b04 #ar { right: 15px;}
+    #b04 ul li img{
+        width: 900px;
+        height: 320px;
     }
-    .banner-ul{
-        border-radius: 11px;
-        width: 100px;
-        height: 22px;
-        background: rgba(229,229,229,0.4);
-        position: absolute;
-        bottom: 22px;
-        left: 50%;
-        margin-left: -20px;
-    }
-    .banner-ul li{
-        width:12px;
-        height: 12px;
-        background: gray;
-        border-radius: 50%;
-        float: left;
-        margin-left: 16px;
-        margin-top: 6px;
-    }
-    .banner-ul .on{
-        background: #ED4F11;
-
-    }
-    .banner-right{
-        width: 315px;
-        height: 270px;
-        float: left;
-        overflow: hidden;
-    }
-    .banner-right .img1{
-        margin: 0px;
-        padding: 0px;
-    }
-    /*L轮播图*/
+    /*banner*/
 </style>
 {% end %}
 
 {% block content%}
-<div class="row">
-    <div class="index-banner-box">
-    	<div class="banner-box1">
-    		<img id="img" src="/static/images/img/1.jpg" width="630" height="270">
-    		<a id="pre" class="erduo pre" href="javascript:void(0);">&lt;</a>
-    		<ul class="banner-ul" id="banner-ul">
-    			<li class="on"></li>
-	    		<li></li>
-	    		<li></li>
-    		</ul>
-    	</div>
-    	<div class="banner-right">
-    		<a id="next" class="erduo next" href="javascript:void(0);">&gt;</a>
-    		<img id="img_right1" class="img1" src="/static/images/img/2.jpg" width="315px" height="135">
-    		<img id="img_right2" class="img1" src="/static/images/img/3.jpg" width="315" height="135">
-    	</div>
-    </div>
+<div class="banner" id="b04">
+    <ul>
+        <li><img src="/static/images/banner/01.jpg"></li>
+        <li><img src="/static/images/banner/02.jpg"></li>
+        <li><img src="/static/images/banner/03.jpg"></li>
+        <li><img src="/static/images/banner/04.jpg"></li>
+        <li><img src="/static/images/banner/05.jpg" ></li>
+    </ul>
+    <a href="javascript:void(0);" class="unslider-arrow04 prev"><img class="arrow" id="al" src="/static/images/banner/arrowl.png" alt="prev" width="20" height="35"></a>
+    <a href="javascript:void(0);" class="unslider-arrow04 next"><img class="arrow" id="ar" src="/static/images/banner/arrowr.png" alt="next" width="20" height="37"></a>
 </div>
+<script>
+$(document).ready(function(e) {
+    var unslider04 = $('#b04').unslider({
+        dots: true
+    }),
+    data04 = unslider04.data('unslider');
+
+    $('.unslider-arrow04').click(function() {
+        var fn = this.className.split(' ')[1];
+        data04[fn]();
+    });
+});
+</script>
 <div class="row">
     <div class="row col-sm-2">
-
     </div>
-    <div class="row col-sm-3">
+    <div class="row col-sm-3" id="bulletin-block">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">公告</h3>
@@ -156,44 +131,5 @@
 {% end %}
 
 {% block footjs%}
-<script>
-    	window.onload = function(){
-    		var pre = document.getElementById("pre");
-	    	var next = document.getElementById("next");
-	    	var img = document.getElementById("img");
-	    	var ulDom = document.getElementById("banner-ul");
-	    	var liDom = ulDom.getElementsByTagName("li");
-	    	var img_right1 = document.getElementById("img_right1");
-	    	var img_right2 = document.getElementById("img_right2");
-	    	var index = 1;
 
-	    	// 点击右键应用样式
-	    	next.onclick=function (){
-	    		index++;
-	    		if (index === 4) {
-	    			index=1;
-	    		};
-	    		img.src="/static/images/img/"+index+".jpg";
-
-	    		for (var i = 0; i < liDom.length; i++) {
-	    			liDom[i].className = "";
-	    		}
-	    		liDom[index-1].className = "on";
-	    	};
-	    	window.setInterval("next.onclick()",6000);
-	    	// 点击左键出现样式
-	    	pre.onclick=function(){
-	    		index--;
-	    		if (index===0) {
-	    			index=3;
-	    		};
-	    		img.src="/static/images/img/"+index+".jpg";
-	    		img_right1.src="/static/images/img/"+index+".jpg";
-	    		for (var i = 0; i < liDom.length; i++) {
-	    			liDom[i].className = "";
-	    		}
-	    		liDom[index-1].className = "on";
-	    	};
-    	};
-    </script>
 {% end %}

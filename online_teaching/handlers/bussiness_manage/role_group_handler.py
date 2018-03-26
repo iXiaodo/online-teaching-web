@@ -1,15 +1,12 @@
 # coding: utf-8
 from tornado.gen import coroutine
 from tornado.web import authenticated
-from handlers.common_handlers.base_handler import BaseHandler, permission
-from pages.handlers import get_page_permission, permission_list
-from models.account import Account
+from handlers.common_handlers.base_handler import BaseHandler
 import json
 from utils.tools import to_string
 
 class RoleGroupIndex(BaseHandler):
     @authenticated
-    @permission("roleGroupManage", 'r')
     @coroutine
     def get(self):
         email = self.get_session("main_account_email")
@@ -17,8 +14,7 @@ class RoleGroupIndex(BaseHandler):
         args = {
             "title": "角色分组管理",
             "user_type": self.get_session("user_type"),
-            "email": email,
-            "permission": permission_list if self.get_session('user_type') == '超级管理员' else get_page_permission(self.get_session('permission'))
+            "email": email
         }
         try:
             if account:
@@ -31,20 +27,16 @@ class RoleGroupIndex(BaseHandler):
 
 class RoleInfoHandler(BaseHandler):
     @authenticated
-    @permission("roleGroupManage", 'r')
     @coroutine
     def get(self):
         try:
             main_account = self.get_session('main_account_email')
-            a = Account(main_account)
-            data = a.own_roles
             self.write_response(data)
         except Exception as e:
             # logging.exception(e)
             self.write_response({}, 0, '获取数据异常')
 
     @authenticated
-    @permission("roleGroupManage", 'w')
     @coroutine
     def post(self):
         post_data = self.request.body

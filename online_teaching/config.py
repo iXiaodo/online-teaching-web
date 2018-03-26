@@ -2,10 +2,10 @@
 
 import os
 
+import uuid,base64
 
-
-COOKIE_SECRET = ''
-
+#cookie_secret
+COOKIE_SECRET = base64.b64encode(uuid.uuid4().bytes)
 
 
 PORT = 8000
@@ -29,6 +29,7 @@ OPEN_ID_COLLECTION = "open_id"
 BULLETIN_INFOS = "bulletin_infos"
 STUDENTS = "students"
 FRONT_USER = "front_user"
+CMS_USER = "cms_user"
 permission_list = ['roleGroupManage', 'accountPermissionManage', 'bulletinManage']
 
 LOG_DIR = "./log"  # 日志目录

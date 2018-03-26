@@ -5,14 +5,13 @@ import json
 import tornado.gen
 import tornado.web
 from tornado.web import authenticated
+
 from libs.decorator.decorator import permission
 from handlers.common_handlers.base_handler import BaseHandler
-from models.account import Account, PermissionInsufficientError, AccountNotExistError
-from utils.check import check_subaccount_alias, check_subaccount_name, check_email
+from utils.check import  check_email
 from utils.tools import to_string
 from libs.motor.base import BaseMotor
 from config import MongoBasicInfoDb, PERMISSION_NAME_COLLECTION, permission_list
-from utils.page import get_page_permission
 
 
 class GetAccountPermission(BaseHandler):
@@ -31,7 +30,7 @@ class GetAccountPermission(BaseHandler):
                 self.write_response({}, 0, '不存在主账号信息')
                 return
             our_permission = [key for key in res['super_admin']]
-            account = Account(main_account)
+            # account = Account(main_account)
             roles = account.get_roles_and_groups()
             if our_permission and roles:
                 self.write_response({

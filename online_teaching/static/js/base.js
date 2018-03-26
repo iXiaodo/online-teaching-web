@@ -1,8 +1,7 @@
 $(document).ready(function(){
     //前端页面展示权限
     function display_page_nav() {
-        // var permission_obj = ['roleGroupManage', 'accountPermissionManage', 'bulletinManage','topo','versionInfo'];
-        var permission_obj = eval($('#personal_permission').val());
+        var permission_obj = ['roleGroupManage', 'accountPermissionManage', 'bulletinManage','topo','versionInfo'];
         for (var i in permission_obj){
             if (permission_obj[i] === 'roleGroupManage') {
                 $('#role-group-manage').removeClass('hidden');

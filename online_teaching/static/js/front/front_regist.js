@@ -66,11 +66,12 @@ $(function () {
             });
         }
     });
-    $("#submit").click(function () {
+    $("#submit").click(function (event) {
+        event.preventDefault();
         var captcha = $("#captcha").val();
         var password = $("#password").val();
-        var reg_captcha = /^[A-Za-z0-9]{6}$/;
         var email = $("#email").val();
+        var reg_captcha = /^[A-Za-z0-9]{4}$/;
         if(email == "" || email == null){
             $("#login_tip").removeClass("hidden");
             $("#login_tip span").html("邮箱帐号输入不能为空！！");
@@ -80,7 +81,7 @@ $(function () {
         } else if(password == "" || password == null){
             $("#login_tip").removeClass("hidden");
             $("#login_tip span").html("密码输入不能为空！！");
-        } else if(password.length <=6){
+        } else if(password.length <6){
             $("#login_tip").removeClass("hidden");
             $("#login_tip span").html("密码位数至少6位数！！");
         } else if(captcha == "" || captcha== null){
@@ -88,7 +89,7 @@ $(function () {
             $("#login_tip span").html("邮箱验证码不能为空！！");
         } else if(!reg_captcha.test(captcha)){
             $("#login_tip").removeClass("hidden");
-            $("#login_tip span").html("邮箱验证码个数只能为6位！！");
+            $("#login_tip span").html("邮箱验证码个数只能为4位！！");
         } else{
             $("#login_tip").addClass("hidden");
             $.ajax({
@@ -99,16 +100,17 @@ $(function () {
                 data: JSON.stringify({
                     'action': 'regist',
                     'email':email,
-                    'captcha': captcha,
-                    'password':password
+                    'password':password,
+                    'captcha':captcha
                 }),
                 success: function (res) {
                     if (res.success === 1) {
                         new GHAlert({
                             content: '恭喜您！帐号注册成功！',
                             type: "success",
-                            time: 3000
+                            time: 4000
                         }).show();
+                        window.location.href = '/signin';
                     }
                     else {
                         new GHAlert({
