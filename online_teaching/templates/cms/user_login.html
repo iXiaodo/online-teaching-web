@@ -14,24 +14,19 @@
     <link rel="stylesheet" href="/static/css/iconfont.css">
     <link rel="stylesheet" href="/static/css/cms/cms_base.css">
 </head>
-
 <body>
 <div id="pic">
     <a><img src="/static/images/favicon.png" width="115px" height="35px"></a>
 </div>
 <div id="container">
     <div id="nav">
-        <a href="javascript:void(0)">主账户登录</a><span class="line"></span><a href="javascript:void(0)" id="subaccout-btn">子账户登录</a>
+        <a href="javascript:void(0)">CMS用户登录</a>
     </div>
     <div>
         <form action="/cms/login?next={{ next_url }}" id="form" method="post">
             <div class="outer-div">
                 <span class="iconfont" title="邮箱">&#xe631;</span>
                 <input type="text" id="username" name="user_email" placeholder='邮箱'>
-            </div>
-            <div class="outer-div hidden">
-                <span class="iconfont" title="子账号">&#xe60f;</span>
-                <input type="text" id="childuser" name="sub_account" placeholder='子账号'>
             </div>
             <div class="outer-div">
                 <span class="iconfont" title="密码">&#xe6e6;</span>

@@ -20,13 +20,16 @@ class BaseHandler(SessionBaseHandler):
             True
         )
 
-    def write_response(self, response, _status=1, _err=''):
+    def write_response(self, response, _status=1, _err='',kwargs={}):
         self.set_header('Content-type', 'application/json')
         _response = {
             "success": _status,
             "data": response,
             "err_msg": _err
         }
+        if kwargs:
+            for k,v in kwargs.items():
+                _response[k] = v
         self.write(json.dumps(_response))
         self.finish()
 

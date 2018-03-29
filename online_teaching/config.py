@@ -14,10 +14,15 @@ BIND_IP = "127.0.0.1"
 
 MONGO_USE_RS = True
 MONGO_RS_HOST_PORT = [
-    ("127.0.0.1", 27017)
+    # ("192.168.1.182", 27017)
+    ("192.168.43.217", 27017)
 ]
 
-MongodbHost = '127.0.0.1'
+#七牛配置
+AK = ""
+SK = ""
+
+MongodbHost = '192.168.1.182'
 MongodbPort = 27017
 MongodbAuthDb = "admin"
 MongodbUser = ''

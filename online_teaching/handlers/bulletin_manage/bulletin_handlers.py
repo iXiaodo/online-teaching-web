@@ -3,7 +3,7 @@ import json
 from tornado.gen import coroutine
 from tornado.web import authenticated
 from datetime import datetime
-import logging
+from log import *
 from handlers.common_handlers.base_handler import BaseHandler
 from config import BULLETIN_INFOS,MongoBasicInfoDb
 from libs.motor.base import BaseMotor
@@ -25,7 +25,7 @@ class BulletinInfoPageHandler(BaseHandler):
             self.render("cms/cms_bulletin.html", **args)
         except Exception, e:
             logging.exception(e)
-            print e
+
 
 
 #获取留言数据
@@ -35,27 +35,22 @@ class getBulletinInfoHandler(BaseHandler):
     def get(self):
         email = self.get_session("current_email")
         try:
-            coll = BaseMotor().client[MongoBasicInfoDb][BULLETIN_INFOS]
-            res = yield coll.find_one({'_id':email })
-            if not res:
+            bull_coll = BaseMotor().client[MongoBasicInfoDb][BULLETIN_INFOS]
+            bull_doc = yield bull_coll.find_one({'_id':email })
+            res = bull_doc['own_bulletins']
+            if not bull_doc:
                 bulletin_data = {
                     "_id":email,
                     "own_bulletins":{}
                 }
-                coll.insert(bulletin_data)
-                res = yield coll.find_one({'_id': email})
-            res = res['own_bulletins']
-            if not res:
-                print "not res"
-                self.write_response({},_err='not res')
-                return
-            docs = res
-            display_lists = []
-            for doc in docs:
-                display_lists.append([doc,res])
-
-            self.write_response(docs)
-        except Exception,e:
+                res = bull_coll.insert_one(bulletin_data)
+                if not res.inserted_id:
+                    self.write_response({}, 0, _err='创建数据出错！')
+                res = yield bull_coll.find_one({'_id': email})
+                res = res['own_bulletins']
+            self.write_response(res)
+        except Exception as e:
+            logging.exception(e)
             self.write_response("", 0, "获取数据失败，请稍后重试")
 
     @coroutine
@@ -75,6 +70,7 @@ class getBulletinInfoHandler(BaseHandler):
         try:
             bulletin_coll = BaseMotor().client[MongoBasicInfoDb][BULLETIN_INFOS]
         except Exception as e:
+            logging.exception(e)
             self.write_response({}, 0, e)
             return
         if action == 'add':
@@ -99,17 +95,16 @@ class getBulletinInfoHandler(BaseHandler):
                     try:
                         bulletin_coll.update_one({'_id': bulletin_author},{
                             '$set':{
-                                'own_bulletins.{0}'.format(bulletin_title): {
+                                'own_bulletins.{0}'.format(to_string(bulletin_title)): {
                                     'content': bulletin_content,
                                     'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                                     'update_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                                    'is_top': False,
-                                    'is_active': True
+                                    'is_top':False,
+                                    'is_active':True
                                 }
                             }
                         })
                     except Exception as e:
-                        print '错误1:',e
                         logging.exception(e)
                         return
                     self.write_response({},1)
@@ -139,7 +134,7 @@ class getBulletinInfoHandler(BaseHandler):
                     self.write_response({},0,'修改公告标题失败！')
                 self.write_response({})
             except Exception as e:
-                print e
+                logging.exception(e)
                 self.write_response({}, 0, '修改公告标题失败！')
         elif action == 'del':
             bulletin_title = post_data.get('bulletin_title', None)
@@ -158,7 +153,7 @@ class getBulletinInfoHandler(BaseHandler):
                     self.write_response({},0,'删除公告失败！')
                 self.write_response({})
             except Exception as e:
-                print e
+                logging.exception(e)
                 self.write_response({}, 0, '删除公告失败！')
         elif action == 'top':
             bulletin_title = post_data.get('bulletin_title', None)
@@ -180,7 +175,7 @@ class getBulletinInfoHandler(BaseHandler):
                     self.write_response({},0,'置顶公告失败！')
                 self.write_response({})
             except Exception as e:
-                print e
+                logging.exception(e)
                 self.write_response({}, 0, '置顶公告失败！！')
         elif action == 'cancel_top':
             bulletin_title = post_data.get('bulletin_title', None)
@@ -202,7 +197,7 @@ class getBulletinInfoHandler(BaseHandler):
                     self.write_response({}, 0, '取消操作失败！')
                 self.write_response({})
             except Exception as e:
-                print e
+                logging.exception(e)
                 self.write_response({}, 0, '取消操作失败！')
         elif action == 'modify':
             bulletin_title = post_data.get('bulletin_title', None)
@@ -225,7 +220,7 @@ class getBulletinInfoHandler(BaseHandler):
                     self.write_response({}, 0, '修改内容失败！')
                 self.write_response({})
             except Exception as e:
-                print e
+                logging.exception(e)
                 self.write_response({}, 0, '修改内容失败！')
         else:
             pass

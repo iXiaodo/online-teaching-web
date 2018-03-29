@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from role_group_handler import RoleGroupIndex, RoleInfoHandler
+from role_manage import RoleIndex, RoleInfoHandler
 
 url = [
-    (r'^/cms/role_group_manage',RoleGroupIndex),
+    (r'^/cms/role_manage',RoleIndex),
     (r'^/cms/role_handler',RoleInfoHandler),
 ]

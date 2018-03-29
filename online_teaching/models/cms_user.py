@@ -15,12 +15,19 @@ from config import MongoBasicInfoDb, MongodbHost, MongodbPort, MongodbUser, Mong
 
 
 class CmsUser():
-    def __init__(self):
+    def __init__(self,email):
         mongo_client = MongoClient(host=MongodbHost, port=MongodbPort)
         if MongodbUser and MongodbPassword and MongodbAuthDb:
             mongo_client[MongodbAuthDb].authenticate(MongodbUser, MongodbPassword)
         self._mongo_client = mongo_client
         self._cms_user_collection = self._mongo_client[MongoBasicInfoDb][CMS_USER]
+        self._document = self._cms_user_collection.find_one({'id':email})
+        self._role = self._document['role']
+        self._permission = self._document['permission']
+        self._tel = self._document['tel']
+        self._user_email = self._document['user_email']
+        self._user_name = self._document['user_name']
+        self._status = self._document['status']
 
     @property
     def get_doc(self):
@@ -45,21 +52,14 @@ class CmsUser():
 
 
     @property
-    def set_pwd(self,raw_password):
-        self.coll = self._cms_user_collection.find_one({"_id": self.email})
-        coll = self.coll
-        raw_password = make_password(raw_password)
-        coll.update_one({"_id",self.email},{
-            '$set':{
-                'password':raw_password
-            }
-        })
+    def get_easy_permission(self):
+        return self._cms_user_collection.find({'permission':{'$ne':'super_admin'}})
 
 #
-a = CmsUser()
-a.email = "dsx@xx.com"
-pwd = 'zzzzzz'
-print a.set_pwd(pwd)
+# a = CmsUser()
+# a.email = "dsx@xx.com"
+# pwd = 'zzzzzz'
+# print a.get_role
 '''
 
     "_id" : "dsx@xx.com", 

@@ -55,8 +55,7 @@ $(function () {
     $("#save_btn").click(function () {
         var bulletin_title = $('#add_bulletin-btn div input[name="bulletin-title"]').val();
         var bulletin_content = $('#textarea-input').val();
-        var insert_html = ''
-        console.log(bulletin_author);
+        var insert_html = '';
         if(!reg.test(bulletin_title)){
             new GHAlert({
                 content: "公告标题不符合规定,请重新输入！",
@@ -127,7 +126,6 @@ $(function () {
                                 type: "success",
                                 time: 3000
                             }).show();
-                            // window.location = '/cms/bulletinPage/';
                             get_bulletin_info();
                         }
                         else {

@@ -179,16 +179,22 @@ class FrontRegistHandler(BaseHandler):
 
 #----------------------------------------------------------忘记密码
 class ForgetPwdHandler(BaseHandler):
+
+    @coroutine
     def get(self):
         msg=''
-        error=''
-        info=''
+        action_url = '/forgetpwd'
         context = {
             'msg':msg,
-            'error':error,
-            'info':info
+            'action_url':action_url
         }
         self.render("front/front_forgetpwd.html",**context)
+
+    @coroutine
+    def post(self):
+        post_data = self.request.body
+        pass
+
 
 
 class SignupHandler(BaseHandler):

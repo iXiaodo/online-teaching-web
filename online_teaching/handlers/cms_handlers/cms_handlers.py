@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
-import logging
-from handlers.common_handlers.base_handler import BaseHandler
 from tornado.gen import Return, coroutine
 from tornado.web import authenticated
-from config import GT_KEY, GT_ID,PERMISSION_NAME_COLLECTION,MongoBasicInfoDb,USER_NAME_COLLECTION, CMS_USER
 from geetest import GeetestLib
+from handlers.common_handlers.base_handler import BaseHandler
+from config import GT_KEY, GT_ID, MongoBasicInfoDb, CMS_USER
+
 from utils.hashers import make_password
 from libs.motor.base import BaseMotor
+from log import *
+from models.cms_user import CmsUser
+
 
 
 #首页
@@ -24,9 +27,31 @@ class IndexHandler(BaseHandler):
             }
             self.render("cms/base.html", **args)
         except Exception as e:
-            print e
             logging.exception(e)
             self.write_response({},0,_err=e)
+
+#用户信息页面
+class CmsProfilePageHandler(BaseHandler):
+    @coroutine
+    @authenticated
+    def get(self):
+        try:
+            email = self.get_session("current_email")
+            args = {
+                "title": "后台管理系统",
+                "role": self.get_session("role"),
+                "email": email,
+                "permission": self.get_session("permission")
+            }
+            user_coll = BaseMotor().client[MongoBasicInfoDb][CMS_USER]
+            user_doc = yield user_coll.find_one({"_id": email})
+            args['user_name']=user_doc['user_name']
+            args['user_email']=user_doc['user_email']
+            args['tel']=user_doc['tel']
+            args['status']=str(user_doc['status'])
+            self.render("cms/cms_profile.html",**args)
+        except Exception as e:
+            logging.exception(e)
 
 #管理员登录处理
 class CmsLoginHandler(BaseHandler):
@@ -76,7 +101,6 @@ class CmsLoginHandler(BaseHandler):
                             self.render("cms/user_login.html", msg=msg, next_url=next_url)
                 except Exception as e:
                     logging.exception(e)
-                    print e
                     msg = "账户出现异常！"
                     self.render("cms/user_login.html", msg=msg, next_url=next_url)
             else:
@@ -109,46 +133,64 @@ class CmsModifyPwdHandler(BaseHandler):
     @authenticated
     @coroutine
     def get(self):
+        email = self.get_session("current_email")
         args = {
-            'user_type': self.session.get('user_type'),
-            'username':self.session.get('user_name'),
-            'title':"修改账户密码"
+            "title": "修改当前账户密码",
+            "role": self.get_session("role"),
+            "email": email,
+            "permission": self.get_session("permission")
         }
         self.render("cms/cms_modifyPwd.html",**args)
 
+
+    def post(self):
+        pass
 
 #版本信息
 class CmsVersionHandler(BaseHandler):
     @authenticated
     @coroutine
     def get(self):
-        user_type = self.session.get('user_type')
-        email = self.get_session("main_account_email")
-        account_email = self.get_session("subaccount_email")
-        args = {
-            'user_type':user_type,
-            'title':'版本信息',
-            'email':email,
-            "permission": permission_list if self.get_session('user_type') == '超级管理员' else get_page_permission(
-                self.get_session('permission'))
-        }
         try:
-            if account_email:
-                args["email"] = account_email
+            email = self.get_session("current_email")
+            args = {
+                "title": "版本信息",
+                "role": self.get_session("role"),
+                "email": email,
+                "permission": self.get_session("permission")
+            }
             self.render("cms/cms_version.html", **args)
         except Exception as e:
-            print e
+            logging.exception(e)
             self.write_response({},0,_err=e)
 
 
-
-
-#子账户管理
+#账户管理
 class CmsSubAccountHandler(BaseHandler):
     @authenticated
     @coroutine
     def get(self):
-        self.render("cms/cms_subAccount.html",title="子账户管理")
+        email = self.get_session("current_email")
+        args = {
+            "title": "子账户管理",
+            "role": self.get_session("role"),
+            "email": email,
+            "permission": self.get_session("permission")
+        }
+        self.render("cms/cms_subAccount.html",**args)
+
+
+
+class CmsDataManageHandler(BaseHandler):
+    def get(self):
+        email = self.get_session("current_email")
+        args = {
+            "title": "资料管理",
+            "role": self.get_session("role"),
+            "email": email,
+            "permission": self.get_session("permission")
+        }
+        self.render("cms/file_up.html",**args)
 
 
 

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block header %}
+<style>
+    #sub-account-block #add-sub-btn, #sub-account-block #editor-sub-btn {
+        font-size: 26px;
+        transition: all 0.4s ease-in-out;
+    }
+    #tenant-manage-block h3, #sub-account-block h3 {
+        font-size: 20px;
+    }
+    #sub-account-block .row {
+        margin: 0;
+    }
+    .panel-body {
+        padding: 15px;
+    }
+</style>
+{% end %}
+{% block content %}
+<div class="container-fluid" style="margin-top:-40px;padding:0;" id="sub-account-block">
+    <div class="row">
+        <div class="col-sm-4 panel panel-info tm-column">
+            <div class="panel-heading">
+                <h3>资料管理</h3>
+            </div>
+            <div class="panel-body row">
+                <div class="col-sm-2 col-md-offset-1">
+                    <span id="pickfiles" class="iconfont" style="cursor: pointer">&#xe60a;</span>
+                </div>
+            </div>
+            <ul class="list-group" id="file-list">
+            </ul>
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block footjs %}
+<script src="https://cdn.staticfile.org/Plupload/2.1.1/moxie.js"></script>
+<script src="https://cdn.staticfile.org/Plupload/2.1.1/plupload.dev.js"></script>
+<script src="https://cdn.staticfile.org/Plupload/2.1.1/Moxie.swf"></script>
+<script src="https://cdn.staticfile.org/qiniu-js-sdk/1.0.14-beta/qiniu.js"></script>
+<script src="/static/js/xdqiniu.js"></script>
+<script src="/static/js/upfile.js"></script>
+{% end %}

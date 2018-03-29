@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block header %}
+
+{% end %}
+{% block content %}
+<div style="margin:-8px 2.5% 0">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p><i class="iconfont">&#xe60e;</i> 个人信息</p>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-striped table-hover" id="role">
+                        <tbody>
+                            <tr colspan="2">
+                                <td>用户名</td>
+                                <td>{{ user_name }}</td>
+                            </tr>
+                            <tr colspan="2">
+                                <td>邮箱</td>
+                                <td>{{ user_email }}</td>
+                            </tr>
+                            <tr colspan="2">
+                                <td>联系电话</td>
+                                <td>{{ tel }}</td>
+                            </tr>
+                            <tr colspan="2">
+                                <td>角色名</td>
+                                <td>{{ role }}</td>
+                            </tr>
+                            <tr colspan="2">
+                                <td>权限</td>
+                                <td>{{ permission }}</td>
+                            </tr>
+                            <tr colspan="2">
+                                <td>状态</td>
+                                {% if status == 'True' %}
+                                    <td><span class="info">可用</span></td>
+                                {% else%}
+                                    <td><span class="warning">不可用</span></td>
+                                {% end%}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% end %}
+
+{% block footjs%}
+<script>
+    $(function () {
+        $(".menu-item").removeClass("active");
+        $("#topo").addClass("active be-click");
+    });
+</script>
+{% end%}

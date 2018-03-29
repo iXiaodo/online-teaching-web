@@ -2,81 +2,50 @@
 # -*- coding: utf-8 -*-
 
 import json
-import tornado.gen
-import tornado.web
+
+from tornado.gen import coroutine
 from tornado.web import authenticated
 
-from libs.decorator.decorator import permission
 from handlers.common_handlers.base_handler import BaseHandler
 from utils.check import  check_email
 from utils.tools import to_string
 from libs.motor.base import BaseMotor
-from config import MongoBasicInfoDb, PERMISSION_NAME_COLLECTION, permission_list
+from config import MongoBasicInfoDb
+from models.cms_user import CmsUser
 
-
-class GetAccountPermission(BaseHandler):
-    """
-
-    """
+class SubAccountPageHandler(BaseHandler):
     @authenticated
-    @permission('accountPermissionManage', 'r')
-    @tornado.gen.coroutine
+    @coroutine
     def get(self):
         try:
-            main_account = self.get_session('main_account_email')
-            coll = BaseMotor().client[MongoBasicInfoDb][PERMISSION_NAME_COLLECTION]
-            res = yield coll.find_one({'_id': main_account})
-            if not res:
-                self.write_response({}, 0, '不存在主账号信息')
-                return
-            our_permission = [key for key in res['super_admin']]
-            # account = Account(main_account)
-            roles = account.get_roles_and_groups()
-            if our_permission and roles:
-                self.write_response({
-                    'permission': our_permission,
-                    'roles': roles
-                })
-            else:
-                self.write_response({}, 0, '获取数据失败')
+            email = self.get_session("current_email")
+            permission = self.get_session("permission")
+            args = {
+                "title": "CMS用户管理",
+                "role": self.get_session("role"),
+                "permission": permission,
+                "email":email
+            }
+            self.render("cms/subAccount.html", **args)
         except Exception as e:
-            self.write_response({}, 0, '获取分组信息失败')
-
+            print e
+            self.write_response({},0,_err=e)
 
 # 子账户的获取
 class SubAccountHandler(BaseHandler):
     @authenticated
-    @permission('accountPermissionManage', 'r')
-    @tornado.gen.coroutine
+    @coroutine
     def get(self):
         try:
-            main_account_id = self.get_session("main_account_email")
-            subaccount_id = self.get_session("sub_account")
-            subordinate_accounts_info = {}#下属的账户信息
-            main_account = Account(main_account_id)
-            current_account = Account(main_account_id, subaccount_id)#当前的账户
-            accounts_info = [(current_account.account_id, current_account.document)] if current_account.is_subaccount else []
-            for subordinate_account_id in current_account.subordinate_accounts_id:
-                accounts_info.append((subordinate_account_id, current_account.get_subaccount_document(subordinate_account_id)))
-            print current_account.subordinate_accounts_id
-            for account_tuple in accounts_info:
-                account_id, account_info = account_tuple
-                subordinate_accounts_info[account_id] = {
-                    "permission": main_account.getSubaccountPermission(account_id),
-                    "status": account_info.get("status"),
-                    "tel": account_info.get("tel"),
-                    "user_email": account_info.get("user_email"),
-                    "user_name": account_info.get("user_name"),
-                    "role": account_info.get("role"),
-                    "group": account_info.get('group')
-                }
-            self.write_response(subordinate_accounts_info)
+            email = self.get_session("current_email")
+            data = CmsUser().get_easy_permission
+            print data
+            self.write_response(data)
         except Exception as e:
             self.write_response("", 0, "获取数据失败，请稍后重试")
 
     @authenticated
-    @permission('accountPermissionManage', 'w')
-    @tornado.gen.coroutine
+    @coroutine
     def post(self):
         try:
             data = self.get_argument('data', None)
@@ -206,41 +175,9 @@ class SubAccountHandler(BaseHandler):
             self.write_response(response='', _status=0, _err='系统异常')
             return
 
-    @tornado.gen.coroutine
-    def get_group_list(self):
-        group_list = []
-        user = self.get_session("main_account_email")
-        coll = BaseMotor().client[MongoBasicInfoDb][PERMISSION_NAME_COLLECTION]
-        idc_group = yield coll.find_one({"_id": user})
-        if idc_group:
-            for key in idc_group['super_admin']:
-                group_list.append(key)
-            raise tornado.gen.Return(group_list)
-        else:
-            raise Exception
 
 
 
-class SubAccountPageHandler(BaseHandler):
-    @authenticated
-    @tornado.gen.coroutine
-    @permission('accountPermissionManage', 'r')
-    def get(self):
-        email = self.get_session("main_account_email")
-        account = self.get_session("sub_account")
-        args = {
-            "title": "子账户管理",
-            "user_type": self.get_session("user_type"),
-            "email": email,
-            "permission": permission_list if self.get_session('user_type') == '超级管理员' else get_page_permission(self.get_session('permission'))
-        }
-        try:
-            if account:
-                email = self.get_session("subaccount_email")
-                args['email']=email
-            self.render("cms/subAccount.html", **args)
-        except Exception as e:
-            print e
-            self.write_response({},0,_err=e)
+
 
 

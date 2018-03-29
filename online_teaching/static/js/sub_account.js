@@ -1,10 +1,7 @@
 $(function(){
     //侧边栏样式
     $(".menu-item").removeClass("active");
-    $("#consumer-manage").addClass("active be-click");
-    $('#drop-business-content').css('display', 'block');
-    $('#drop-business-content ul>li:eq(1)').css('background', '#4E5465');
-    $('#drop-business-content ul>li:eq(1) a').css('color', 'white');
+    $("#account-permission-manage").addClass("active be-click");
 
     var subAccountData,
         bind_name='input';
@@ -138,7 +135,6 @@ $(function(){
             renderSubInfo(username);
         })
     }
-
     /*渲染某个子账户的详细信息*/
     function renderSubInfo(subName){
 

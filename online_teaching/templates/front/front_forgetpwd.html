@@ -5,31 +5,31 @@
 {% end %}
 
 {% block formblock %}
-	<a href="#" class="btn btn-primary btn-lg disabled" id="forget-pwd">忘记密码</a>
+	<a href="javascript:void(0);" class="btn btn-primary btn-lg disabled" id="forget-pwd">忘记密码</a>
 	<div class="form-group form-set">
 		<div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-envelope"></span>
-			<input type="email" class="form-control" name="email" placeholder="请输入邮箱">
+			<input type="email" class="form-control" name="email" id="email" placeholder="请输入邮箱">
 		</div>
 	</div>
-	{% include "../common/captcha_base.html" %}
-	{% if error %}
-		<div class="form-group">
-			<div class="input-group">
-				<p class="btn btn-danger p-error">{{error}}</p>
-			</div>
-		</div>
-	{% end %}
-	{% if info %}
-		<div class="form-group">
-			<div class="input-group">
-				<span class="btn btn-success p-error"><a href="/">{{info}}-点我返回</a></span>
-			</div>
-		</div>
-	{% end %}
+    <div class="form-group">
+        <div class="input-group">
+            <input class="form-control" type="text" id="captcha">
+            <a type="button" class="input-group-addon btn btn-info" id="captcha-btn">获取验证码</a>
+        </div>
+	</div>
+	<div class="form-group">
+		<p id="login_tip" class="hidden">
+			<i class="iconfont" style="color:orange">&#xe61d;</i>&nbsp;&nbsp;<span style="color: red;"></span>
+		</p>
+	</div>
+
 	<div class="from-group">
 		<div class="input-group">
-			<button class="btn btn-primary btn-lg btn-block">发送邮件重置密码</button>
+			<button type="button" class="btn btn-primary btn-lg btn-block" id="send-email-btn">发送邮件重置密码</button>
 		</div>
 	</div>
+{% end %}
+{% block frontfootjs %}
+<script src="/static/js/front/front_forget_pwd.js"></script>
 {% end %}
