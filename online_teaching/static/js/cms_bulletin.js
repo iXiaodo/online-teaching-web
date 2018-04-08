@@ -145,7 +145,7 @@ $(function () {
     $('#bulletin-tbody').on('click', 'span.iconfont.rename', function() {
         var first_td = $(this).parent().parent().find('td:first'),
             bulletin_title = first_td.attr('data-bulletin');
-        first_td.html('<input type="text" value="'+bulletin_title+'" style="width:80px;"><i class="iconfont cancel" title="取消">&#xe61d;</i>');
+        first_td.html('<input type="text" value="'+bulletin_title+'" style="width:80px;"><i class="iconfont cancel" title="取消" style="cursor:pointer;">&#xe61d;</i>');
         first_td.find('input').off('keydown').on('keydown', function(e){
             if(e.keyCode===13){
                 var new_value = $(this).val();

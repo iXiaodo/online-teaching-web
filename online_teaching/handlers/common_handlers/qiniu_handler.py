@@ -16,7 +16,8 @@ from config import AK,SK
 
 
 
-class get_token(BaseHandler):
+class getTokenHandler(BaseHandler):
+
     @authenticated
     @coroutine
     def get(self):
@@ -31,8 +32,4 @@ class get_token(BaseHandler):
         # 4.生成token
         token = q.upload_token(bucket_name)
         # 5.返回token,key必须为uptoken
-        #(kwargs={'uptoken': token})
-        kwargs = {
-            'uptoken': token
-        }
-        self.write_response({'uptoken': token})
+        self.write_response({},1,_err='',kwargs={'uptoken': token})

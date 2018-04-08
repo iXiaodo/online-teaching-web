@@ -6,11 +6,11 @@ from handlers.bussiness_manage.urls import url as bussiness_urls
 from handlers.subaccount.urls import url as subaccount_urls
 from handlers.bulletin_manage.urls import url as bulletin_url
 from handlers.common_handlers.captcha_handlers import PcGetCaptchaHandler
-from handlers.common_handlers.qiniu_handler import get_token
+from handlers.common_handlers.qiniu_handler import getTokenHandler
 
 handlers = [
     (r"^/geetest/register", PcGetCaptchaHandler),
-    (r"^/cms/get_token/$", get_token),
+    (r"^/common/get_token/$", getTokenHandler),
 ]
 handlers += frontUrls
 handlers += cmsUrls

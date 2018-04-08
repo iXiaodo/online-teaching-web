@@ -31,6 +31,11 @@
     }
     .navbar-right li a{
         font-size: 17px;
+        color: #ffffff;
+    }
+    .navbar-right li:hover{
+        border-radius: 15px;
+        background-color: none;
     }
 </style>
 {% end %}
@@ -46,7 +51,7 @@
                 <li class="nav-li"><a href="#">学习社区</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/cms/login">后台登录</a></li>
+                <li><a href="/cms/login" target="_blank">后台登录</a></li>
                 {% if role %}
                     <li><a href="javascript:void(0);">身份：{{ role }}</a></li>
                 {% end %}

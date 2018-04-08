@@ -14,7 +14,6 @@ $(function(){
 
     $('#save_btn').click(function(){
         var role_name = $('#create_role_modal div input[name="role-name"]').val();
-        console.log(role_name);
         if(!reg.test(role_name)){
             new GHAlert({
                 content: "角色名称不符合规定,请重新输入！",

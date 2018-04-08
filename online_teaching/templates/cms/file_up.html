@@ -7,7 +7,7 @@
         transition: all 0.4s ease-in-out;
     }
     #tenant-manage-block h3, #sub-account-block h3 {
-        font-size: 20px;
+        font-size: 17px;
     }
     #sub-account-block .row {
         margin: 0;
@@ -15,32 +15,66 @@
     .panel-body {
         padding: 15px;
     }
+    #pickfiles{
+        font-size: 25px;
+    }
+    .iconfont.save-btn{
+        font-size: 25px;
+    }
 </style>
 {% end %}
 {% block content %}
-<div class="container-fluid" style="margin-top:-40px;padding:0;" id="sub-account-block">
+<div style="margin: -8px 2.5% 0;" id="sub-account-block" author="{{ email }}">
     <div class="row">
-        <div class="col-sm-4 panel panel-info tm-column">
-            <div class="panel-heading">
-                <h3>资料管理</h3>
-            </div>
-            <div class="panel-body row">
-                <div class="col-sm-2 col-md-offset-1">
-                    <span id="pickfiles" class="iconfont" style="cursor: pointer">&#xe60a;</span>
+        <div class="col-sm-6">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3>资料管理（温馨提示：上传成功后，点击 <i class="iconfont" style="cursor: pointer;">&#xe666;</i> 保存已上传的资料)</h3>
                 </div>
+                <div class="panel-body row">
+                    <div class="col-sm-4 col-md-offset-5">
+                        <span id="pickfiles" class="iconfont" style="cursor: pointer" title="上传资料" url-data="">&#xe60a;</span>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="iconfont save-btn" style="cursor: pointer;" title="保存资料">&#xe666;</span>
+                    </div>
+                </div>
+                <ul class="list-group" id="file-list">
+                </ul>
             </div>
-            <ul class="list-group" id="file-list">
-            </ul>
         </div>
     </div>
 </div>
 {% end %}
 
 {% block footjs %}
+<!--文件名称-->
+<div class="modal fade" id="add_file_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-quick close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center">上传文件</h4>
+			</div>
+			<div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <p><span class="iconfont" style="color:orange;">&#xe61d;</span> 文件名称限制为汉字、英文字母和数字组成且长度不得超过8位</p><br>
+                        <div class="col-sm-4 text-center" style="padding-top:5px;">文件名称</div>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="file-name">
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="file_save_btn" class="btn btn-primary">保存</button>
+				<button type="button" class="close-quick btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="/static/js/upfile.js"></script>
 <script src="https://cdn.staticfile.org/Plupload/2.1.1/moxie.js"></script>
 <script src="https://cdn.staticfile.org/Plupload/2.1.1/plupload.dev.js"></script>
-<script src="https://cdn.staticfile.org/Plupload/2.1.1/Moxie.swf"></script>
 <script src="https://cdn.staticfile.org/qiniu-js-sdk/1.0.14-beta/qiniu.js"></script>
 <script src="/static/js/xdqiniu.js"></script>
-<script src="/static/js/upfile.js"></script>
 {% end %}

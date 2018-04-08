@@ -32,7 +32,6 @@ class BaseHandler(SessionBaseHandler):
                 _response[k] = v
         self.write(json.dumps(_response))
         self.finish()
-
     def write_error(self, status_code, **kwargs):
         if status_code == 404:
             self.render('common/404.html')

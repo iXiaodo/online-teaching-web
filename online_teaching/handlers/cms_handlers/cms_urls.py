@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from cms_handlers import CmsDataManageHandler,CmsLoginHandler,CmsModifyPwdHandler,CmsVersionHandler,CmsSubAccountHandler,CmsLogoutHandler,CmsProfilePageHandler
+from cms_handlers import CmsDataManageHandler,CmsLoginHandler,CmsModifyPwdHandler,CmsVersionHandler,CmsSubAccountHandler,CmsLogoutHandler,CmsProfilePageHandler,CmsDataManageInfoHandler
 
 
 cmsUrls = [
@@ -10,4 +10,5 @@ cmsUrls = [
     (r'^/cms/subAccount/$',CmsSubAccountHandler),
     (r'^/cms/$',CmsProfilePageHandler),
     (r'^/cms/dataPage/$',CmsDataManageHandler),
+    (r'^/cms/dataInfo/$',CmsDataManageInfoHandler),
 ]

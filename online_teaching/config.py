@@ -35,6 +35,7 @@ BULLETIN_INFOS = "bulletin_infos"
 STUDENTS = "students"
 FRONT_USER = "front_user"
 CMS_USER = "cms_user"
+FILES = "files"
 permission_list = ['roleGroupManage', 'accountPermissionManage', 'bulletinManage']
 
 LOG_DIR = "./log"  # 日志目录

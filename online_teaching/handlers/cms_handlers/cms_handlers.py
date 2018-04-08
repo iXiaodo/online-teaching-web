@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+import json
+from datetime import datetime
 from tornado.gen import Return, coroutine
 from tornado.web import authenticated
 from geetest import GeetestLib
 from handlers.common_handlers.base_handler import BaseHandler
-from config import GT_KEY, GT_ID, MongoBasicInfoDb, CMS_USER
+from config import GT_KEY, GT_ID, MongoBasicInfoDb, CMS_USER, FILES
 
 from utils.hashers import make_password
+from utils.tools import to_unicode,to_string
 from libs.motor.base import BaseMotor
 from log import *
 from models.cms_user import CmsUser
@@ -182,6 +185,8 @@ class CmsSubAccountHandler(BaseHandler):
 
 
 class CmsDataManageHandler(BaseHandler):
+    @coroutine
+    @authenticated
     def get(self):
         email = self.get_session("current_email")
         args = {
@@ -193,4 +198,112 @@ class CmsDataManageHandler(BaseHandler):
         self.render("cms/file_up.html",**args)
 
 
+class CmsDataManageInfoHandler(BaseHandler):
+    @coroutine
+    @authenticated
+    def get(self):
+        email = self.get_session("current_email")
+        try:
+            file_coll = BaseMotor().client[MongoBasicInfoDb][FILES]
+            file_doc = yield file_coll.find_one({'_id':email})
+            if not file_doc:
+                basic_info = {
+                    '_id': email,
+                    'status': True,
+                    'own_files': {}
+                }
+                res = file_coll.insert_one(basic_info)
+                if res:
+                    data = ''
+                    self.write_response({})
+                else:
+                    self.write_response({},0,'数据库操作出现异常！')
+            else:
+                data = file_doc['own_files']
+                self.write_response(data)
+        except Exception as e:
+            logging.exception(e)
+            self.write_response({},0,'获取数据异常！')
 
+
+    @coroutine
+    @authenticated
+    def post(self):
+        post_data = self.request.body
+        try:
+            data = json.loads(post_data)
+        except (TypeError, ValueError):
+            self.write_response({}, 0, '参数格式错误')
+            return
+        action = data.get('action', None)
+        if not action:
+            self.write_response({},0,'操作类型错误！')
+            return
+        author = data.get('author',None)
+        file_name = data.get('file_name',None)
+        if not(author and file_name):
+            self.write_response({}, 0, '值获取错误！')
+            return
+        try:
+            file_coll = BaseMotor().client[MongoBasicInfoDb][FILES]
+            file_doc = yield file_coll.find_one({'_id': author})
+            file_name = to_string(file_name)
+        except Exception as e:
+            logging.exception(e)
+            self.write_response({}, 0, '数据库查询异常！')
+            return
+        if action == 'up_file':
+            file_url = data.get('file_url', None)
+            if not file_url:
+                self.write_response({}, 0, '资料链接获取失败！')
+                return
+            try:
+                docu = {
+                    'up_time':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    'url':file_url,
+                    'is_active':True
+                }
+                if file_doc:
+                    try:
+                        res = file_coll.update_one({'_id':author},{
+                            '$set':{
+                                'own_files.{0}'.format(file_name):docu
+                            }
+                        })
+                        if res:
+                            self.write_response({})
+                            return
+                        else:
+                            self.write_response({}, 0, '保存失败！')
+                            return
+                    except Exception as e:
+                        logging.exception(e)
+                        self.write_response({}, 0, '保存操作异常！')
+                        return
+                else:
+                    self.write_response({}, 0, '数据不存在！')
+                    return
+            except Exception as e:
+                logging.exception(e)
+                self.write_response({}, 0, '数据库异常！')
+                return
+
+        elif action == 'del_file':
+            try:
+                res = file_coll.update_one({'_id': author}, {
+                    '$unset': {
+                        'own_files.{0}'.format(file_name): ''
+                    }
+                })
+                if res:
+                    self.write_response({})
+                    return
+                else:
+                    self.write_response({}, 0, '删除失败！')
+                    return
+            except Exception as e:
+                logging.exception(e)
+                self.write_response({}, 0, '操作数据库时发生异常！')
+                return
+        else:
+            pass
