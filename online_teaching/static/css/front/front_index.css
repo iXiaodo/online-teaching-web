@@ -1,0 +1,51 @@
+#bulletin-block .panel-title{
+    text-align: center;
+}
+#bulletin-block .panel-body{
+    height: 180px;
+}
+#bulletin-block li{
+    list-style: none;
+    text-decoration: none;
+    cursor: pointer;
+}
+#bulletin-block a{
+    text-decoration: none;
+}
+#bulletin-ul li span{
+    font-size: 20px;
+    color:#337ab7;
+}
+#bulletin-ul li a{
+    font-size: 16px;
+}
+.row .col-sm-3 .bulletin_panel{
+    margin: 0 auto;
+}
+.bulletin-more{
+    width: 72px;
+    position: absolute;
+    bottom: 36px;
+    right: 18px;
+}
+#bulletin-block{
+    width: 390px;
+    float: right;
+    right: 136px;
+    top: 0px;
+}
+/*banner-start*/
+
+*{ padding:0; margin:0; list-style:none; border:0;}
+.all{ width: 676px; height: 218px; padding: 7px;  margin: -7px 0 0 130px; position: relative; }
+.screen{
+	width:676px;
+	height:218px;
+	 overflow:hidden;
+	position:relative;
+}
+.screen li{ width:676px; height:218px; overflow:hidden; float:left;}
+.screen ul{ position:absolute; left:0; top:0px; width:3000px;}
+.all ol{ position:absolute; right:10px; bottom:10px; line-height:20px; text-align:center;}
+.all ol li{ float: left; width: 15px; height: 15px; background: #fff;  margin-left: 5px; cursor: pointer; font-size: 10px; font-family: Verdana; line-height: 15px; border-radius: 15px; }
+.all ol li.current{ background:#0e9aef;}

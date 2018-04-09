@@ -261,7 +261,7 @@ class CmsDataManageInfoHandler(BaseHandler):
                 docu = {
                     'up_time':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                     'url':file_url,
-                    'is_active':True
+                     'is_active':True
                 }
                 if file_doc:
                     try:

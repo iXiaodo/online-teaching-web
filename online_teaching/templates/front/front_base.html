@@ -1,82 +1,70 @@
 {% extends "../common/bootstrap_base.html" %}
 
 {% block cssblockbase %}
-<style>
-    #nav-box{
-        background-color: #1f8dd6;
-    }
-    ul .nav-li{
-        height: 77px;
-        display: inline-block;
-        list-style: none;
-        float: left;
-        line-height: 77px;
-        margin-right: 10px;
-
-    }
-    .nav-li a{
-        text-decoration: none;
-        font-size: 17px;
-        letter-spacing: 1px;
-        color: #ffffff;
-    }
-    #logo-first{
-        margin-left: 47px;
-        letter-spacing: 1px;
-        font-size: 24px;
-        padding-right: 46px;
-    }
-    .navbar-right{
-        margin-right: 40px;
-    }
-    .navbar-right li a{
-        font-size: 17px;
-        color: #ffffff;
-    }
-    .navbar-right li:hover{
-        border-radius: 15px;
-        background-color: none;
-    }
-</style>
+<link rel="stylesheet" href="/static/css/front/front_base.css">
 {% end %}
 
-
 {% block containerblock %}
-    <div class="container">
-        <div class="row" id="nav-box">
-            <ul>
-                <li class="nav-li" id="logo-first"><a href="/">计算机组成与结构教学网站</a></li>
-                <li class="nav-li"><a href="#">课程简介</a></li>
-                <li class="nav-li"><a href="#">资料下载</a></li>
-                <li class="nav-li"><a href="#">学习社区</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/cms/login" target="_blank">后台登录</a></li>
-                {% if role %}
-                    <li><a href="javascript:void(0);">身份：{{ role }}</a></li>
-                {% end %}
-                <li class="dropdown">
-                    {% if user %}
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user }}<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">个人中心</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/logout">退出登录</a></li>
-                    </ul>
-                    {% else %}
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">身份：游客<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/signin">登录</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/regist">注册</a></li>
-                    </ul>
-                    {% end %}
-                </li>
-            </ul>
-        </div>
-        {% block content%}
 
-        {% end %}
+<div class="nav-top">
+    <img src="/static/images/front/logo3.png" alt="" id="logo">
+    <ul class="nav-title">
+        <li class="nx-p">宁夏大学</li>
+        <li>计算机组成与结构教学网站</li>
+    </ul>
+</div>
+<div class="nav">
+    <div class="horizontal-nav full-width horizontalNav-notprocessed">
+        <ul>
+            <li><a href="#" target="_blank">首页</a></li>
+            <li><a href="#">课程简介</a></li>
+            <li><a href="#">公告</a></li>
+            <li><a href="#">资料</a></li>
+            <li><a href="#">社区</a></li>
+            <li><a href="#">关于</a></li>
+        </ul>
     </div>
+</div>
 
+<!--<div class="container">-->
+<!--<div class="row" id="nav-box">-->
+<!--<ul>-->
+<!--<li class="nav-li" id="logo-first"><a href="/">计算机组成与结构教学网站</a></li>-->
+<!--<li class="nav-li"><a href="#">课程简介</a></li>-->
+<!--<li class="nav-li"><a href="#">资料下载</a></li>-->
+<!--<li class="nav-li"><a href="#">学习社区</a></li>-->
+<!--</ul>-->
+<!--<ul class="nav navbar-nav navbar-right">-->
+<!--<li><a href="/cms/login" target="_blank">后台登录</a></li>-->
+<!--{% if role %}-->
+<!--<li><a href="javascript:void(0);">身份：{{ role }}</a></li>-->
+<!--{% end %}-->
+<!--<li class="dropdown">-->
+<!--{% if user %}-->
+<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user }}<span class="caret"></span></a>-->
+<!--<ul class="dropdown-menu">-->
+<!--<li><a href="#">个人中心</a></li>-->
+<!--<li role="separator" class="divider"></li>-->
+<!--<li><a href="/logout">退出登录</a></li>-->
+<!--</ul>-->
+<!--{% else %}-->
+<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">身份：游客<span class="caret"></span></a>-->
+<!--<ul class="dropdown-menu">-->
+<!--<li><a href="/signin">登录</a></li>-->
+<!--<li role="separator" class="divider"></li>-->
+<!--<li><a href="/regist">注册</a></li>-->
+<!--</ul>-->
+<!--{% end %}-->
+<!--</li>-->
+<!--</ul>-->
+<!--</div>-->
+    {% block content%}
+    {% end %}
+    <script src="/static/js/front/jquery-1.7.2.min.js"></script>
+    <script src="/static/js/front/jquery.horizontalNav.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.full-width').horizontalNav({});
+    });
+    </script>
 {% end %}
