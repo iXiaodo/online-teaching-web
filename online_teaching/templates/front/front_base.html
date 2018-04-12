@@ -11,13 +11,25 @@
     <ul class="nav-title">
         <li class="nx-p">宁夏大学</li>
         <li>计算机组成与结构教学网站</li>
+        {% if user %}
+        <li class="login"><a href="javascript:void(0);">身份：{{ role }} &nbsp;&nbsp;用户：{{user}}</a></li>
+        {% else %}
+        <li class="login"><a href="/signin">登录</a></li>
+        {% end %}
     </ul>
 </div>
 <div class="nav">
     <div class="horizontal-nav full-width horizontalNav-notprocessed">
         <ul>
-            <li><a href="#" target="_blank">首页</a></li>
-            <li><a href="#">课程简介</a></li>
+            <li><a href="/">首页</a></li>
+            <li id="course-nav">
+                <a href="javascript:void(0);" id="course-down-btn">课程概况</a>
+                <div class="sub-nav">
+                    <p class="sub-nav-first-p"><a href="/courseCenter">课程简介</a></p>
+                    <p><a href="#">发展前沿</a></p>
+                    <p><a href="#">师资力量</a></p>
+                </div>
+            </li>
             <li><a href="#">公告</a></li>
             <li><a href="#">资料</a></li>
             <li><a href="#">社区</a></li>
@@ -58,8 +70,11 @@
 <!--</li>-->
 <!--</ul>-->
 <!--</div>-->
+<div class="content">
     {% block content%}
+
     {% end %}
+</div>
     <script src="/static/js/front/jquery-1.7.2.min.js"></script>
     <script src="/static/js/front/jquery.horizontalNav.js"></script>
     <script>
@@ -67,4 +82,5 @@
         $('.full-width').horizontalNav({});
     });
     </script>
+    <script src="/static/js/front/front_base.js"></script>
 {% end %}

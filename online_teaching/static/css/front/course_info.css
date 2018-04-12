@@ -1,0 +1,19 @@
+.left-box{
+    width: 200px;
+    height: 200px;
+}
+.subNavBox{width:200px;border:solid 1px #e5e3da;margin:100px auto;}
+
+.subNav{border-bottom:solid 1px #e5e3da;cursor:pointer;font-weight:bold;font-size:14px;color:#999;line-height:28px;padding-left:10px;background:url(/static/images/front/jiantou1.jpg) no-repeat;background-position:95% 50%}
+
+.subNav:hover{color:#277fc2;}
+
+.currentDd{color:#277fc2}
+
+.currentDt{background-image:url(/static/images/front/jiantou.jpg);}
+
+.navContent{display: none;border-bottom:solid 1px #e5e3da;}
+
+.navContent li a{display:block;width:200px;heighr:28px;text-align:center;font-size:14px;line-height:28px;color:#333}
+
+.navContent li a:hover{color:#fff;background-color:#277fc2}

@@ -32,12 +32,12 @@
     width: 390px;
     float: right;
     right: 136px;
-    top: 0px;
+    top: 27px;
 }
 /*banner-start*/
 
 *{ padding:0; margin:0; list-style:none; border:0;}
-.all{ width: 676px; height: 218px; padding: 7px;  margin: -7px 0 0 130px; position: relative; }
+.all{ width: 676px; height: 218px; padding: 7px;  margin: 20px 0 0 130px; position: relative; }
 .screen{
 	width:676px;
 	height:218px;

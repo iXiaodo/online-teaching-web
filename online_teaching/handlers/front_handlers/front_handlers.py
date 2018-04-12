@@ -219,3 +219,19 @@ class testHandler(BaseHandler):
             self.write(body)
         except Exception as e:
             print e
+
+
+
+#----------------------------------------------------------课程中心
+class courseCenterHandler(BaseHandler):
+    @coroutine
+    def get(self):
+        email = self.get_session('current_email')
+        role = self.get_session('role')
+        args = {
+            'user': email,
+            'role': role
+        }
+        self.render("front/course_info.html", **args)
+
+#----------------------------------------------------------课程中心
