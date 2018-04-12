@@ -45,7 +45,21 @@ class Bulletin_info():
                 bulletin_top_list.append(bulletin)
         return bulletin_top_list
 
+    @property
+    def get_untop_list(self):
+        bulletin_top_list = []
+        all_bulletins = self.get_all_bulletin_info
+        for bulletin in all_bulletins:
+            if bulletin[2] is False:
+                bulletin_top_list.append(bulletin)
+        return bulletin_top_list
+
+    @property
+    def get_bulletin_detail(self,title=''):
+        bulletin_detail = []
+        coll = self._bulletins_collection.find_one({"own_bulletins": title})
+
 
 # a = Bulletin_info()
-# for i in  a.get_is_top:
-#     print i
+# title = u'考试通知1'
+# print a.get_bulletin_detail(title)

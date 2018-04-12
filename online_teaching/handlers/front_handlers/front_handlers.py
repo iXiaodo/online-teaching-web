@@ -235,3 +235,38 @@ class courseCenterHandler(BaseHandler):
         self.render("front/course_info.html", **args)
 
 #----------------------------------------------------------课程中心
+
+
+#----------------------------------------------------------公告
+#公告页面
+class frontBulletinsHandler(BaseHandler):
+    @coroutine
+    def get(self):
+        email = self.get_session('current_email')
+        role = self.get_session('role')
+        bulletin_coll = Bulletin_info()
+        top_list = bulletin_coll.get_top_list
+        untop_list = bulletin_coll.get_untop_list
+        args = {
+            'user':'',
+            'role': role,
+            'bulletin_infos':top_list,
+            'unTopBulletins':untop_list
+        }
+        if email:
+            args['user'] = email
+        self.render("front/front_bulletin.html", **args)
+
+
+#公告详情页面
+class bulletinDetailHandler(BaseHandler):
+    @coroutine
+    def get(self):
+        title = self.get_argument('title', None)
+        if not title:
+            self.write_response({}, 0, '缺少公告标题')
+            return
+        bulletin_coll = Bulletin_info()
+        self.write_response({})
+
+#----------------------------------------------------------公告

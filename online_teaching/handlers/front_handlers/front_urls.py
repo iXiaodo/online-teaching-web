@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from front_handlers import IndexHandler,SignInHandler,FrontRegistHandler,ForgetPwdHandler, SignupHandler,testHandler,\
-courseCenterHandler
+courseCenterHandler, frontBulletinsHandler
 
 frontUrls = [
     (r"^/$",IndexHandler),
@@ -9,5 +9,6 @@ frontUrls = [
     (r"^/forgetpwd",ForgetPwdHandler),
     (r"^/logout",SignupHandler),
     (r"^/test",testHandler),
-    (r"^/courseCenter",courseCenterHandler),
+    (r"^/courseCenter$",courseCenterHandler),
+    (r"^/bulletin$",frontBulletinsHandler),
 ]

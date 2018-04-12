@@ -3,6 +3,9 @@
     height: 100px;
     background-color: #1E9FFF;
 }
+body{
+    background-color: #f8f8f8;
+}
 .nav{
     width: 100%;
     background-color: #0e7079;
@@ -98,6 +101,7 @@
     width: 100%;
     position: relative;
     margin: 0;
+
 }
 #course-nav{
     position: relative;
