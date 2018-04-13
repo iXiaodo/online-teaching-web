@@ -33,8 +33,11 @@ $(document).ready(function(){
         if(c_url.indexOf('/cms/bulletinPage/')>0){
             c_index = 3;
         }
-        if(c_url.indexOf('/cms/version/')>0){
+        if(c_url.indexOf('/cms/dataPage/')>0){
             c_index = 4;
+        }
+        if(c_url.indexOf('/cms/version/')>0){
+            c_index = 5;
         }
         if (c_index > 0){
             $('.side-menu').children().eq(c_index).addClass("active").siblings().removeClass("active");

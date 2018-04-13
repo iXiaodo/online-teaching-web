@@ -21,12 +21,12 @@ $(function () {
                         for(var i in data){
                             var flag = data[i]['is_top'];
                             if(flag!==true){
-                                insert_html += '<tr><td data-bulletin="'+i+'">'+i+'</td><td>'+data[i]['pub_time']+'</td>'
+                                insert_html += '<tr><td data-bulletin="'+data[i]['id']+'">'+ data[i]['title'] +'</td><td>'+data[i]['pub_time']+'</td>'
                                     +'<td><span class="iconfont remove" style="cursor: pointer;" title="删除公告">&#xe713;</span>&nbsp;&nbsp;&nbsp;'
                                     + '<span class="iconfont rename" style="cursor: pointer;" title="修改标题">&#xe63a;</span>&nbsp;&nbsp;&nbsp;'
                                     +'<span class="iconfont top" style="cursor: pointer;" title="置顶公告">&#xe637;</span></td></tr>';
                             }else{
-                                insert_html += '<tr><td data-bulletin="'+i+'">'+i+'</td><td>'+data[i]['pub_time']+'</td>'
+                                insert_html += '<tr><td data-bulletin="'+ data[i]['id'] +'">'+data[i]['title']+'</td><td>'+data[i]['pub_time']+'</td>'
                                     +'<td><span class="iconfont remove" style="cursor: pointer;" title="删除公告">&#xe713;</span>&nbsp;&nbsp;&nbsp;'
                                     + '<span class="iconfont rename" style="cursor: pointer;" title="修改标题">&#xe63a;</span>&nbsp;&nbsp;&nbsp;'
                                     +'<span class="iconfont is-top" style="cursor: pointer;" title="取消置顶">&#xe636;</span></td></tr>';
@@ -34,9 +34,9 @@ $(function () {
                         }
                         $('#bulletin-tbody').html(insert_html);
                         $("#bulletin-tbody").children().eq(0).addClass("success");
-                        var bulletin_title = $("#bulletin-tbody").children().eq(0).children().eq(0).attr("data-bulletin");
+                        var bulletin_title = $("#bulletin-tbody").children().eq(0).children().eq(0).text();
                         $("#bulletin-title").val(bulletin_title);
-                        renderRadio(bulletin_title,data);
+                        renderRadio(data[0]);
                     }
                 }
                 else{
@@ -51,11 +51,14 @@ $(function () {
     };
     get_bulletin_info();
     //添加公告
-    var reg = /^[\u4e00-\u9fa5]|[0-9a-zA-Z]{1,12}$/;
+    var reg = /^[\u4e00-\u9fa5]|[0-9a-zA-Z]{1,18}$/;
     $("#save_btn").click(function () {
         var bulletin_title = $('#add_bulletin-btn div input[name="bulletin-title"]').val();
         var bulletin_content = $('#textarea-input').val();
+        var bulletin_type = $("#bulletin-type option:selected").val();
         var insert_html = '';
+        bulletin_title = $.trim(bulletin_title);
+        bulletin_content = $.trim(bulletin_content);
         if(!reg.test(bulletin_title)){
             new GHAlert({
                 content: "公告标题不符合规定,请重新输入！",
@@ -74,7 +77,8 @@ $(function () {
                     'bulletin_content': bulletin_content,
                     'action': 'add',
                     'type': 'bulletin',
-                    'bulletin_author':bulletin_author
+                    'bulletin_author':bulletin_author,
+                    'bulletin_type':bulletin_type
                 }),
                 success: function(res){
                     if(res.success===1){
@@ -102,7 +106,8 @@ $(function () {
     //删除公告
     $('#bulletin-tbody').on('click', 'span.iconfont.remove', function() {
         var first_td = $(this).parent().parent().find('td:first'),
-            bulletin_title = first_td.attr('data-bulletin');
+            id = first_td.attr('data-bulletin'),
+            bulletin_title = first_td.text();
         zeroModal.confirm({
             content: '确定删除公告【'+bulletin_title+'】吗？',
             contentDetail: '提交后将会删除该公告的所有信息',
@@ -116,8 +121,7 @@ $(function () {
                     data: JSON.stringify({
                         'action': 'del',
                         'type': 'bulletin',
-                        'bulletin_title': bulletin_title,
-                        'bulletin_author':bulletin_author
+                        'id': id
                     }),
                     success: function (res) {
                         if (res.success === 1) {
@@ -144,7 +148,9 @@ $(function () {
     //修改公告标题
     $('#bulletin-tbody').on('click', 'span.iconfont.rename', function() {
         var first_td = $(this).parent().parent().find('td:first'),
-            bulletin_title = first_td.attr('data-bulletin');
+            bulletin_title = first_td.text();
+        var id = first_td.attr("data-bulletin");
+        bulletin_title = $.trim(bulletin_title);
         first_td.html('<input type="text" value="'+bulletin_title+'" style="width:80px;"><i class="iconfont cancel" title="取消" style="cursor:pointer;">&#xe61d;</i>');
         first_td.find('input').off('keydown').on('keydown', function(e){
             if(e.keyCode===13){
@@ -160,7 +166,7 @@ $(function () {
                             'type': 'bulletin',
                             'new_name': new_value,
                             'old_name': bulletin_title,
-                            'bulletin_author':bulletin_author
+                            'id':id
                         }),
                         success: function(res){
                             if(res.success===1){
@@ -194,7 +200,8 @@ $(function () {
     //置顶公告
     $('#bulletin-tbody').on('click', 'span.iconfont.top', function() {
         var first_td = $(this).parent().parent().find('td:first'),
-            bulletin_title = first_td.attr('data-bulletin');
+            id = first_td.attr('data-bulletin'),
+            bulletin_title = first_td.text();
         zeroModal.confirm({
             content: '确定要置顶公告【'+bulletin_title+'】吗？',
             contentDetail: '提交后将会置顶此公告！',
@@ -208,8 +215,7 @@ $(function () {
                     data: JSON.stringify({
                         'action': 'top',
                         'type': 'bulletin',
-                        'bulletin_title': bulletin_title,
-                        'bulletin_author':bulletin_author
+                        'id': id
                     }),
                     success: function (res) {
                         if (res.success === 1) {
@@ -238,7 +244,8 @@ $(function () {
     //取消置顶
     $('#bulletin-tbody').on('click', 'span.iconfont.is-top', function() {
         var first_td = $(this).parent().parent().find('td:first'),
-            bulletin_title = first_td.attr('data-bulletin');
+            id = first_td.attr('data-bulletin'),
+            bulletin_title = first_td.text();
         zeroModal.confirm({
             content: '确定要取消公告【'+bulletin_title+'】的置顶状态吗？',
             contentDetail: '提交后此公告将不再置顶！',
@@ -252,8 +259,7 @@ $(function () {
                     data: JSON.stringify({
                         'action': 'cancel_top',
                         'type': 'bulletin',
-                        'bulletin_title': bulletin_title,
-                        'bulletin_author':bulletin_author
+                        'id': id
                     }),
                     success: function (res) {
                         if (res.success === 1) {
@@ -283,7 +289,7 @@ $(function () {
     function  renderBulletin() {
         $('#bulletin-tbody').off('click','tr').on('click', 'tr', function() {
             $(this).addClass("success").siblings('tr').removeClass("success");
-            var bulletin_title = $(this).find('td:first').attr("data-bulletin");
+            var bulletin_title = $(this).find('td:first').text();
             $("#bulletin-title").val(bulletin_title);
             $.ajax({
                 url: '/cms/bulletinInfo/',
@@ -299,8 +305,9 @@ $(function () {
                             }).show();
                         }else{
                             for(var i in data){
-                                if(i===bulletin_title){
-                                    renderRadio(i,data);
+                                var title = data[i]['title']
+                                if(title===bulletin_title){
+                                    renderRadio(data[i]);
                                 }
                             }
                         }
@@ -342,6 +349,9 @@ $(function () {
         var content = $("#bulletin-content").val();
         var title = $("#bulletin-title").val();
         var is_active = $("input[name='status']:checked").val();
+        var id = $("#bulletin-tbody tr.success").find("td:first").attr("data-bulletin");
+        content = $.trim(content);
+        title = $.trim(title);
         if(content === '' || content === null){
             new GHAlert({
                 content: "公告内容不能为空！",
@@ -357,10 +367,9 @@ $(function () {
                 data: JSON.stringify({
                     'action': 'modify',
                     'type': 'bulletin',
-                    'bulletin_title': title,
-                    'bulletin_author': bulletin_author,
                     'content':content,
-                    'is_active':is_active
+                    'is_active':is_active,
+                    'id':id
                 }),
                 success: function (res) {
                     if (res.success === 1) {
@@ -383,10 +392,10 @@ $(function () {
         }
     });
     // 渲染单选按钮的值
-    function renderRadio(i,data) {
-        $("#bulletin-content").val(data[i]['content']);
-        var is_top = data[i]['is_top'];
-        var is_active = data[i]['is_active'];
+    function renderRadio(data) {
+        $("#bulletin-content").val(data['content']);
+        var is_top = data['is_top'];
+        var is_active = data['is_active'];
         if (is_top === true ){
             $("input[name=top-status][value=true]").prop("checked",true);
         }else{

@@ -114,9 +114,16 @@
                         <div class="col-sm-8">
                             <input type="text" class="form-control" name="bulletin-title">
                         </div>
+                        <div class="col-sm-4 text-center">公告类型</div>
+                        <div class="col-sm-8">
+                            <select name="" id="bulletin-type" class="form-control">
+                                <option value="course">课程公告</option>
+                                <option value="system">系统公告</option>
+                            </select>
+                        </div>
                         <div class="col-sm-4 text-center">公告内容</div>
                         <div class="col-sm-8">
-                            <textarea class="form-control" cols="8" name="bulletin-content" id="textarea-input">
+                            <textarea class="form-control" cols="8" rows="8" name="bulletin-content" id="textarea-input">
                             </textarea>
                         </div>
                     </div>
@@ -129,5 +136,5 @@
 		</div>
 	</div>
 </div>
-<script src="/static/js/cms_bulletin.js"></script>
+<script src="/static/js/cms/cms_bulletin.js"></script>
 {% end %}

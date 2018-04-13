@@ -2,12 +2,39 @@
 
 {% block title %}公告详情{% end %}
 
+{% block bulletincss %}
+<link rel="stylesheet" href="/static/css/front/bulletin_detail.css">
+{% end %}
+
 {% block bulletin_detail%}
     <div class="detail-box">
-        详情
+        <div class="bulletin-con">
+            <p class="title">{{ bulletin['title'] }}</p>
+            <p class="txt">
+                <span class="user_msg_mobile"></span>
+                {% if is_top  %}
+                    <span class="marktop"><i class="iconfont" style="color:#d58512">&#xe650;</i></span>&nbsp;&nbsp;
+                {% else %}
+                    <span class="marktop">未置顶</span>&nbsp;&nbsp;
+                {% end %}
+                {% if bulletin['type'] == 'course'  %}
+                    <span class="marktype">课程公告</span>&nbsp;&nbsp;
+                {% else %}
+                    <span class="marktop">系统公告</span>&nbsp;&nbsp;
+                {% end %}
+                <a href="/bulletin" order-by="1" class="publish_address">公告首页</a>&nbsp;&nbsp;
+                <span class="time">{{ bulletin['pub_time'] }}</span>
+                <span class="f_msg"><i class="iconfont msg">&#xe671;</i>&nbsp;10261</span>
+                <span class="f_see"><i class="iconfont see">&#xe626;</i>&nbsp;210528</span>
+            </p>
+            <div class="invitation_content">
+                {{ bulletin['content'] }}
+                <!--<p></p><p>从豫园到黄鹤楼，</p><p>从外滩夜景到武大樱花，</p><p>逆长江北上，再一路西行</p><p>……</p><p>这一次，</p><p>我们来到东湖西岸，珞珈山下，</p><p>相约百年名校，武汉大学。</p><p><br></p><p>你好，大武汉！</p><p>江城，我们来啦！</p><p><br></p><p>4月25日，小米手机新品发布会，不见不散！</p><p style="text-align: center;"><img src="//c1.mifile.cn/f/i/bbs/forum/load.png" data-original="http://cdn.fds.api.xiaomi.com/b2c-bbs/cn/attachment/38f52ef0d0dd84cdb9f0d09b280f0886.jpg" aid="16623802" dateline="2018-04-13 11:30:38" filename="QQ图片20180412100524.jpg" description=""></p><p></p>-->
+            </div>
+        </div>
     </div>
 {% end %}
 
 {% block footjs%}
-<script src="/static/js/front/front_bulletin_detail.js"></script>
+
 {% end %}

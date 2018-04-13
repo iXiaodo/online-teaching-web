@@ -8,6 +8,7 @@
     list-style: none;
     text-decoration: none;
     cursor: pointer;
+    line-height: 27px;
 }
 #bulletin-block a{
     text-decoration: none;
@@ -49,3 +50,4 @@
 .all ol{ position:absolute; right:10px; bottom:10px; line-height:20px; text-align:center;}
 .all ol li{ float: left; width: 15px; height: 15px; background: #fff;  margin-left: 5px; cursor: pointer; font-size: 10px; font-family: Verdana; line-height: 15px; border-radius: 15px; }
 .all ol li.current{ background:#0e9aef;}
+

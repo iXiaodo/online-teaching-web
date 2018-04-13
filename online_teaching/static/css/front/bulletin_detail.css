@@ -1,0 +1,26 @@
+.bulletin-con p.title{
+    font-size: 20px;
+    color:#1b809e;
+    text-align: center;
+}
+
+.bulletin-con .txt{
+    position: relative;
+    line-height: 35px;
+    border-bottom: 1px dashed #2196f3;
+}
+.txt .f_msg{
+    position: absolute;
+    right: 80px;
+}
+.txt .f_see{
+    position: absolute;
+    right: 0;
+}
+.invitation_content{
+    letter-spacing: 1px;
+    line-height: 32px;
+    text-align: justify;
+    text-indent: 2em;
+    font-size: 20px;
+}

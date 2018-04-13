@@ -1,15 +1,98 @@
-2018-04-12 22:49:12 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 1.95ms
-2018-04-12 22:49:28 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.18ms
-2018-04-12 22:50:14 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.47ms
-2018-04-12 22:50:14 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.98ms
-2018-04-12 22:50:15 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.59ms
-2018-04-12 22:50:16 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 6.52ms
-2018-04-12 22:50:43 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.48ms
-2018-04-12 22:50:44 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 4.71ms
-2018-04-12 22:50:44 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.94ms
-2018-04-12 22:50:44 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.07ms
-2018-04-12 22:50:44 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.88ms
-2018-04-12 22:51:30 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.99ms
-2018-04-12 22:51:31 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.90ms
-2018-04-12 22:51:57 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.94ms
-2018-04-12 22:51:57 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.45ms
+2018-04-13 14:49:51 web.py[line:1591] ERROR Uncaught exception GET /bulletin (192.168.43.6)
+HTTPServerRequest(protocol='http', host='192.168.43.217:8000', method='GET', uri='/bulletin', version='HTTP/1.1', remote_ip='192.168.43.6', headers={'Accept-Language': 'zh-CN,zh;q=0.9', 'Accept-Encoding': 'gzip, deflate', 'Host': '192.168.43.217:8000', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Dnt': '1', 'Connection': 'keep-alive', 'Referer': 'http://192.168.43.217:8000/', 'Cookie': 'msid=RZr88XoLoctcelmriM7JU17eILzM_MH7vxNLAXLF; user="2|1:0|10:1523601689|4:user|24:dHhxQHh4LmNvbeaVmeW4iA==|128f6b05aa8a60d3b464b6fae0c044626d85411853984a928b6214739b932fe1"; _xsrf=2|b51d554d|4639d7585b77a72fd4c3776d68c01364|1523597797', 'If-None-Match': '"32534d0f568da2beccdb4ad698e2c2c0779daf6b"', 'Upgrade-Insecure-Requests': '1'})
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1512, in _execute
+    result = yield result
+  File "/usr/local/lib/python2.7/dist-packages/tornado/gen.py", line 1055, in run
+    value = future.result()
+  File "/usr/local/lib/python2.7/dist-packages/tornado/concurrent.py", line 238, in result
+    raise_exc_info(self._exc_info)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/gen.py", line 292, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/xiaodong/university/online_teaching/handlers/front_handlers/front_handlers.py", line 260, in get
+    self.render("front/front_bulletin.html", **args)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 724, in render
+    html = self.render_string(template_name, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 865, in render_string
+    return t.generate(**namespace)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/template.py", line 348, in generate
+    return execute()
+  File "front/front_bulletin_html.generated.py", line 59, in _tt_execute
+    for bulletin in bulletin_infos:  # front/front_bulletin.html:33 (via front/front_bulletin.html:31, front/front_base.html:74, common/bootstrap_base.html:20, common/bootstrap_base.html:18)
+TypeError: 'NoneType' object is not iterable
+2018-04-13 14:49:51 web.py[line:2064] ERROR 500 GET /bulletin (192.168.43.6) 28.75ms
+2018-04-13 14:49:53 web.py[line:1591] ERROR Uncaught exception GET /bulletin (192.168.43.6)
+HTTPServerRequest(protocol='http', host='192.168.43.217:8000', method='GET', uri='/bulletin', version='HTTP/1.1', remote_ip='192.168.43.6', headers={'Accept-Language': 'zh-CN,zh;q=0.9', 'Accept-Encoding': 'gzip, deflate', 'Host': '192.168.43.217:8000', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.119 Safari/537.36', 'Dnt': '1', 'Connection': 'keep-alive', 'Cookie': 'msid=RZr88XoLoctcelmriM7JU17eILzM_MH7vxNLAXLF; user="2|1:0|10:1523601689|4:user|24:dHhxQHh4LmNvbeaVmeW4iA==|128f6b05aa8a60d3b464b6fae0c044626d85411853984a928b6214739b932fe1"; _xsrf=2|b51d554d|4639d7585b77a72fd4c3776d68c01364|1523597797', 'Cache-Control': 'max-age=0', 'Upgrade-Insecure-Requests': '1'})
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 1512, in _execute
+    result = yield result
+  File "/usr/local/lib/python2.7/dist-packages/tornado/gen.py", line 1055, in run
+    value = future.result()
+  File "/usr/local/lib/python2.7/dist-packages/tornado/concurrent.py", line 238, in result
+    raise_exc_info(self._exc_info)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/gen.py", line 292, in wrapper
+    result = func(*args, **kwargs)
+  File "/home/xiaodong/university/online_teaching/handlers/front_handlers/front_handlers.py", line 260, in get
+    self.render("front/front_bulletin.html", **args)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 724, in render
+    html = self.render_string(template_name, **kwargs)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/web.py", line 865, in render_string
+    return t.generate(**namespace)
+  File "/usr/local/lib/python2.7/dist-packages/tornado/template.py", line 348, in generate
+    return execute()
+  File "front/front_bulletin_html.generated.py", line 59, in _tt_execute
+    for bulletin in bulletin_infos:  # front/front_bulletin.html:33 (via front/front_bulletin.html:31, front/front_base.html:74, common/bootstrap_base.html:20, common/bootstrap_base.html:18)
+TypeError: 'NoneType' object is not iterable
+2018-04-13 14:49:53 web.py[line:2064] ERROR 500 GET /bulletin (192.168.43.6) 25.29ms
+2018-04-13 15:09:57 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 1.00ms
+2018-04-13 15:12:40 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 0.76ms
+2018-04-13 15:12:47 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 3.49ms
+2018-04-13 15:19:51 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.09ms
+2018-04-13 15:25:20 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 4.44ms
+2018-04-13 15:25:56 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.29ms
+2018-04-13 15:26:41 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 5.81ms
+2018-04-13 15:35:22 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 6.98ms
+2018-04-13 15:35:22 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 1.49ms
+2018-04-13 15:35:22 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.44ms
+2018-04-13 15:35:23 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.11ms
+2018-04-13 15:35:23 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 4.31ms
+2018-04-13 15:35:23 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.69ms
+2018-04-13 15:37:35 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.39ms
+2018-04-13 15:37:36 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.47ms
+2018-04-13 15:37:36 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.00ms
+2018-04-13 15:37:37 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 4.08ms
+2018-04-13 15:38:13 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 1.75ms
+2018-04-13 15:38:14 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 1.67ms
+2018-04-13 15:38:19 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 4.15ms
+2018-04-13 15:38:22 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.61ms
+2018-04-13 15:38:28 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.62ms
+2018-04-13 15:38:33 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 1.75ms
+2018-04-13 15:38:38 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 1.61ms
+2018-04-13 15:39:07 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.34ms
+2018-04-13 15:39:07 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.73ms
+2018-04-13 15:39:08 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 1.89ms
+2018-04-13 19:58:27 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.61ms
+2018-04-13 19:58:42 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.28ms
+2018-04-13 19:59:25 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.16ms
+2018-04-13 19:59:25 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.07ms
+2018-04-13 19:59:25 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.36ms
+2018-04-13 19:59:26 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.41ms
+2018-04-13 19:59:26 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.30ms
+2018-04-13 19:59:34 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.71ms
+2018-04-13 19:59:34 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 4.30ms
+2018-04-13 20:01:39 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 4.22ms
+2018-04-13 20:01:57 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.02ms
+2018-04-13 20:01:58 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 2.16ms
+2018-04-13 20:02:57 web.py[line:2064] WARNING 404 GET /static/bootstrap/bootstrap.min.css.map (192.168.43.6) 3.78ms
+2018-04-13 20:03:58 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 0.88ms
+2018-04-13 20:06:43 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 0.97ms
+2018-04-13 20:08:40 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 1.10ms
+2018-04-13 20:08:44 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 0.77ms
+2018-04-13 20:08:48 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 0.88ms
+2018-04-13 20:08:56 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 1.05ms
+2018-04-13 20:12:32 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 1.28ms
+2018-04-13 20:13:33 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 1.09ms
+2018-04-13 20:13:39 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 0.68ms
+2018-04-13 20:14:06 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 0.93ms
+2018-04-13 20:14:19 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 0.89ms
+2018-04-13 20:14:36 web.py[line:2064] WARNING 405 GET /cms/role_group_permission (192.168.43.6) 0.86ms

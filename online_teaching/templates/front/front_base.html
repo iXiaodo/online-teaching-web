@@ -2,6 +2,13 @@
 
 {% block cssblockbase %}
 <link rel="stylesheet" href="/static/css/front/front_base.css">
+<script src="/static/js/front/jquery-1.7.2.min.js"></script>
+<script src="/static/js/front/jquery.horizontalNav.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.full-width').horizontalNav({});
+    });
+</script>
 {% end %}
 
 {% block containerblock %}
@@ -75,12 +82,5 @@
 
     {% end %}
 </div>
-    <script src="/static/js/front/jquery-1.7.2.min.js"></script>
-    <script src="/static/js/front/jquery.horizontalNav.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('.full-width').horizontalNav({});
-    });
-    </script>
     <script src="/static/js/front/front_base.js"></script>
 {% end %}

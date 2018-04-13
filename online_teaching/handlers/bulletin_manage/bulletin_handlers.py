@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import time
 from tornado.gen import coroutine
 from tornado.web import authenticated
 from datetime import datetime
@@ -8,7 +9,8 @@ from handlers.common_handlers.base_handler import BaseHandler
 from config import BULLETIN_INFOS,MongoBasicInfoDb
 from libs.motor.base import BaseMotor
 from utils.tools import to_string
-
+from bson import ObjectId
+from models.bulletin import Bulletin_info
 #页面
 class BulletinInfoPageHandler(BaseHandler):
     @authenticated
@@ -28,27 +30,27 @@ class BulletinInfoPageHandler(BaseHandler):
 
 
 
-#获取留言数据
+#获取公告数据
 class getBulletinInfoHandler(BaseHandler):
     @authenticated
     @coroutine
     def get(self):
         email = self.get_session("current_email")
         try:
-            bull_coll = BaseMotor().client[MongoBasicInfoDb][BULLETIN_INFOS]
-            bull_doc = yield bull_coll.find_one({'_id':email })
-            res = bull_doc['own_bulletins']
+            bull = Bulletin_info(email)
+            bull_doc = bull.by_author
+            bull_info = []
             if not bull_doc:
-                bulletin_data = {
-                    "_id":email,
-                    "own_bulletins":{}
-                }
-                res = bull_coll.insert_one(bulletin_data)
-                if not res.inserted_id:
-                    self.write_response({}, 0, _err='创建数据出错！')
-                res = yield bull_coll.find_one({'_id': email})
-                res = res['own_bulletins']
-            self.write_response(res)
+                self.write_response({})
+            else:
+                for i in bull_doc:
+                    i['id'] = str(i.pop('_id'))
+                    timeStamp = i['pub_time']
+                    timeArray = time.localtime(timeStamp)
+                    otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+                    i['pub_time'] = otherStyleTime
+                    bull_info.append(i)
+                self.write_response(bull_info)
         except Exception as e:
             logging.exception(e)
             self.write_response("", 0, "获取数据失败，请稍后重试")
@@ -77,6 +79,7 @@ class getBulletinInfoHandler(BaseHandler):
             bulletin_title = post_data.get('bulletin_title', None)
             bulletin_content = post_data.get('bulletin_content', None)
             bulletin_author = post_data.get('bulletin_author', None)
+            bulletin_type = post_data.get('bulletin_type', None)
             if not bulletin_title:
                 self.write_response({}, 0, '公告标题不能为空！')
                 return
@@ -84,33 +87,28 @@ class getBulletinInfoHandler(BaseHandler):
                 self.write_response({}, 0, '公告内容不能为空！')
                 return
             if not bulletin_author:
-                self.write_response({}, 0,'作者获取异常')
+                self.write_response({}, 0,'作者获取异常！')
+                return
+            if not bulletin_type:
+                self.write_response({}, 0,'公告类型获取有误！')
                 return
             res = yield bulletin_coll.find_one({'_id': bulletin_author})
             try:
-                temp_list = []
-                for key in res['own_bulletins']:
-                    temp_list.append(key)
-                if not res['own_bulletins'].has_key(bulletin_title):
-                    try:
-                        bulletin_coll.update_one({'_id': bulletin_author},{
-                            '$set':{
-                                'own_bulletins.{0}'.format(to_string(bulletin_title)): {
-                                    'content': bulletin_content,
-                                    'pub_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                                    'update_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                                    'is_top':False,
-                                    'is_active':True
-                                }
-                            }
-                        })
-                    except Exception as e:
-                        logging.exception(e)
-                        return
-                    self.write_response({},1)
+                insert_info = {
+                    'title':bulletin_title,
+                    'author':bulletin_author,
+                    'type':bulletin_type,
+                    'content': bulletin_content,
+                    'pub_time': int(time.time()),
+                    'update_time': '',
+                    'is_top': False,
+                    'is_active': True
+                }
+                res = bulletin_coll.insert_one(insert_info)
+                if res:
+                    self.write_response({})
                 else:
-                    self.write_response({},0,'公告标题已经存在，无法重复添加')
-                    return
+                    self.write_response({},0,'公告创建失败')
             except Exception as e:
                 logging.exception(e)
                 self.write_response({}, 0, e)
@@ -118,16 +116,20 @@ class getBulletinInfoHandler(BaseHandler):
         elif action == 'rename':
             old_title_name = post_data.get('old_name', None)
             old_title_name = to_string(old_title_name)
-            bulletin_author = post_data.get('bulletin_author',None)
+            id = post_data.get('id',None)
+            if not id:
+                self.write_response({}, 0, '标题id获取异常！')
+                return
             new_title_name = post_data.get('new_name',None)
             new_title_name = to_string(new_title_name)
             if not (new_title_name and old_title_name):
                 self.write_response({}, 0, '标题参数错误，无法删除！')
                 return
             try:
-                res = bulletin_coll.update_one({'_id':bulletin_author},{
-                    '$rename': {
-                        'own_bulletins.{0}'.format(old_title_name):'own_bulletins.{0}'.format(new_title_name)
+                res = bulletin_coll.update_one({'_id':ObjectId(id)},{
+                    '$set': {
+                        '{0}'.format('title'):new_title_name,
+                        '{0}'.format('pub_time'):int(time.time())
                     }
                 })
                 if not res:
@@ -137,16 +139,21 @@ class getBulletinInfoHandler(BaseHandler):
                 logging.exception(e)
                 self.write_response({}, 0, '修改公告标题失败！')
         elif action == 'del':
-            bulletin_title = post_data.get('bulletin_title', None)
-            bulletin_title = to_string(bulletin_title)
-            bulletin_author = post_data.get('bulletin_author',None)
-            if not bulletin_title:
-                self.write_response({}, 0, '公告标题为空，无法删除！')
+            id = post_data.get('id',None)
+            if not id:
+                self.write_response({}, 0, '公告id为空，无法删除！')
                 return
             try:
-                res = bulletin_coll.update_one({'_id':bulletin_author},{
+                res = bulletin_coll.update_one({'_id':ObjectId(id)},{
                     '$unset': {
-                        'own_bulletins.{0}'.format(bulletin_title): ''
+                        'title':'',
+                        'author':'',
+                        'type':'',
+                        'content': '',
+                        'pub_time': '',
+                        'update_time': '',
+                        'is_top': '',
+                        'is_active': ''
                     }
                 })
                 if not res:
@@ -156,19 +163,17 @@ class getBulletinInfoHandler(BaseHandler):
                 logging.exception(e)
                 self.write_response({}, 0, '删除公告失败！')
         elif action == 'top':
-            bulletin_title = post_data.get('bulletin_title', None)
-            bulletin_title = to_string(bulletin_title)
-            bulletin_author = post_data.get('bulletin_author', None)
-            if not bulletin_title:
-                self.write_response({}, 0, '公告标题为空，无法操作！')
+            id = post_data.get('id', None)
+            if not id:
+                self.write_response({}, 0, '公告id获取异常，无法操作！')
                 return
             try:
-                res = bulletin_coll.update({'_id':bulletin_author},{
+                res = bulletin_coll.update({'_id':ObjectId(id)},{
                     '$set':{
-                        'own_bulletins.{0}.{1}'.format(bulletin_title,'update_time'): datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                        'own_bulletins.{0}.{1}'.format(bulletin_title,'is_top'): True,
-                        'own_bulletins.{0}.{1}'.format(bulletin_title,'is_active'): True,
-                        'own_bulletins.{0}.{1}'.format(bulletin_title,'top_time'): datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        '{0}'.format('update_time'): int(time.time()),
+                        '{0}'.format('is_top'): True,
+                        '{0}'.format('is_active'): True,
+                        '{0}'.format('top_time'): int(time.time())
                     }
                 })
                 if not res:
@@ -178,19 +183,18 @@ class getBulletinInfoHandler(BaseHandler):
                 logging.exception(e)
                 self.write_response({}, 0, '置顶公告失败！！')
         elif action == 'cancel_top':
-            bulletin_title = post_data.get('bulletin_title', None)
-            bulletin_title = to_string(bulletin_title)
-            bulletin_author = post_data.get('bulletin_author', None)
-            if not bulletin_title:
-                self.write_response({}, 0, '公告标题为空，无法操作！')
+            id = post_data.get('id', None)
+
+            if not id:
+                self.write_response({}, 0, '公告id获取异常，无法操作！')
                 return
             try:
-                res = bulletin_coll.update({'_id': bulletin_author}, {
-                    '$set': {
-                        'own_bulletins.{0}.{1}'.format(bulletin_title, 'update_time'): datetime.now().strftime(
-                            '%Y-%m-%d %H:%M:%S'),
-                        'own_bulletins.{0}.{1}'.format(bulletin_title, 'is_top'): False,
-                        'own_bulletins.{0}.{1}'.format(bulletin_title, 'top_time'):''
+                res = bulletin_coll.update({'_id': ObjectId(id)}, {
+                    '$set':{
+                        '{0}'.format('update_time'): int(time.time()),
+                        '{0}'.format('is_top'): False,
+                        '{0}'.format('is_active'): True,
+                        '{0}'.format('top_time'): ''
                     }
                 })
                 if not res:
@@ -200,25 +204,29 @@ class getBulletinInfoHandler(BaseHandler):
                 logging.exception(e)
                 self.write_response({}, 0, '取消操作失败！')
         elif action == 'modify':
-            bulletin_title = post_data.get('bulletin_title', None)
-            bulletin_title = to_string(bulletin_title)
-            bulletin_author = post_data.get('bulletin_author', None)
             content = post_data.get('content',None)
             is_active = post_data.get('is_active',None)
             is_active = bool(is_active)
+            id = post_data.get('id',None)
+            if not id:
+                self.write_response({}, 0, '公告id获取失败，无法修改！')
+                return
+            if not content:
+                self.write_response({}, 0, '公告内容获取失败，无法修改！')
+                return
             try:
-                res = bulletin_coll.update({'_id': bulletin_author}, {
+                res = bulletin_coll.update_one({'_id': ObjectId(id)}, {
                     '$set': {
-                        'own_bulletins.{0}.{1}'.format(bulletin_title, 'update_time'): datetime.now().strftime(
-                            '%Y-%m-%d %H:%M:%S'),
-                        'own_bulletins.{0}.{1}'.format(bulletin_title, 'is_active'): is_active,
-                        'own_bulletins.{0}.{1}'.format(bulletin_title, 'content'):content
+                        '{0}'.format('update_time'): int(time.time()),
+                        '{0}'.format('is_active'): is_active,
+                        '{0}'.format('content'):content
                     }
                 })
-                if not res:
-                    print 'not res'
+                if res:
+                    self.write_response({})
+                else:
                     self.write_response({}, 0, '修改内容失败！')
-                self.write_response({})
+
             except Exception as e:
                 logging.exception(e)
                 self.write_response({}, 0, '修改内容失败！')

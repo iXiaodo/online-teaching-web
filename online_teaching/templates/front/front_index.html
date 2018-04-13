@@ -4,6 +4,7 @@
 
 {% block cssblock %}
 <link rel="stylesheet" href="/static/css/front/front_index.css">
+
 <script type="text/javascript">
     window.onload= function() {
         var box  = document.getElementById("all");  //   获得大盒子
@@ -20,6 +21,7 @@
             // 创建节点 li
             var li = document.createElement("li");
             li.innerHTML = i + 1;   //  存在加1 的关系
+            // a.appendChild(b);
             ol.appendChild(li);
         }
         var olLis = ol.children;  // 找到 ol 里面的li
@@ -44,7 +46,7 @@
         timer = setInterval(autoplay,3000);   // 每隔3s 调用一次 autoplay
         function autoplay() {
             key++;   // key == 1  先 ++
-            // console.log(key); //  不能超过5
+            console.log(key); //  不能超过5
             if(key > ulLis.length - 1)
             {
                // alert('停下');
@@ -57,9 +59,11 @@
             square++;  // 小方块自加1
             square = square>olLis.length-1 ? 0 : square;
             /// 清除所有人
+            console.log(square)
             for(var i=0;i<olLis.length;i++) {
                 olLis[i].className = "";
             }
+
             olLis[square].className = "current";   // 留下当前自己的
 
         }
@@ -92,6 +96,7 @@
                 }
             },10);
         }
+
     }
 </script>
 {% end %}
@@ -122,8 +127,11 @@
             <div class="panel-body">
                 <ul id="bulletin-ul">
                     {% for bulletin in bulletins_top%}
-                        <li><a href="#">[{{ bulletin[1] }}]&nbsp;&nbsp;{{ bulletin[0] }}</a><span class="iconfont">&#xe604;</span></li>
+                        <li><a href="bulletin_detail?id={{ bulletin['_id'] }}">[{{ bulletin['top_time'] }}]&nbsp;&nbsp;{{ bulletin['title'] }}</a><span class="iconfont">&#xe604;</span></li>
                     {% end%}
+                    {% for bulletin in bulletins_untop%}
+                         <li><a href="bulletin_detail?id={{ bulletin['_id'] }}">[{{ bulletin['pub_time'] }}]&nbsp;&nbsp;{{ bulletin['title'] }}</a></li>
+                    {% end %}
                 </ul>
                 <div class="bulletin-more">
                     <a href="/bulletin">查看更多&gt;</a>

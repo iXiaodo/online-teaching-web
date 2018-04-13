@@ -15,13 +15,15 @@ from utils.captcha import get_captcha
 class IndexHandler(BaseHandler):
     def get(self):
         bulletin_coll = Bulletin_info()
-        top_list = bulletin_coll.get_top_list
+        top_bulletin = bulletin_coll.by_top_limit2
+        bulletins_untop = bulletin_coll.by_untop_limit2
         email = self.get_session('current_email')
         role = self.get_session('role')
         args = {
-            'bulletins_top':top_list,
+            'bulletins_top':top_bulletin,
             'user':email,
-            'role':role
+            'role':role,
+            'bulletins_untop':bulletins_untop
         }
         self.render("front/front_index.html",**args)
 
@@ -245,8 +247,8 @@ class frontBulletinsHandler(BaseHandler):
         email = self.get_session('current_email')
         role = self.get_session('role')
         bulletin_coll = Bulletin_info()
-        top_list = bulletin_coll.get_top_list
-        untop_list = bulletin_coll.get_untop_list
+        top_list = bulletin_coll.by_top_sort
+        untop_list = bulletin_coll.by_untop_sort
         args = {
             'user':'',
             'role': role,
@@ -262,11 +264,29 @@ class frontBulletinsHandler(BaseHandler):
 class bulletinDetailHandler(BaseHandler):
     @coroutine
     def get(self):
-        title = self.get_argument('title', None)
-        if not title:
-            self.write_response({}, 0, '缺少公告标题')
+        email = self.get_session('current_email') if self.get_session('current_email') else '游客'
+        role = self.get_session('role') if self.get_session('') else '游客'
+        id = self.get_argument('id',None)
+        if not id:
+            self.write_response({},0,'公告id获取错误！')
             return
-        bulletin_coll = Bulletin_info()
-        self.write_response({})
+        try:
+            bulletin_coll = Bulletin_info(id=id)
+            bulletin = bulletin_coll.by_id
+            is_top = bulletin['is_top']
+            if is_top == True:
+                is_top = 1
+            else:
+                is_top = ''
+            args = {
+                'user': email,
+                'role': role,
+                'bulletin':bulletin,
+                'is_top':is_top
+            }
+            self.render("front/front_bulletin_detail.html", **args)
+        except Exception as e:
+            logging.exception(e)
+
 
 #----------------------------------------------------------公告

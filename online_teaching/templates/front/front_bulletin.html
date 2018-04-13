@@ -6,6 +6,8 @@
 
 {% block cssblock %}
 <link rel="stylesheet" href="/static/css/front/front_bulletin.css">
+    {% block bulletincss %}
+    {% end %}
 {% end %}
 
 {% block content%}
@@ -25,41 +27,46 @@
         <div class="bulletin-right">
             <div class="bulletin-list-content">
                 <h3>公告&nbsp;&nbsp;<i class="iconfont title-top" title="公告信息">&#xe6d2;</i></h3>
-                <a href="/cms/bulletinPage/" target="_blank"><span class="iconfont pub" title="发布公告" style="cursor: pointer;">发布：&#xe624;</span></a>
-                <ul id="bulletin-ul-list">
-                    {% block bulletin_detail%}
-                        {% for bulletin in bulletin_infos%}
-                        <li>
-                            <i class="iconfont" title="通知消息">&#xe632;</i>&nbsp;&nbsp;
-                            <a href="/bulletin?title={{ bulletin[0] }}" data-value="{{ bulletin[0] }}">{{ bulletin[0] }}</a>
-                            <span><i class="iconfont top" title="已置顶公告">&#xe650;</i>&nbsp;&nbsp;&nbsp;&nbsp;{{ bulletin[1] }}</span>
-                        </li>
+                <a href="/cms/bulletinPage/" target="_blank"><span class="iconfont pub" title="发布公告" style="cursor: pointer;">&#xe624;</span></a>
+                {% block bulletin_detail%}
+                    <ul id="bulletin-ul-list">
+                        {% if bulletin_infos %}
+                            {% for bulletin in bulletin_infos %}
+                            <li>
+                                <i class="iconfont" title="通知消息">&#xe632;</i>&nbsp;&nbsp;
+                                <a href="/bulletin_detail?id={{ bulletin['_id'] }}" data-value="{{ bulletin['_id'] }}">{{ bulletin['title'] }}</a>
+                                <span><i class="iconfont top" title="已置顶公告">&#xe650;</i>&nbsp;&nbsp;&nbsp;&nbsp;{{ bulletin['top_time'] }}</span>
+                            </li>
+                            {% end %}
                         {% end %}
-                        {% for bulletin in unTopBulletins%}
-                        <li>
-                            <i class="iconfont" title="通知消息">&#xe632;</i>&nbsp;&nbsp;
-                            <a href="/bulletin?title={{ bulletin[0] }}" data-value="{{ bulletin[0] }}">{{ bulletin[0] }}</a>
-                            <span>{{ bulletin[1] }}</span>
-                        </li>
+                        {% if unTopBulletins %}
+                            {% for bulletin in unTopBulletins%}
+                            <li>
+                                <i class="iconfont" title="通知消息">&#xe632;</i>&nbsp;&nbsp;
+                                <a href="/bulletin_detail?id={{ bulletin['_id'] }}" data-value="{{ bulletin['_id'] }}">{{ bulletin['title'] }}</a>
+                                <span>{{ bulletin['pub_time'] }}</span>
+                            </li>
+                            {% end %}
                         {% end %}
-                    {% end%}
-                </ul>
+                    </ul>
+                    <!--分页-->
+                    <nav aria-label="..." id="page-devide">
+                        <ul class="pagination">
+                            <li><a href="#"><span>首页</span></a></li>
+                            <li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                            <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                            <li><a href="#"><span>尾页</span></a></li>
+                        </ul>
+                    </nav>
+                    <!--分页-->
+                {% end %}
             </div>
-            <!--分页-->
-            <nav aria-label="..." id="page-devide">
-                <ul class="pagination">
-                    <li><a href="#"><span>首页</span></a></li>
-                    <li><a href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                    <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
-                    <li><a href="#"><span>尾页</span></a></li>
-                </ul>
-            </nav>
-            <!--分页-->
+
         </div>
     </div>
 {% end %}
