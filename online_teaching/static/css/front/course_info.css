@@ -2,18 +2,91 @@
     width: 200px;
     height: 200px;
 }
-.subNavBox{width:200px;border:solid 1px #e5e3da;margin:100px auto;}
 
-.subNav{border-bottom:solid 1px #e5e3da;cursor:pointer;font-weight:bold;font-size:14px;color:#999;line-height:28px;padding-left:10px;background:url(/static/images/front/jiantou1.jpg) no-repeat;background-position:95% 50%}
 
-.subNav:hover{color:#277fc2;}
+/*主要界面-start*/
+.main-content{
+    width: 1080px;
+    height: 600px;
+    margin: 17px auto;
+    border: 5px solid #ccc;
+    border-radius: 5px;
+}
+/*主要界面-end*/
 
-.currentDd{color:#277fc2}
+/*left-start*/
+.left-course-box{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    float: left;
+    position: relative;
+}
+.parting-line{
+    position: absolute;
+    top: 136px;
+    border: none;
+    border-bottom: 5px solid #ccc;
+    width: 224px;
+    transform: rotate(90deg);
+    left: 235px;
+}
+#subnav-ul-list{
+    width: 230px;
+    height: 200px;
+    margin:42px 0 0 70px;
+}
+#subnav-ul-list li{
+    list-style: none;
+    width: 230px;
+    height: 50px;
+    font-size: 17px;
+    border-radius: 5px;
+    display: block;
+}
+#subnav-ul-list li:hover{
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+#subnav-ul-list li a{
+    text-decoration: none;
+    color:#333333d6;
+}
+#subnav-ul-list li i.iconfont{
+    font-size: 39px;
+    color:#a0a0a0;
+    margin: 0 0 0 15px;
+}
+.course-a{
+    width: 68px;
+    height: 24px;
+    display: block;
+    margin: -39px 0 0 77px
+}
+/*left-end*/
 
-.currentDt{background-image:url(/static/images/front/jiantou.jpg);}
+.right-course-box{
+    width: 765px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    float: left;
+    position: relative;
+}
+.intro-course-box{
+    width: 626px;
+    height: 100%;
+    margin: 52px auto;
+}
+.intro-course-box .first_par{
+    font-size: 17px;
+    letter-spacing: 2px;
+    text-align: justify;
+    text-indent: 41px;
+    line-height: 25px;
+    color:#68bdc1;
+}
+/*right-start*/
 
-.navContent{display: none;border-bottom:solid 1px #e5e3da;}
 
-.navContent li a{display:block;width:200px;heighr:28px;text-align:center;font-size:14px;line-height:28px;color:#333}
-
-.navContent li a:hover{color:#fff;background-color:#277fc2}
+/*right-end*/

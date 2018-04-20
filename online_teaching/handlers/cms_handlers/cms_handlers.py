@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 import json
-from datetime import datetime
-from tornado.gen import Return, coroutine
+import time
+from bson import ObjectId
+from tornado.gen import coroutine
 from tornado.web import authenticated
 from geetest import GeetestLib
 from handlers.common_handlers.base_handler import BaseHandler
@@ -11,6 +12,7 @@ from utils.hashers import make_password
 from utils.tools import to_unicode,to_string
 from libs.motor.base import BaseMotor
 from log import *
+from models.files import Files_info
 from models.cms_user import CmsUser
 
 
@@ -97,6 +99,7 @@ class CmsLoginHandler(BaseHandler):
                             self.session['current_email'] = user_email
                             self.session['role'] = cms_user_doc['role']
                             self.session['permission'] = cms_user_doc['permission']
+                            self.session['username'] = cms_user_doc['user_name']
                             self.set_secure_cookie("user", user_email + cms_user_doc['role'],expires_days=1)
                             self.redirect(next_url)
                         else:
@@ -147,7 +150,53 @@ class CmsModifyPwdHandler(BaseHandler):
 
 
     def post(self):
-        pass
+        post_data = self.request.body
+        try:
+            data = json.loads(post_data)
+        except (TypeError, ValueError):
+            self.write_response({}, 0, '参数格式错误')
+            return
+        action = data.get('action', None)
+        if not action:
+            self.write_response({},0,'获取操作失败！')
+            return
+        if action == 'reset_pwd':
+            email = self.get_session("current_email")
+            old_password = data.get('old_password', None)
+            new_password = data.get('new_password', None)
+            repeat_password = data.get('repeat_password', None)
+            if not(old_password and new_password and repeat_password):
+                self.write_response({},0,'获取密码出错！')
+                return
+            if not email:
+                self.write_response({}, 0, '账户信息异常！')
+                return
+            try:
+                cms_user = CmsUser(email=email)
+                old_password = make_password(old_password)
+                new_password = make_password(new_password)
+                repeat_password = make_password(repeat_password)
+                if new_password != repeat_password:
+                    self.write_response({}, 0, '两次密码输入不一致！')
+                    return
+                if old_password == cms_user._password:
+                    res = CmsUser(email=email,raw_password=new_password)
+                    if res.reset_pwd:
+                        self.write_response({})
+                        return
+                    else:
+                        self.write_response({},0,'密码修改失败！')
+                        return
+                else:
+                    self.write_response({}, 0, '原密码错误，无法修改！')
+                    return
+            except Exception as e:
+                logging.exception(e)
+                self.write_response({},0,'数据库查询发生异常！')
+
+
+
+
 
 #版本信息
 class CmsVersionHandler(BaseHandler):
@@ -204,23 +253,12 @@ class CmsDataManageInfoHandler(BaseHandler):
     def get(self):
         email = self.get_session("current_email")
         try:
-            file_coll = BaseMotor().client[MongoBasicInfoDb][FILES]
-            file_doc = yield file_coll.find_one({'_id':email})
-            if not file_doc:
-                basic_info = {
-                    '_id': email,
-                    'status': True,
-                    'own_files': {}
-                }
-                res = file_coll.insert_one(basic_info)
-                if res:
-                    data = ''
-                    self.write_response({})
-                else:
-                    self.write_response({},0,'数据库操作出现异常！')
-            else:
-                data = file_doc['own_files']
-                self.write_response(data)
+            file = Files_info(email = email)
+            if not file:
+                self.write_response({})
+                return
+            data = file.by_email
+            self.write_response(data)
         except Exception as e:
             logging.exception(e)
             self.write_response({},0,'获取数据异常！')
@@ -246,7 +284,6 @@ class CmsDataManageInfoHandler(BaseHandler):
             return
         try:
             file_coll = BaseMotor().client[MongoBasicInfoDb][FILES]
-            file_doc = yield file_coll.find_one({'_id': author})
             file_name = to_string(file_name)
         except Exception as e:
             logging.exception(e)
@@ -254,22 +291,30 @@ class CmsDataManageInfoHandler(BaseHandler):
             return
         if action == 'up_file':
             file_url = data.get('file_url', None)
+            author = self.session.get('username')
+            file_name = data.get('file_name',None)
+            email = self.get_session("current_email")
+            if not (author and email):
+                self.redirect('/cms/login')
             if not file_url:
                 self.write_response({}, 0, '资料链接获取失败！')
                 return
+            if not file_name:
+                self.write_response({},0,'文件名称获取出错')
+                return 
             try:
-                docu = {
-                    'up_time':datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                file_docu = {
+                    'filename':file_name,
+                    'up_time':int(time.time()),
                     'url':file_url,
-                     'is_active':True
+                    'is_active':True,
+                    'is_top':False,
+                    'author':author,
+                    'email':email
                 }
-                if file_doc:
+                if file_coll:
                     try:
-                        res = file_coll.update_one({'_id':author},{
-                            '$set':{
-                                'own_files.{0}'.format(file_name):docu
-                            }
-                        })
+                        res = file_coll.insert_one(file_docu)
                         if res:
                             self.write_response({})
                             return
@@ -289,12 +334,12 @@ class CmsDataManageInfoHandler(BaseHandler):
                 return
 
         elif action == 'del_file':
+            id = data.get('id', None)
+            if not id:
+                self.write_response({}, 0, '文件id有误！')
+                return
             try:
-                res = file_coll.update_one({'_id': author}, {
-                    '$unset': {
-                        'own_files.{0}'.format(file_name): ''
-                    }
-                })
+                res = file_coll.remove({'_id':ObjectId(id)})
                 if res:
                     self.write_response({})
                     return

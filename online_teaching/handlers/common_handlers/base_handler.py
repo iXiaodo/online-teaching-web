@@ -3,7 +3,7 @@ import json
 from tornado_session.sessionhandler import SessionBaseHandler
 from tornadomail.backends.smtp import EmailBackend
 from libs.redis.redis_conn import conn
-
+from config import QQ_EMAIL_PWD,QQ_EMAIL_SQM
 
 
 class BaseHandler(SessionBaseHandler):
@@ -16,7 +16,7 @@ class BaseHandler(SessionBaseHandler):
     @property
     def mail_connection(self):
         return EmailBackend(
-            'smtp.qq.com', 587, '1070457631@qq.com','ayzumyiiervqbdig', 'WABC_940522',
+            'smtp.qq.com', 587, '1070457631@qq.com',QQ_EMAIL_SQM, QQ_EMAIL_PWD,
             True
         )
 

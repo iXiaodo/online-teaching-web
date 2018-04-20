@@ -28,3 +28,9 @@
 	color:#CDF0F0;
 	font-size:18px;
 }
+#update-pwd .modal-body .row .col-sm-10{
+    margin-bottom: 32px;
+}
+#send-email-btn{
+    width: 300px;
+}

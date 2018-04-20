@@ -7,7 +7,6 @@
 
 #：IDE：PyCharm
 from tornadomail.message import EmailMessage
-from tornado.web import template
 def send_email(self,subject='',body='',to_email=''):
     message = EmailMessage(
         subject=subject,

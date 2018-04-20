@@ -14,16 +14,21 @@
 {% block containerblock %}
 
 <div class="nav-top">
-    <img src="/static/images/front/logo3.png" alt="" id="logo">
-    <ul class="nav-title">
-        <li class="nx-p">宁夏大学</li>
-        <li>计算机组成与结构教学网站</li>
-        {% if user %}
-        <li class="login"><a href="javascript:void(0);">身份：{{ role }} &nbsp;&nbsp;用户：{{user}}</a></li>
-        {% else %}
-        <li class="login"><a href="/signin">登录</a></li>
-        {% end %}
-    </ul>
+    <div class="nav-content-top">
+        <img src="/static/images/front/logo_n.png" alt="" id="logo">
+        <ul class="nav-title">
+            <li>计算机组成与结构教学网站</li>
+        </ul>
+        <ul class="nav-login">
+            {% if username %}
+            <li class="login"><a href="javascript:void(0);">{% if role %}身份：{{ role }} {% end %} &nbsp;&nbsp;用户：{{ username }}</a></li>
+            <li class="login out"><a href="/logout">【退出系统】</a></li>
+            {% else %}
+            <li class="login-regist"><a href="/signin">登录|注册</a></li>
+            {% end %}
+        </ul>
+    </div>
+
 </div>
 <div class="nav">
     <div class="horizontal-nav full-width horizontalNav-notprocessed">
@@ -32,55 +37,73 @@
             <li id="course-nav">
                 <a href="javascript:void(0);" id="course-down-btn">课程概况</a>
                 <div class="sub-nav">
-                    <p class="sub-nav-first-p"><a href="/courseCenter">课程简介</a></p>
-                    <p><a href="#">发展前沿</a></p>
-                    <p><a href="#">师资力量</a></p>
+                    <p class="sub-nav-first-p"><a href="/course_intro">课程简介</a></p>
+                    <p><a href="/course_develop">发展前沿</a></p>
+                    <p><a href="/course_teachers">师资力量</a></p>
                 </div>
             </li>
             <li><a href="/bulletin">公告</a></li>
-            <li><a href="#">资料</a></li>
+            <li><a href="/resource">资料</a></li>
             <li><a href="#">社区</a></li>
             <li><a href="#">关于</a></li>
         </ul>
     </div>
 </div>
-
-<!--<div class="container">-->
-<!--<div class="row" id="nav-box">-->
-<!--<ul>-->
-<!--<li class="nav-li" id="logo-first"><a href="/">计算机组成与结构教学网站</a></li>-->
-<!--<li class="nav-li"><a href="#">课程简介</a></li>-->
-<!--<li class="nav-li"><a href="#">资料下载</a></li>-->
-<!--<li class="nav-li"><a href="#">学习社区</a></li>-->
-<!--</ul>-->
-<!--<ul class="nav navbar-nav navbar-right">-->
-<!--<li><a href="/cms/login" target="_blank">后台登录</a></li>-->
-<!--{% if role %}-->
-<!--<li><a href="javascript:void(0);">身份：{{ role }}</a></li>-->
-<!--{% end %}-->
-<!--<li class="dropdown">-->
-<!--{% if user %}-->
-<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user }}<span class="caret"></span></a>-->
-<!--<ul class="dropdown-menu">-->
-<!--<li><a href="#">个人中心</a></li>-->
-<!--<li role="separator" class="divider"></li>-->
-<!--<li><a href="/logout">退出登录</a></li>-->
-<!--</ul>-->
-<!--{% else %}-->
-<!--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">身份：游客<span class="caret"></span></a>-->
-<!--<ul class="dropdown-menu">-->
-<!--<li><a href="/signin">登录</a></li>-->
-<!--<li role="separator" class="divider"></li>-->
-<!--<li><a href="/regist">注册</a></li>-->
-<!--</ul>-->
-<!--{% end %}-->
-<!--</li>-->
-<!--</ul>-->
-<!--</div>-->
 <div class="content">
+    <!--主要内容-->
     {% block content%}
-
     {% end %}
+</div>
+<!--底部设计-->
+<div class="row footer">
+
+    <div class="footer-content">
+        <div class="card-link">
+            <div class="contact">
+                <ul>
+                    <li>联系我们</li>
+                    <br>
+                    <li>地址：宁夏中卫市沙坡头区平安西路宁夏大学中卫校区</li>
+                </ul>
+            </div>
+            <div class="qrcode">
+                <div class="icon w">
+                    <span class="iconfont">&#xe60c;</span>
+                    <div class="qrcode-w">
+                        <img src="/static/images/front/w_contact.png">
+                        <div class="down_icon"></div>
+                    </div>
+                </div>
+                <div class="icon q">
+                    <span class="iconfont">&#xe65e;</span>
+                    <div class="qrcode-q">
+                        <img src="/static/images/front/qq_contact.png" alt="">
+                        <div class="down_icon"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--友情链接-->
+        <div class="friendly-link">
+            <ul>
+                <li class="link-li">&nbsp;&nbsp;友情链接:</li>
+                <li class="link-li"><a href="http://www.nxu.edu.cn/" target="_blank">宁夏大学官网</a></li>
+                <li class="link-li"><a href="http://zwxq.nxu.edu.cn/" target="_blank">宁夏大学中卫校区官网</a></li>
+                <li class="link-li"><a href="http://jwc.nxu.edu.cn/" target="_blank">宁夏大学教务处</a></li>
+                <li class="link-li"><a href="http://jwgl.nxu.edu.cn/" target="_blank">宁夏大学教务管理系统</a></li>
+                <li class="link-li"><a href="https://www.python.org/" target="_blank">Python官网</a></li>
+                <li class="link-li"><a href="https://v3.bootcss.com/" target="_blank">Bootstrap中文网</a></li>
+                <li class="link-li"><a href="http://api.jquery.com/" target="_blank">jQueryAPI</a></li>
+                <li class="link-li"><a href="https://www.qiniu.com/" target="_blank">七牛云</a></li>
+                <li class="link-li"><a href="http://www.geetest.com/" target="_blank">极验验证</a></li>
+                <li><a href="https://github.com/" target="_blank">github</a></li>
+            </ul>
+        </div>
+    </div>
+    <!--版权说明-->
+    <div class="copy">
+        <p>宁夏大学计算机组成与结构教学网站 |宁ICP备-----号-1</p>
+    </div>
 </div>
     <script src="/static/js/front/front_base.js"></script>
 {% end %}

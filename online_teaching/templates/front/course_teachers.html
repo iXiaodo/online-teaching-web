@@ -1,0 +1,67 @@
+{% extends "course_base.html"%}
+
+
+{% block title %}师资力量{% end %}
+
+{% block course_css_block  %}
+<style>
+    .teacher-hr{
+        border: none;
+        border-bottom: 1px solid #d3e9ea;
+        border-width: 3px;
+        width: 598px;
+        margin: 56px 0 0 82px;
+    }
+    .teacher-info{
+        width: 427px;
+        height: 400px;
+        margin: 24px auto;
+    }
+    .teacher-info table thead tr th{
+        text-align: center;
+    }
+    .teacher-info table tbody tr td{
+        text-align: center;
+    }
+    .teacher-team{
+        text-align: center;
+        margin: 40px 0 -33px 0px;
+        letter-spacing: 6px;
+        font-size: 21px;
+        color: purple;
+    }
+</style>
+
+{% end %}
+
+
+{% block right-course-content  %}
+<p class="teacher-team">师资队伍</p>
+<hr class="teacher-hr">
+<div class="teacher-info">
+    <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th>教师姓名</th>
+            <th>职称</th>
+            <th>主攻专业</th>
+            <th>电子邮箱</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>汤效琴</td>
+            <td>教授</td>
+            <td>计算机技术</td>
+            <td>4004827@qq.com</td>
+        </tr>
+        <tr>
+            <td>郭辉</td>
+            <td>教授</td>
+            <td>计算机技术</td>
+            <td>@qq.com</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{% end  %}

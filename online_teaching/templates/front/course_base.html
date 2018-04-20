@@ -1,0 +1,37 @@
+{% extends "front_base.html"%}
+
+
+{% block title %}课程中心{% end %}
+
+{% block cssblock %}
+
+<link rel="stylesheet" href="/static/css/front/course_info.css">
+    {% block course_css_block  %}
+    {% end %}
+{% end %}
+
+{% block content%}
+    <div class="main-content">
+        <!--左边盒子--->
+        <div class="left-course-box">
+            <div class="subnav-box">
+                <ul id="subnav-ul-list">
+                    <li class="course-li"><i class="iconfont">&#xe6e0;</i>&nbsp;&nbsp;&nbsp;<a href="/course_intro" class="course-a">课程简介</a></li>
+                    <li class="course-li"><i class="iconfont">&#xe614;</i>&nbsp;&nbsp;&nbsp;<a href="/course_develop" class="course-a">发展前沿</a></li>
+                    <li class="course-li"><i class="iconfont">&#xe605;</i>&nbsp;&nbsp;&nbsp;<a href="/course_teachers" class="course-a">师资力量</a></li>
+                </ul>
+            </div>
+            <hr class="parting-line">
+        </div>
+
+        <!--右边盒子-->
+        <div class="right-course-box">
+            {% block right-course-content  %}
+            {% end  %}
+        </div>
+    </div>
+{% end %}
+
+{% block frontfootjs %}
+<script src="/static/js/front/course_info.js"></script>
+{% end %}

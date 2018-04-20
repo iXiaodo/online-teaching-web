@@ -1,35 +1,63 @@
 .nav-top{
     width: 100%;
     height: 100px;
-    background-color: #1E9FFF;
+    /*background-color: #1E9FFF;*/
+    overflow: hidden;
 }
 body{
     background-color: #f8f8f8;
+    min-width: 1200px;
 }
 .nav{
     width: 100%;
     background-color: #0e7079;
 }
+.nav-content-top{
+    width: 1130px;
+    height: 100%;
+    margin: 0 auto;
+}
 #logo{
-    width: 80px;
-    height: 80px;
-    margin: 8px 0 0 145px;
+    margin: 17px 0 0 0;
     border-radius: 41px;
     float: left;
 }
 .nav-title{
-    float: left;
+    width: 629px;
+    height: 100%;
     list-style: none;
-    width: 80%;
-    height: 100px;
-    display: inline-block;
-    margin: 0 auto;
 }
 .nav-title li{
-    float:left;
-    line-height: 98px;
-    margin-left: 25px;
-    font-size: 27px;
+    line-height: 100px;
+    font-size: 17px;
+    color: dimgray;
+    letter-spacing: 1px;
+    font-family: 华文行楷;
+    margin-left: 26px;
+}
+.nav-title,.nav-login{
+    float: left;
+}
+.nav-login{
+    width: 320px;
+    height: 100%;
+}
+.nav-login .login{
+    float: left;
+    list-style: none;
+    line-height: 100px;
+    margin-right: 9px;
+}
+.nav-login li a{
+    text-decoration: none;
+    font-size: 16px;
+    color:dimgray;
+}
+.login-regist{
+    list-style: none;
+    line-height: 100px;
+    float: right;
+    margin-right: 54px;
 }
 .nx-p{
     font-family: sans-serif;
@@ -38,7 +66,7 @@ body{
 .horizontal-nav {
     background: #efefef;
     border-radius: 6px;
-    width: 80%;
+    width: 1130px;
     margin: 0 auto;
 }
 .horizontal-nav ul {
@@ -88,20 +116,12 @@ body{
 /*nav-end*/
 
 /**/
-.login{
-    position: absolute;
-    right: 170px;
-}
-.login a{
-    text-decoration: none;
-    font-size: 19px;
-    color: #fff;
-}
+
 .content{
     width: 100%;
     position: relative;
     margin: 0;
-
+    overflow: hidden;
 }
 #course-nav{
     position: relative;
@@ -133,3 +153,140 @@ body{
 #course-nav:hover .sub-nav{
     display: block;
 }
+
+
+/*版权所有-start*/
+.row.footer{
+    width: 100%;
+    background-color: #0e7079;
+    height: 300px;
+    position: relative;
+
+}
+.row.footer .footer-content{
+    width: 1130px;
+    height: 220px;
+    margin: 0 auto;
+}
+.card-link{
+    height: 170px;
+}
+.friendly-link{
+    height: 50px;
+    width: 1130px;
+    margin: 0 auto;
+    border-top: 1px solid #656973;
+    border-bottom: 1px solid #656973;
+}
+.friendly-link ul li{
+    list-style: none;
+    float: left;
+    color:#d6d6d6;
+    margin: 14px 0 0 0;
+}
+.friendly-link .link-li{
+    margin: 14px 21px 0 0;
+}
+.friendly-link ul li a{
+    color:#FFF;
+}
+.row.footer .copy{
+    width: 760px;
+    height: 80px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(193, 193, 193, 0.07);
+}
+.copy p{
+    color:#f0f0f0;
+    font-size: 17px;
+    letter-spacing: 1px;
+    text-align: center;
+    overflow: hidden;
+    margin: 30px 0 0 0;
+}
+.contact{
+    width: 150px;
+    height: 70px;
+    margin: 33px 0 0 22px;
+    float: left;
+}
+.contact ul li{
+    color:#FFF;
+    list-style: none;
+}
+/*二维码*/
+.qrcode{
+    width: 101px;
+    float: right;
+    margin: 22px 10px 0 0;
+    position: relative;
+}
+.qrcode img{
+    width: 120px;
+    height: 120px;
+}
+span.iconfont{
+    width: 30px;
+    height: 30px;
+}
+div.icon .iconfont{
+    cursor: pointer;
+    font-size: 37px;
+    color:#FFF;
+    float: left;
+}
+.icon.w{
+    width: 32px;
+    height: 32px;
+    float: left;
+    margin: 0 25px 0 0;
+}
+.icon.q{
+    width: 32px;
+    height: 32px;
+    float: left;
+}
+div.qrcode-w,div.qrcode-q{
+    width: 120px;
+    height: 120px;
+    position: absolute;
+    top:-136px;
+}
+.qrcode-w{
+    right:27px;
+    display: none;
+}
+.qrcode-q{
+    right: -21px;
+    display: none;
+}
+.icon.w{
+    width: 35px;
+    height: 35px;
+    margin-right: 10px;
+}
+.icon.q{
+    width: 35px;
+    height: 35px;
+}
+.icon.w:hover .qrcode-w{
+    display: block;
+}
+.icon.q:hover .qrcode-q{
+    display: block;
+}
+.down_icon{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    transform:rotate(45deg);
+    -ms-transform:rotate(45deg); 	/* IE 9 */
+    -moz-transform:rotate(45deg); 	/* Firefox */
+    -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
+    -o-transform:rotate(45deg); 	/* Opera */
+    bottom: -4px;
+    left: 56px;
+}
+/*版权所有-end*/
+

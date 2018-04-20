@@ -14,7 +14,7 @@
 	</div>
     <div class="form-group">
         <div class="input-group">
-            <input class="form-control" type="text" id="captcha">
+            <input class="form-control" type="text" id="captcha" placeholder="请输入验证码">
             <a type="button" class="input-group-addon btn btn-info" id="captcha-btn">获取验证码</a>
         </div>
 	</div>
@@ -23,13 +23,45 @@
 			<i class="iconfont" style="color:orange">&#xe61d;</i>&nbsp;&nbsp;<span style="color: red;"></span>
 		</p>
 	</div>
-
-	<div class="from-group">
+	<div class="form-group">
 		<div class="input-group">
-			<button type="button" class="btn btn-primary btn-lg btn-block" id="send-email-btn">发送邮件重置密码</button>
+			<button type="button" class="btn btn-primary" id="send-email-btn">重置密码</button>
 		</div>
 	</div>
 {% end %}
 {% block frontfootjs %}
+<!--找回密码modal-start-->
+<div class="modal fade" id="update-pwd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-email="">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close-quick close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center">计算机组成与结构教学网站-找回密码</h4>
+			</div>
+			<div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <p><span class="iconfont" style="color:orange;">&#xe61d;</span>温馨提示：为了您的账户安全，建议密码设置为大写字母+小写字母+数字+特殊字符</p><br>
+                        <div class="col-sm-4 text-center" style="padding-top:5px;">新密码</div>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" name="password" id="password">
+                        </div>
+                    </div>
+                    <div class="col-sm-10 col-sm-offset-1">
+                        <div class="col-sm-4 text-center" style="padding-top:5px;">确认新密码</div>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" name="repeat-password" id="repeat-password">
+                        </div>
+                    </div>
+                </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="update-pwd-btn" class="btn btn-primary">找回密码</button>
+				<button type="button" class="close-quick btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--找回密码modal-end-->
 <script src="/static/js/front/front_forget_pwd.js"></script>
 {% end %}

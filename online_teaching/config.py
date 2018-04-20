@@ -15,7 +15,7 @@ BIND_IP = "127.0.0.1"
 MONGO_USE_RS = True
 MONGO_RS_HOST_PORT = [
     # ("192.168.1.182", 27017)
-    ("192.168.43.217", 27017)
+    ("192.168.147.128", 27017)
 ]
 
 #七牛配置
@@ -42,7 +42,8 @@ LOG_DIR = "./log"  # 日志目录
 LOG_FILE = 'online_teaching.log'  # 日志文件
 
 PASSWORD_SALT=''
-
+QQ_EMAIL_PWD = ''
+QQ_EMAIL_SQM = ''
 setting = {
     "cookie_secret": COOKIE_SECRET,
     "login_url": "/cms/login",
