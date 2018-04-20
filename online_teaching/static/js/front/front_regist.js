@@ -108,9 +108,11 @@ $(function () {
                         new GHAlert({
                             content: '恭喜您！帐号注册成功！',
                             type: "success",
-                            time: 4000
+                            time: 2000
                         }).show();
-                        window.location.href = '/signin';
+                        setTimeout(function () {
+                            window.location.href = '/signin';
+                        },1000)
                     }
                     else {
                         new GHAlert({

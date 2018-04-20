@@ -2,16 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import json
-
+import time
 from tornado.gen import coroutine
 from tornado.web import authenticated
 
 from handlers.common_handlers.base_handler import BaseHandler
-from utils.check import  check_email
+from utils.hashers import  make_password
 from utils.tools import to_string
+from models.cms_user import CmsUser,MongoBasicInfoDb
 from libs.motor.base import BaseMotor
-from config import MongoBasicInfoDb
-from models.cms_user import CmsUser
+from log import *
+from config import CMS_USER,STUDENTS
 
 class SubAccountPageHandler(BaseHandler):
     @authenticated
@@ -31,6 +32,22 @@ class SubAccountPageHandler(BaseHandler):
             print e
             self.write_response({},0,_err=e)
 
+
+#权限/角色获取
+class permissionRoleHandler(BaseHandler):
+    @authenticated
+    @coroutine
+    def get(self):
+        try:
+            cms = CmsUser()
+            data = cms.get_permissions
+            if not data:
+                self.write_response({},0,'获取权限信息出错')
+            else:
+                self.write_response(data)
+        except Exception as e:
+            logging.exception(e)
+
 # 子账户的获取
 class SubAccountHandler(BaseHandler):
     @authenticated
@@ -38,9 +55,22 @@ class SubAccountHandler(BaseHandler):
     def get(self):
         try:
             email = self.get_session("current_email")
-            data = CmsUser().get_easy_permission
-            print data
-            self.write_response(data)
+            cms_user = CmsUser(email=email)
+            permission = cms_user.get_permission
+            if not email:
+                self.write_response({},0,'帐号信息出错！')
+                return
+            if not permission:
+                self.write_response({},0,'权限获取异常！')
+                return
+            if permission == "super_admin":
+                data = cms_user.get_easy_permission
+                if not data:
+                    self.write_response({},0,'查询出错')
+                else:
+                    self.write_response(data)
+            else:
+                self.write_response({})
         except Exception as e:
             self.write_response("", 0, "获取数据失败，请稍后重试")
 
@@ -48,130 +78,113 @@ class SubAccountHandler(BaseHandler):
     @coroutine
     def post(self):
         try:
-            data = self.get_argument('data', None)
-            mainSubAccountEmail = self.get_session("main_account_email")
-            subaccount_id = self.get_session("sub_account")
-            current_account = Account(mainSubAccountEmail, subaccount_id)
-            account_info = {}
-            if mainSubAccountEmail is None:
-                self.write_response(response='', _status=0, _err='获取主账户异常')
-                return
-            if data is None:
-                self.write_response(response='', _status=0, _err='传入参数异常')
-                return
+            post_data = self.request.body
             try:
-                # 处理传入数据
-                json_data = json.loads(data)
-                sub_name = ""
-                method = json_data["method"]
-                if not check_subaccount_name(json_data["sub_name"]):
-                    raise Exception
-                else:
-                    sub_name = json_data["sub_name"]
-                if method == 'ban':
-                    try:
-                        account_info = {
-                            "status": json_data["status"]
-                        }
-                        res = current_account.modify_subaccount(sub_name, account_info)
-                    except PermissionInsufficientError:
-                        self.write_response("权限不足")
-                    except AccountNotExistError:
-                        self.write_response("账号不存在")
-                    except Exception as e:
-                        raise e
-                    else:
-                        if res:
-                            self.write_response("修改子账户信息成功")
-                        else:
-                            self.write_response("", 0, "修改子账户信息失败")
-                else:
-                    account_info = {
-                        "status": bool(json_data["status"])
-                    }
-
-                    main_account = Account(mainSubAccountEmail)
-                    all_subaccounts = main_account.all_subaccounts
-                    sub_list = [arr[1] for arr in all_subaccounts] if all_subaccounts else []
-
-                    if not check_subaccount_alias(json_data['user_name']):
-                        self.write_response({}, 0, '昵称格式有误,昵称为3-16位且只能包含数字，英文，汉字')
-                        return
-                    else:
-                        account_info['user_name'] = json_data['user_name']
-                    tel = to_string(json_data.get("tel"))
-                    if isinstance(tel, str) and len(tel) == 11 and tel.isalnum():
-                        account_info["tel"] = tel
-                    else:
-                        raise Exception
-                    email = json_data["user_email"]
-                    if check_email(email):
-                        account_info["user_email"] = email
-                    else:
-                        raise Exception
-                    idc_permission = json_data["permission"]
-                    group_list = yield self.get_group_list()
-                    if not group_list:
-                        raise Exception
-                    if not isinstance(idc_permission, list):
-                        try:
-                            idc_permission = json.loads(idc_permission)
-                        except (TypeError, ValueError):
-                            raise Exception
-                    for key in idc_permission:
-                        if key[0] not in group_list:
-                            raise Exception
-                    account_info['permission'] = idc_permission
-                    role = to_string(json_data["role"])
-                    if role in main_account.get_all_roles():
-                        account_info["role"] = role
-                    else:
-                        raise Exception
-                    group = to_string(json_data.get('group', None))
-                    if group:
-                        flag = main_account.is_exist_group_in_role(role, group)
-                        if flag:
-                            account_info['group'] = group
-                        else:
-                            raise Exception
-                    elif role == '管理' and not group:
-                        pass
-                    else:
-                        raise Exception
-                    if method == 'modify':
-                        res = current_account.modify_subaccount(sub_name, account_info)
-                        if res:
-                            self.write_response("修改子用户信息成功")
-                        else:
-                            self.write_response("", 0, "修改子账户信息失败")
-                    elif method == 'add':
-                        if json_data['user_name'] in sub_list:
-                            self.write_response({}, 0, '子账号昵称重复，请修改')
-                            return
-                        password = json_data.get("password")
-                        if not (isinstance(password, (str, unicode)) or len(password) != 32):
-                            raise Exception
-                        account_info["password"] = password
-                        res = current_account.add_subaccount(
-                            subaccount_id=sub_name,
-                            **account_info)
-                        if res:
-                            self.write_response("添加子账户成功")
-                        else:
-                            self.write_response("", 0, "添加子账户失败")
-                            return
-                    elif method == 'delete':
-                        self.write_response(response='', _status=0, _err='子账户不可以删除')
-                        return
-                    else:
-                        self.write_response(response='', _status=0, _err='传入method异常')
-                        return
-            except Exception as e:
-
-                self.write_response(response='', _status=0, _err='传入参数异常')
+                data = json.loads(post_data)
+            except (TypeError, ValueError):
+                self.write_response({}, 0, '参数格式错误')
                 return
-        except Exception as e:
+            action = data.get('action', None)
+            if not action:
+                self.write_response({}, 0, '获取操作失败！')
+                return
+            if action == 'ban':
+                email = data.get('email',None)
+                if not email:
+                    self.write_response({},0,'邮箱账户获取出错!')
+                    return
+                try:
+                    cms = CmsUser(email=email, new_status=False)
+                    if cms.ban_cms_user:
+                        self.write_response({})
+                        return
+                    else:
+                        self.write_response({}, 0, '禁用失败!')
+                        return
+                except Exception as e:
+                    logging.exception(e)
+            elif action == 'start_use':
+                email = data.get('email',None)
+                if not email:
+                    self.write_response({},0,'邮箱账户获取出错!')
+                    return
+                try:
+                    cms = CmsUser(email=email, new_status=True)
+                    if cms.ban_cms_user:
+                        self.write_response({})
+                        return
+                    else:
+                        self.write_response({}, 0, '启用失败!')
+                        return
+                except Exception as e:
+                    logging.exception(e)
+            elif action == 'add':
+                email = data.get('email', None)
+                password = data.get('password', None)
+                tel = data.get('tel', None)
+                permission = data.get('permission', None)
+                username = data.get('username', None)
+                if not (email and password and tel and permission and username):
+                    self.write_response({},0,'缺少用户信息!')
+                    return
+                role = ''
+                if permission == 'admin':
+                    role = u'管理'
+                elif permission == 'student':
+                    role = u'学生'
+                else:
+                    role = u'老师'
+                # 学生用户
+                insert_doc = {
+                    "_id": email,
+                    "status": True,
+                    "avator":'',
+                    "create_time": int(time.time()),
+                    "tel": tel,
+                    "permission": permission,
+                    "role": role,
+                    "password": make_password(password),
+                    "user_name": username,
+                    "user_email": email
+                }
+                if permission != 'student':
+                    try:
+                        cms_coll = BaseMotor().client[MongoBasicInfoDb][CMS_USER]
+                        cms_doc = yield cms_coll.find_one({'user_email': email})
+                        if not cms_doc:
+                            res = cms_coll.insert_one(insert_doc)
+                            if not res:
+                                self.write_response({},0,'用户添加失败!')
+                                return
+                            else:
+                                self.write_response({})
+                                return
+                        else:
+                            self.write_response({}, 0, '邮箱账户已存在!')
+                            return
+                    except Exception as e:
+                        logging.exception(e)
 
+                #其它用户
+                else:
+                    try:
+                        stu_coll = BaseMotor().client[MongoBasicInfoDb][STUDENTS]
+                        stu_doc = yield stu_coll.find_one({'email': email})
+                        if not stu_doc:
+                            res = stu_coll.insert_one(insert_doc)
+                            if not res:
+                                self.write_response({},0,'用户添加失败!')
+                            else:
+                                self.write_response({})
+                        else:
+                            self.write_response({}, 0, '邮箱账户已存在!')
+                            return
+                    except Exception as e:
+                        logging.exception(e)
+
+
+        except Exception as e:
+            logging.exception(e)
             self.write_response(response='', _status=0, _err='系统异常')
             return
 

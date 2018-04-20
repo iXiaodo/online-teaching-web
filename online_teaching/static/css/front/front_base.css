@@ -23,7 +23,7 @@ body{
     float: left;
 }
 .nav-title{
-    width: 629px;
+    width: 490px;
     height: 100%;
     list-style: none;
 }
@@ -35,11 +35,12 @@ body{
     font-family: 华文行楷;
     margin-left: 26px;
 }
-.nav-title,.nav-login{
+.nav-title{
     float: left;
 }
 .nav-login{
-    width: 320px;
+    /*width: 460px;*/
+    float: right;
     height: 100%;
 }
 .nav-login .login{

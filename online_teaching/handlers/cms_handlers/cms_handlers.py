@@ -95,6 +95,9 @@ class CmsLoginHandler(BaseHandler):
                         self.render("cms/user_login.html", msg="账户不存在", next_url=next_url)
                     else:
                         pwd = cms_user_doc['password']
+                        status = cms_user_doc['status']
+                        if status == bool(False):
+                            self.render("cms/user_login.html", msg="此用户已被禁用", next_url=next_url)
                         if pwd == password:
                             self.session['current_email'] = user_email
                             self.session['role'] = cms_user_doc['role']

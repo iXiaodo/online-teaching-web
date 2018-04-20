@@ -1,0 +1,7 @@
+2018-04-20 22:11:07 front_handlers.py[line:85] ERROR 'gt_server_status not found'
+Traceback (most recent call last):
+  File "/home/xiaodong/university/online_teaching/handlers/front_handlers/front_handlers.py", line 49, in post
+    status = int(self.session[gt.GT_STATUS_SESSION_KEY])
+  File "build/bdist.linux-x86_64/egg/tornado_session/session.py", line 213, in __getitem__
+    raise KeyError('%s not found' % key)
+KeyError: 'gt_server_status not found'

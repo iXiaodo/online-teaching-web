@@ -25,5 +25,5 @@ def check_password(raw_password,password):
 
 
 if __name__ == "__main__":
-    pwd = "aaaaaa"
+    pwd = "zxcvzxcv"
     print make_password(pwd)

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import time
 from tornado.gen import coroutine
 import logging
 from datetime import datetime
@@ -8,7 +9,7 @@ from handlers.common_handlers.base_handler import BaseHandler
 from libs.motor.base import BaseMotor
 from models.bulletin import Bulletin_info
 from models.files import Files_info
-from config import GT_ID,GT_KEY,MongoBasicInfoDb,STUDENTS,FRONT_USER
+from config import GT_ID,GT_KEY,MongoBasicInfoDb,STUDENTS
 from utils.hashers import make_password
 from utils.xdemail import send_email
 from utils.captcha import get_captcha
@@ -19,7 +20,7 @@ class IndexHandler(BaseHandler):
         top_bulletin = bulletin_coll.by_top_limit2
         bulletins_untop = bulletin_coll.by_untop_limit2
         email = self.get_session('current_email')
-        name = self.get_session("username") if self.get_session("username") else ''
+        name = self.get_session("username") if self.get_session("username") else email
         role = self.get_session('role') if self.get_session('role') else ''
         args = {
             'bulletins_top':top_bulletin,
@@ -57,20 +58,17 @@ class SignInHandler(BaseHandler):
                 password = self.get_argument("password")
                 if email and password:
                     password = make_password(password)
-
-                    front_user_coll = BaseMotor().client[MongoBasicInfoDb][FRONT_USER]
-                    # stu_doc = yield student_coll.find_one({"_id": email})
-                    front_user_doc = yield front_user_coll.find_one({"email": email})
-
-                    if not front_user_doc:
+                    student_coll = BaseMotor().client[MongoBasicInfoDb][STUDENTS]
+                    stu_doc = yield student_coll.find_one({"user_email": email})
+                    if not stu_doc:
                         msg = '账户不存在，请重新输入或前往注册！'
                         self.render("front/front_signin.html", msg=msg,action_url = '/signin')
                     else:
-                        pwd = front_user_doc['password']
+                        pwd = stu_doc['password']
                         if password == pwd:
                             self.session['current_email'] = email
-                            self.session['role'] = front_user_doc['role']
-                            self.session['username'] = front_user_doc['username']
+                            self.session['role'] = stu_doc['role']
+                            self.session['username'] = stu_doc['user_name'] if stu_doc['user_name'] != '' else stu_doc['user_email']
                             self.redirect("/")
                         else:
                             msg = '密码错误，请重新输入！'
@@ -120,8 +118,6 @@ class FrontRegistHandler(BaseHandler):
                             self.session['has_send_email'] = email
                             message.send()
                         self.write_response({})
-                        # else:
-                        #     self.render("front/front_regist.html", msg='邮件已发送成功,请前往邮箱进行验证！', action_url='/regist')
                     except Exception as e:
                         print e
                         self.render("front/front_regist.html", msg=e, action_url='/regist')
@@ -137,20 +133,22 @@ class FrontRegistHandler(BaseHandler):
                 if cache_captcha.lower() == captcha:
                     password = make_password(password)
                     try:
-                        user_coll = BaseMotor().client[MongoBasicInfoDb][FRONT_USER]
-                        user_doc = yield user_coll.find_one({"_id": email})
+                        user_coll = BaseMotor().client[MongoBasicInfoDb][STUDENTS]
+                        user_doc = yield user_coll.find_one({"user_email": email})
                         if not user_doc:
                             try:
                                 document = {
-                                    '_id':email,
-                                    'is_stu': False,
-                                    'create_time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                                    'update_time': '',
-                                    'is_active': True,
-                                    'email': email,
-                                    'role': '用户',
-                                    'permission':'user',
-                                    'password': password,
+                                    "_id": email,
+                                    "status": True,
+                                    "password": password,
+                                    "avator": "",
+                                    "create_time": int(time.time()),
+                                    "permission": "student",
+                                    "tel": "",
+                                    "role": "学生",
+                                    "user_name": "",
+                                    "user_email": email,
+                                    "stu_num": ""
                                 }
                                 res = user_coll.insert(document)
                                 if not res:
@@ -168,7 +166,6 @@ class FrontRegistHandler(BaseHandler):
                 else:
                     self.render("front/front_regist.html", msg='验证码输入不一致！', action_url='/regist')
         except Exception as e:
-            print e
             self.write_response({},0)
 
 
@@ -230,8 +227,8 @@ class ForgetPwdHandler(BaseHandler):
                     self.write_response({},0,'缺少邮箱帐号信息！')
                     return
                 try:
-                    front_user_coll = BaseMotor().client[MongoBasicInfoDb][FRONT_USER]
-                    front_user_doc = front_user_coll.find_one({'email':email})
+                    front_user_coll = BaseMotor().client[MongoBasicInfoDb][STUDENTS]
+                    front_user_doc = front_user_coll.find_one({'user_email':email})
                     if not front_user_doc:
                         self.write_response({},0,'此邮箱账户未注册使用！')
                         return
@@ -257,14 +254,14 @@ class ForgetPwdHandler(BaseHandler):
                     self.write_response({},0,'密码获取错误！')
                     return
                 try:
-                    front_user_coll = BaseMotor().client[MongoBasicInfoDb][FRONT_USER]
-                    front_user_doc = front_user_coll.find_one({'email':email})
+                    front_user_coll = BaseMotor().client[MongoBasicInfoDb][STUDENTS]
+                    front_user_doc = front_user_coll.find_one({'user_email':email})
                     if not front_user_doc:
                         self.write_response({},0,'此邮箱账户未注册使用！')
                         return
                     else:
                         if password == repeat_password:
-                            res = front_user_coll.update_one({'email':email},{
+                            res = front_user_coll.update_one({'user_email':email},{
                                 '$set':{
                                     '{0}'.format('password'):make_password(password)
                                 }
@@ -296,21 +293,8 @@ class SignupHandler(BaseHandler):
             self.session['username'] = ''
         except Exception as e:
             logging.exception(e)
-            print e
         self.redirect('/signin')
 
-class testHandler(BaseHandler):
-    def get(self):
-        try:
-            email = 'x15729557664@163.com'
-            host = self.request.host
-            url = self.request.uri
-            subject = 'www.baidu.com'
-            body = host+url
-            # message =send_email()
-            self.write(body)
-        except Exception as e:
-            print e
 
 
 
@@ -319,7 +303,7 @@ class courseIntroHandler(BaseHandler):
     @coroutine
     def get(self):
         email = self.get_session('current_email')
-        name = self.get_session("username") if self.get_session("username") else ''
+        name = self.get_session("username") if self.get_session("username") else email
         role = self.get_session('role') if self.get_session('role') else ''
         args = {
             'user': email,
@@ -333,7 +317,7 @@ class courseTeachersHandler(BaseHandler):
     @coroutine
     def get(self):
         email = self.get_session('current_email')
-        name = self.get_session("username") if self.get_session("username") else ''
+        name = self.get_session("username") if self.get_session("username") else email
         role = self.get_session('role') if self.get_session('role') else ''
         args = {
             'user': email,
@@ -346,7 +330,7 @@ class courseDevelopHandler(BaseHandler):
     @coroutine
     def get(self):
         email = self.get_session('current_email')
-        name = self.get_session("username") if self.get_session("username") else ''
+        name = self.get_session("username") if self.get_session("username") else email
         role = self.get_session('role') if self.get_session('role') else ''
         args = {
             'user': email,
@@ -364,7 +348,7 @@ class frontBulletinsHandler(BaseHandler):
     @coroutine
     def get(self):
         email = self.get_session('current_email')
-        name = self.get_session("username") if self.get_session("username") else ''
+        name = self.get_session("username") if self.get_session("username") else email
         role = self.get_session('role') if self.get_session('role') else ''
         bulletin_coll = Bulletin_info()
         top_list = bulletin_coll.by_top_sort
@@ -386,7 +370,7 @@ class bulletinDetailHandler(BaseHandler):
     @coroutine
     def get(self):
         email = self.get_session('current_email') if self.get_session('current_email') else ''
-        name = self.get_session("username") if self.get_session("username") else ''
+        name = self.get_session("username") if self.get_session("username") else email
         role = self.get_session('role') if self.get_session('role') else ''
         id = self.get_argument('id',None)
         if not id:
@@ -420,7 +404,7 @@ class fileDownLoadPageHandle(BaseHandler):
     @coroutine
     def get(self):
         email = self.get_session('current_email') if self.get_session('current_email') else ''
-        name = self.get_session("username") if self.get_session("username") else ''
+        name = self.get_session("username") if self.get_session("username") else email
         role = self.get_session('role') if self.get_session('role') else ''
         try:
             args = {
@@ -468,3 +452,19 @@ class getSortLimitFileHandler(BaseHandler):
         except Exception as e:
             logging.exception(e)
             self.write_response({}, 0, '资料查询出错！')
+
+
+
+
+class testHandler(BaseHandler):
+    def get(self):
+        try:
+            email = 'x15729557664@163.com'
+            host = self.request.host
+            url = self.request.uri
+            subject = 'www.baidu.com'
+            body = host+url
+            # message =send_email()
+            self.write(body)
+        except Exception as e:
+            print e
