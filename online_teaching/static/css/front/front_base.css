@@ -1,16 +1,14 @@
-.nav-top{
-    width: 100%;
-    height: 100px;
-    /*background-color: #1E9FFF;*/
-    overflow: hidden;
-}
 body{
     background-color: #f8f8f8;
     min-width: 1200px;
 }
-.nav{
+.nav-top{
     width: 100%;
-    background-color: #0e7079;
+    height: 100px;
+    /*overflow: hidden;*/
+}
+.clear-both{
+    clear: both;
 }
 .nav-content-top{
     width: 1130px;
@@ -43,27 +41,28 @@ body{
     float: right;
     height: 100%;
 }
-.nav-login .login{
-    float: left;
+.nav-login .dropdown{
+    margin: 42px 0 0 0;
     list-style: none;
-    line-height: 100px;
-    margin-right: 9px;
 }
-.nav-login li a{
+#username{
+    font-size: 17px;
     text-decoration: none;
-    font-size: 16px;
-    color:dimgray;
+    color: dimgray;
 }
 .login-regist{
-    list-style: none;
-    line-height: 100px;
-    float: right;
-    margin-right: 54px;
+    margin: 42px 0 0 0;
 }
-.nx-p{
-    font-family: sans-serif;
+.login-regist a{
+    font-size: 17px;
+    text-decoration: none;
+    color: dimgray;
 }
 /*nav-start*/
+.nav{
+    width: 100%;
+    background-color: #0e7079;
+}
 .horizontal-nav {
     background: #efefef;
     border-radius: 6px;

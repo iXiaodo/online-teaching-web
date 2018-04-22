@@ -29,6 +29,7 @@ class CmsUser():
             self._status = self._document['status']
             self._password = self._document['password']
 
+
         if raw_password:
             self._new_password = raw_password
         self._new_status = bool(new_status)
@@ -102,6 +103,13 @@ class CmsUser():
         role_info['permissions'] =  cms_users['own_permissions']
         return role_info
 
+
+
+    @property
+    def get_all_boards(self):
+        cms_users = self._cms_user_collection.find_one({'permission': 'super_admin'})
+        all_boards = cms_users['own_boards']
+        return all_boards
 #
 # a = CmsUser()
 # a.email = "dsx@xx.com"
@@ -126,4 +134,4 @@ class CmsUser():
 # afdbb4c478b5d047644f5c7abc9471d9
 if __name__ == "__main__":
     a = CmsUser()
-    print a.get_permission_role
+    print a.get_all_boards

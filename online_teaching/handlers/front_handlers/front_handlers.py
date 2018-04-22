@@ -4,15 +4,23 @@ import time
 from tornado.gen import coroutine
 import logging
 from datetime import datetime
+from bson import ObjectId
+
 from geetest import GeetestLib
 from handlers.common_handlers.base_handler import BaseHandler
 from libs.motor.base import BaseMotor
 from models.bulletin import Bulletin_info
 from models.files import Files_info
-from config import GT_ID,GT_KEY,MongoBasicInfoDb,STUDENTS
+from config import GT_ID,GT_KEY,MongoBasicInfoDb,STUDENTS,EVERY_PAGE_NUM, ARTICLES
 from utils.hashers import make_password
 from utils.xdemail import send_email
 from utils.captcha import get_captcha
+from utils.tools import time_formatting
+from libs.decorator.decorator import front_login_auth
+from models.cms_user import CmsUser
+from models.articles import Articles_info
+
+
 #首页
 class IndexHandler(BaseHandler):
     def get(self):
@@ -66,7 +74,7 @@ class SignInHandler(BaseHandler):
                     else:
                         pwd = stu_doc['password']
                         if password == pwd:
-                            self.session['current_email'] = email
+                            self.session['current_email'] = stu_doc['user_email']
                             self.session['role'] = stu_doc['role']
                             self.session['username'] = stu_doc['user_name'] if stu_doc['user_name'] != '' else stu_doc['user_email']
                             self.redirect("/")
@@ -401,16 +409,51 @@ class bulletinDetailHandler(BaseHandler):
 #----------------------------------------------------------资料下载页面
 
 class fileDownLoadPageHandle(BaseHandler):
+    @front_login_auth
     @coroutine
     def get(self):
         email = self.get_session('current_email') if self.get_session('current_email') else ''
         name = self.get_session("username") if self.get_session("username") else email
         role = self.get_session('role') if self.get_session('role') else ''
+        page = self.get_argument('page', None)
+        file = Files_info()
+        file_list = file.by_is_active
+        files_sum = len(file_list)
+        currentPage = int(page)
+        start = (currentPage - 1) * EVERY_PAGE_NUM
+        end = start + EVERY_PAGE_NUM
+        file_list = file_list[start:end]
+        page_num = files_sum / int(EVERY_PAGE_NUM)
+        flag = files_sum % int(EVERY_PAGE_NUM)
+        if flag > 0:
+            page_num = page_num + 1
+
+        pre_page = currentPage - 1  # 前一页
+        next_page = currentPage + 1  # 后一页
+        if pre_page == 0:
+            pre_page = 1
+        if next_page > page_num:
+            next_page = currentPage
+        if page_num <= 5:
+            pages = [p for p in xrange(1, page_num+1)]
+        elif currentPage <= 3:
+            pages = [p for p in xrange(1, 6)]
+        elif currentPage >= page_num - 2:
+            pages = [p for p in xrange(currentPage - 4, currentPage + 1)]
+        else:
+            pages = [p for p in xrange(currentPage - 2, currentPage + 3)]
         try:
             args = {
                 'user': email,
                 'role': role,
-                'username':name
+                'username':name,
+                'files':file_list,
+                'files_sum': files_sum,
+                'c_page':currentPage,
+                'pages_num': page_num,
+                'pre_page':pre_page,
+                'next_page':next_page,
+                'pages':pages
             }
             self.render("front/front_file.html", **args)
         except Exception as e:
@@ -454,6 +497,169 @@ class getSortLimitFileHandler(BaseHandler):
             self.write_response({}, 0, '资料查询出错！')
 
 
+
+class communityHandler(BaseHandler):
+
+    @coroutine
+    def get(self):
+        email = self.get_session('current_email')
+        name = self.get_session("username") if self.get_session("username") else email
+        role = self.get_session('role') if self.get_session('role') else ''
+        page = self.get_argument('page')
+        try:
+            articles_coll = Articles_info()
+            articles = articles_coll.get_all_articles
+            # 分页
+            files_sum = len(articles)
+            currentPage = int(page)
+            start = (currentPage - 1) * EVERY_PAGE_NUM
+            end = start + EVERY_PAGE_NUM
+            articles = articles[start:end]
+            page_num = files_sum / int(EVERY_PAGE_NUM)
+            flag = files_sum % int(EVERY_PAGE_NUM)
+            if flag > 0:
+                page_num = page_num + 1
+
+            pre_page = currentPage - 1  # 前一页
+            next_page = currentPage + 1  # 后一页
+            if pre_page == 0:
+                pre_page = 1
+            if next_page > page_num:
+                next_page = currentPage
+            if page_num <= 5:
+                pages = [p for p in xrange(1, page_num + 1)]
+            elif currentPage <= 3:
+                pages = [p for p in xrange(1, 6)]
+            elif currentPage >= page_num - 2:
+                pages = [p for p in xrange(currentPage - 4, currentPage + 1)]
+            else:
+                pages = [p for p in xrange(currentPage - 2, currentPage + 3)]
+
+            args = {
+                'user': email,
+                'role': role,
+                'username': name,
+                'articles':articles,
+                'files_sum': files_sum,
+                'c_page' :currentPage,
+                'pages_num': page_num,
+                'pre_page':pre_page,
+                'next_page':next_page,
+                'pages':pages
+            }
+            self.render("front/front_community.html", **args)
+        except Exception as e:
+            logging.exception(e)
+
+
+
+
+#----------------------------------------------------------------------笔记
+class addArticleHandler(BaseHandler):
+    @front_login_auth
+    @coroutine
+    def get(self):
+        email = self.get_session('current_email')
+        name = self.get_session("username") if self.get_session("username") else email
+        role = self.get_session('role') if self.get_session('role') else ''
+        cms_user = CmsUser()
+        all_boards = cms_user.get_all_boards
+        args = {
+            'user': email,
+            'role': role,
+            'username': name,
+            'boards':all_boards
+        }
+        self.render("front/add_article.html", **args)
+
+    @front_login_auth
+    @coroutine
+    def post(self):
+        author = self.get_session('username')
+        email = self.get_session('current_email')
+        if not (author and email):
+            self.write_response({},0,'获取作者信息出错！')
+            return
+        post_data = self.request.body
+        try:
+            data = json.loads(post_data)
+        except (TypeError, ValueError):
+            self.write_response({}, 0, '参数格式错误')
+            return
+        try:
+            action = data.get("action", None)
+            if not action:
+                self.write_response({}, 0, _err='没有相应的操作方法！')
+            if action == "add_article":
+                title = data.get("title",None)
+                content = data.get("content_html",None)
+                category = data.get("category",None)
+                desc = data.get("desc",None)
+                if not(title and content and category):
+                    self.write_response({},0,'获取文章信息出错！')
+                    return
+                try:
+                    article_coll = BaseMotor().client[MongoBasicInfoDb][ARTICLES]
+                    insert_html = {
+                        'title':title,
+                        'pub_time':int(time.time()),
+                        'update_time':'',
+                        'is_top':False,
+                        'is_active':True,
+                        'author':author,
+                        'email':email,
+                        'desc':desc,
+                        'content':content,
+                        'category':category
+                    }
+                    res = article_coll.insert_one(insert_html)
+                    if not res:
+                        self.write_response({},0,'添加文章失败！')
+                        return
+                    else:
+                        self.write_response({})
+
+                except Exception as e:
+                    logging.exception(e)
+            else:
+                pass
+
+        except Exception as e:
+            logging.exception(e)
+
+
+#----------------------------------------------------------------------文章详情页面
+class articleDetailHandler(BaseHandler):
+
+    @coroutine
+    def get(self):
+        email = self.get_session('current_email')
+        name = self.get_session("username") if self.get_session("username") else email
+        role = self.get_session('role') if self.get_session('role') else ''
+        article_id = self.get_argument('article_id',None)
+        if not article_id:
+            self.write_response({},0,'文章id获取错误！')
+            return
+        try:
+            article_coll = BaseMotor().client[MongoBasicInfoDb][ARTICLES]
+            article_doc = yield article_coll.find_one({'_id':ObjectId(article_id)})
+            args = {
+                'user': email,
+                'role': role,
+                'username': name,
+            }
+            if article_doc:
+                for k,v in article_doc.items():
+                    args[k] = v
+            args['pub_time'] = time_formatting(args['pub_time'])
+            self.render("front/front_article_detail.html", **args)
+        except Exception as e:
+            logging.exception(e)
+
+
+
+#----------------------------------------------------------------------文章详情页面
+#----------------------------------------------------------------------笔记-end
 
 
 class testHandler(BaseHandler):

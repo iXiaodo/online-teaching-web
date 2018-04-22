@@ -21,15 +21,27 @@
         </ul>
         <ul class="nav-login">
             {% if username %}
-            <li class="login"><a href="javascript:void(0);">{% if role %}身份：{{ role }} {% end %} &nbsp;&nbsp;用户：{{ username }}</a></li>
-            <li class="login out"><a href="/logout">【退出系统】</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="username">
+                    {{ username }}
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">个人中心</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">修改密码</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/logout">退出系统</a></li>
+                </ul>
+            </li>
             {% else %}
-            <li class="login-regist"><a href="/signin">登录|注册</a></li>
+            <li class="login-regist"><a href="/signin">登录</a>|<a href="/regist">注册</a></li>
             {% end %}
         </ul>
     </div>
 
 </div>
+<div class="clear-both"></div>
 <div class="nav">
     <div class="horizontal-nav full-width horizontalNav-notprocessed">
         <ul>
@@ -43,9 +55,8 @@
                 </div>
             </li>
             <li><a href="/bulletin">公告</a></li>
-            <li><a href="/resource">资料</a></li>
-            <li><a href="#">社区</a></li>
-            <li><a href="#">关于</a></li>
+            <li><a href="/resource?page=1">资料</a></li>
+            <li><a href="/community?page=1">社区</a></li>
         </ul>
     </div>
 </div>

@@ -1,0 +1,129 @@
+{}
+{% extends "front_base.html"%}
+
+
+{% block title %}学习社区{% end %}
+
+{% block cssblock %}
+<style>
+
+    .boundary {
+        height: 2px;
+        width: 100%;
+        margin: 10px 0 30px 0;
+        background: linear-gradient(to right,#525869,#ffffff);
+    }
+    div.article-box{
+        width: 1080px;
+        display: block;
+        margin: 0 auto;
+    }
+    #files-list-ul li{
+        list-style: none;
+        line-height: 30px;
+        border-bottom: 1px dashed #c4e3f3;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    .header-h3 a{
+        text-decoration: none;
+    }
+    .panel-body .author-info li{
+        float: left;
+        list-style: none;
+    }
+    .panel-body .author-info{
+        float: right;
+        margin-bottom: -10px;
+    }
+    .first-li{
+        margin-right: 10px;
+    }
+    .page-box{
+        width: 300px;
+        height: 70px;
+    }
+    .header-h3 a{
+        color: none;
+        text-decoration: none;
+    }
+    .header-h3 i.iconfont.add {
+        cursor: pointer;
+        font-size: 20px;
+        color:inherit;
+        float: right;
+        margin-right: 158px;
+    }
+    .header-h3 i.iconfont.add:hover {
+        color:#1E9FFF;
+    }
+    .page-box{
+        width: 326px;
+        height: 70px;
+        margin: auto;
+    }
+    .blog-main{
+        min-height: 600px;
+    }
+</style>
+{% end %}
+
+{% block content%}
+<div class="article-box">
+    <div class="row col-xs-10 col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-xs-offset-1 col-md-offset-1 col-lg-offset-1">
+        <div class="row">
+            <header class="panel-heading no-border">
+                <h3 class="header-h3">{% block h3_block %}学习社区<a href="/add_article/"><i class="iconfont add" title="发布文章">&#xe640;</i></a>{% end %}</h3>
+                <div class="boundary"></div>
+            </header>
+            <div class="col-sm-10 blog-main">
+                {% block article_block%}
+                    {% for article in articles %}
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><a href="/article_detail?article_id={{ article[0] }}" target="_blank">{{ article[1] }}</a></h3>
+                            </div>
+                            <div class="panel-body">
+                                {{ article[8] }}......
+                                <br>
+                                <br>
+                                <ul class="author-info">
+                                    <li class="first-li">作者：{{ article[4] }}</li>
+                                    <li>发表时间：{{ article[3] }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% end %}
+                    <div class="page-box">
+                        <nav aria-label="Page navigation">
+                            <!--<span class="btn btn-primary page-info">当前页：第{{ c_page }}页/共{{ pages_num }}页</span><br>-->
+                            <ul class="pagination">
+                                <li><a href="/community?page=1">首页</a></li>
+                                <li >
+                                    <a href="/community?page={{ pre_page }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                {%  for page in pages %}
+                                <li {% if c_page == page %}class="active"{% end %}><a href="/community?page={{ page }}">{{ page }}</a></li>
+                                {% end %}
+                                <li>
+                                    <a href="/community?page={{ next_page }}" aria-label="Next">
+                                        <span aria-hidden="true" {% if c_page == pages_num %}class="disabled"{% end %}>&raquo;</span>
+                                    </a>
+                                </li>
+                                <li><a href="/community?page={{ pages_num }}">尾页</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                {% end %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% end %}
+
+{% block frontfootjs %}
+{% end %}

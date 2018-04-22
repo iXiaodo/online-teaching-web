@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 def to_string(obj, raise_err=False):
     if obj is None:
         return ""
@@ -22,3 +23,13 @@ def to_unicode(obj):
             return str(obj).decode("utf-8")
         except:
             return unicode("")
+
+
+def time_formatting(timeStamp):
+    """
+    :param timeStamp: 传入的时间戳
+    :return: 处理后的时间格式
+    """
+    timeArray = time.localtime(timeStamp)
+    otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+    return otherStyleTime

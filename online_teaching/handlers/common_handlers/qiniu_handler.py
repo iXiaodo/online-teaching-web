@@ -15,7 +15,6 @@ from base_handler import BaseHandler
 from config import AK,SK
 
 
-
 class getTokenHandler(BaseHandler):
 
     @authenticated

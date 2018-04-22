@@ -67,6 +67,21 @@
     .header-h3 a{
         text-decoration: none;
     }
+    .pagination {
+        width: 317px;
+        display: block;
+        margin: 0 auto;
+    }
+    .page-box{
+        height: 70px;
+        margin: 0 0 18px;
+    }
+    .Page.navigation{
+        height: 40px;
+    }
+    .page-info{
+        margin-left: 49px;
+    }
 </style>
 {% end %}
 
@@ -81,9 +96,35 @@
             <div style="padding:15px;padding-top:0;">
                 <div class="bs-callout bs-callout-info" id="callout-helper-context-color-specificity">
                     <ul id="files-list-ul">
-
+                        {% for file in files %}
+                            <li>&nbsp;&nbsp;<i class="iconfont">&#xe610;</i>&nbsp;<span class="title">{{ file[0] }}
+                                </span><span class="up-time"><i class="iconfont">&#xe638;</i>上传时间：{{ file[1] }} </span><span class="author">
+                                <i class="iconfont">&#xe673;</i>上传作者：{{ file[2] }} </span><a href="{{ file[3] }}" target="_blank">下载</a></li>
+                        {% end %}
                     </ul>
                 </div>
+            </div>
+            <div class="page-box">
+                <nav aria-label="Page navigation">
+                    <span class="btn btn-primary page-info">当前页：第{{ c_page }}页/共{{ pages_num }}页</span><br>
+                    <ul class="pagination">
+                        <li><a href="/resource?page=1">首页</a></li>
+                        <li >
+                            <a href="/resource?page={{ pre_page }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {%  for page in pages %}
+                            <li {% if c_page == page %}class="active"{% end %}><a href="/resource?page={{ page }}">{{ page }}</a></li>
+                        {% end %}
+                        <li>
+                            <a href="/resource?page={{ next_page }}" aria-label="Next">
+                                <span aria-hidden="true" {% if c_page == pages_num %}class="disabled"{% end %}>&raquo;</span>
+                            </a>
+                        </li>
+                        <li><a href="/resource?page={{ pages_num }}">尾页</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

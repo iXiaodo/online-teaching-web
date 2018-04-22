@@ -1,0 +1,67 @@
+{% extends "front_base.html"%}
+
+{% block title %}添加笔记{% end %}
+
+{% block cssblock %}
+<style>
+    .content-box{
+        width: 700px;
+        min-height: 700px;
+        margin: 0 auto;
+    }
+    .pub-h3{
+        text-align: center;
+        line-height: 73px;
+    }
+</style>
+{% end %}
+
+{% block content %}
+<div class="content-box">
+    <div class="container">
+        <div class="form-group">
+            <h3 class="pub-h3">发布文章</h3>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">标题</span>
+                <input type="text" class="form-control" id="title" placeholder="文章标题">
+                <span class="input-group-addon btn" id="btn-pub-article">
+                    {% block submitblock %}发布文章{% end %}
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">分类</span>
+                <select class="form-control" id="category-select">
+                    {% for i in boards %}
+                    <option value="{{ i }}">{{i}}</option>
+                    {% end %}
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">描述</span>
+                <input type="text" class="form-control" id="desc" placeholder="描述">
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+            <!--<div class="input-group">-->
+                <!--<span class="input-group-addon">图片</span>-->
+                <!--<input type="text" class="form-control img-input" placeholder="温馨提示：此图片将显示在文章内容中，，" id="thumbnail">-->
+                <!--<span class="input-group-addon btn" id="thumbnail-btn">上传图片</span>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="form-group" id="editor">
+
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block frontfootjs %}
+<script type="text/javascript" src="/static/wangEditor/wangEditor.js"></script>
+<script src="/static/js/front/add_article.js"></script>
+{% end %}

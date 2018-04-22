@@ -3,8 +3,7 @@
 
 #创建时间：18-3-17
 
-#日期：下午5:28   
-
+#日期：下午5:28
 #：IDE：PyCharm
 import time
 from pymongo import  MongoClient
@@ -47,10 +46,15 @@ class Files_info():
         if coll:
             file_list = []
             for i in coll:
+                file = []
                 i['id'] = str(i['_id'])
                 i['up_time'] = time_formatting(i['up_time'])
                 del i['_id']
-                file_list.append(i)
+                file.append(i['filename'])
+                file.append(i['up_time'])
+                file.append(i['author'])
+                file.append(i['url'])
+                file_list.append(file)
             return file_list
 
         else:
@@ -75,6 +79,6 @@ class Files_info():
 if __name__ == "__main__":
     email ="xd@xx.com"
     file = Files_info(email=email)
-    print file.by_is_active_sort
+    print file.by_is_active
 
 

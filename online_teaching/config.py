@@ -36,6 +36,7 @@ STUDENTS = "students"
 FRONT_USER = "front_user"
 CMS_USER = "cms_user"
 FILES = "files"
+ARTICLES = "articles"
 permission_list = ['roleGroupManage', 'accountPermissionManage', 'bulletinManage']
 
 LOG_DIR = "./log"  # 日志目录
@@ -53,6 +54,9 @@ setting = {
     'template_path': os.path.join(os.path.dirname(__file__), "templates"),
     'static_path': os.path.join(os.path.dirname(__file__), "static"),
 }
+
+#NUM_PAGE
+EVERY_PAGE_NUM = 5
 
 try:
     from local_config import *

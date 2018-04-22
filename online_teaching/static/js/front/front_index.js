@@ -12,7 +12,7 @@ $(function () {
                         for(var i in data){
                             insert_html += '<li class="list-group-item">'+ data[i]['filename'] +'&nbsp;&nbsp;<span class="update-time"><i class="iconfont">&#xe638;</i>更新时间：'+ data[i]['up_time'] + '</span></li>';
                         }
-                        insert_html += '<a href="/resource" class="look-download" target="_blank">查看与下载</a>';
+                        insert_html += '<a href="/resource?page=1" class="look-download" target="_blank">查看与下载</a>';
                         $("#file-download-list").html(insert_html);
                     }else{
                         insert_html = '<li>还未上传文件！请等待上传</li>';

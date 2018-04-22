@@ -3,6 +3,8 @@ import time
 from pymongo import  MongoClient
 from config import MongoBasicInfoDb, BULLETIN_INFOS, MongodbHost,MongodbPort, MongodbAuthDb, MongodbPassword,MongodbUser
 from bson import ObjectId
+from utils.tools import time_formatting
+
 
 class Bulletin_info():
     def __init__(self,email=None,id=None):
@@ -111,14 +113,7 @@ class Bulletin_info():
         else:
             return None
 
-def time_formatting(timeStamp):
-    """
-    :param timeStamp: 传入的时间戳
-    :return: 处理后的时间格式
-    """
-    timeArray = time.localtime(timeStamp)
-    otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
-    return otherStyleTime
+
 
 if __name__ == "__main__":
     a = Bulletin_info()

@@ -6,23 +6,20 @@ import functools
 def admin_ip_list(method):
     @functools.wraps(method)
     def wraps(self, *args, **kwargs):
-        if self.request.remote_ip in ADMIN_IP:
+        if self.request.remote_ip in '':
             return method(self, *args, **kwargs)
         else:
             self.write("IP地址不在管理员列表中")
     return wraps
 
 #另外的验证方法
-def admin_auth(method):
+def front_login_auth(method):
     @functools.wraps(method)
     def wrapper(self, *args, **kwargs):
-        if self.current_user:
-            if self.session.get('ip_address') == self.request.remote_ip:
-                return method(self, *args, **kwargs)
-            else:
-                self.write('ip地址不相符')
+        if self.session.get('current_email'):
+            return method(self, *args, **kwargs)
         else:
-            self.write('很抱歉，用户没有登录，请登录后再试')
+            self.redirect("/signin")
     return wrapper
 
 
