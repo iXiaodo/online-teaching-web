@@ -496,7 +496,25 @@ class getSortLimitFileHandler(BaseHandler):
             logging.exception(e)
             self.write_response({}, 0, '资料查询出错！')
 
-
+#获取排序后的文章
+class getSortLimitArticlesHandler(BaseHandler):
+    @coroutine
+    def get(self):
+        try:
+            articles = Articles_info()
+            if not articles:
+                self.write_response({})
+                return
+            else:
+                articles_list = articles.by_is_active_sort
+            if articles_list:
+                self.write_response(articles_list)
+            else:
+                self.write_response({})
+                return
+        except Exception as e:
+            logging.exception(e)
+            self.write_response({}, 0, '文章查询出错！')
 
 class communityHandler(BaseHandler):
 

@@ -8,16 +8,375 @@
 
 
 {% block content%}
-<div style="height:0;overflow:hidden;"></div>
-<div class="flexslider">
-	<ul class="slides">
-		<li style="background:url(/static/images/banner/img1.jpg) 50% 0 no-repeat;"></li>
-		<li style="background:url(/static/images/banner/img2.jpg) 50% 0 no-repeat;"></li>
-		<li style="background:url(/static/images/banner/img3.jpg) 50% 0 no-repeat;"></li>
-		<li style="background:url(/static/images/banner/img4.jpg) 50% 0 no-repeat;"></li>
-		<li style="background:url(/static/images/banner/img5.jpg) 50% 0 no-repeat;"></li>
-	</ul>
+<!--<div style="height:0;overflow:hidden;"></div>-->
+<!--<div class="flexslider">-->
+<!--<ul class="slides">-->
+<!--<li style="background:url(/static/images/banner/img1.jpg) 50% 0 no-repeat;"></li>-->
+<!--<li style="background:url(/static/images/banner/img2.jpg) 50% 0 no-repeat;"></li>-->
+<!--<li style="background:url(/static/images/banner/img3.jpg) 50% 0 no-repeat;"></li>-->
+<!--<li style="background:url(/static/images/banner/img4.jpg) 50% 0 no-repeat;"></li>-->
+<!--<li style="background:url(/static/images/banner/img5.jpg) 50% 0 no-repeat;"></li>-->
+<!--</ul>-->
+<!--</div>-->
+<div class="row course-info">
+    <section class="course-introduction">
+        <div class="course-introduction-infor pull-left">
+            <div class="course-title clearfix">
+                <p class="title-p">计算机组成与结构</p>
+                <span class="title-rank">必修课</span>
+            </div>
+            <div class="course-btn" id="course-btn">
+                {% if username %}
+                <a class="course-btn-style btn-alreadyjoin" href="/resource?page=1">已加入，开始学习</a>
+                {% else %}
+                <a class="course-btn-style btn-join active" href="/signin" target="_blank">加入学习</a>
+                {% end %}
+            </div>
+            <div class="course-text">
+                <p>“计算机组成与结构”是计算机及其相关专业本科生的主干核心课程，是必修的专业基础课。本课程包括“计算机组成原理”和“计算机系统结构”两大部分。本课程侧重于硬件，是本科阶段为数不多的涉及到计算机内部构造的课程。</p>
+            </div>
+        </div>
+        <div id="courseBulletin-box" class="course-bulletin pull-right">
+            <div id="bulletin-block" class="col-sm-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">公告</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul id="bulletin-ul">
+                            {% for bulletin in bulletins_top%}
+                            <li><a href="bulletin_detail?id={{ bulletin['_id'] }}">[{{ bulletin['top_time'] }}]&nbsp;&nbsp;{{ bulletin['title'] }}</a><span class="iconfont">&#xe604;</span></li>
+                            {% end%}
+                            {% for bulletin in bulletins_untop%}
+                            <li><a href="bulletin_detail?id={{ bulletin['_id'] }}">[{{ bulletin['pub_time'] }}]&nbsp;&nbsp;{{ bulletin['title'] }}</a></li>
+                            {% end %}
+                        </ul>
+                        <div class="bulletin-more">
+                            <a href="/bulletin">查看更多&gt;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
+<div class="course-primary-main">
+    <section class="course-primary">
+        <!-- 课程介绍-->
+        <div class="course-primary-text">
+            <div class="title">课程介绍</div>
+            <div class="content-intro">
+                <p class="text">计算机组成与结构课程介绍
+                    “计算机组成与结构”是计算机及其相关专业本科生的主干核心课程，是必修的专业基础课。本课程包括“计算机组成原理”和“计算机系统结构”两大部分。本课程侧重于硬件，是本科阶段为数不多的涉及到计算机内部构造的课程。
+                    本课程主要讨论单机系统范围内计算机各部件和系统的组成以及内部工作机制。通过对本门课程学习，要求学生掌握计算机各大部件的工作原理、组成方法以及相互关系，了解计算机系...</p>
+            </div>
+        </div>
+        <!-- 教学单元-->
+        <div class="course-primary-unit">
+            <div class="title">教学单元</div>
+            <div class="content-unit">
+                <ul class="list-out-l">
+
+                    <li class="list-out-i">第1讲
+                        概论
+                        <ul class="list-in-l">
+                            <li class="list-in-i"><span>01-01</span>
+                                <p>计算机发展史</p></li>
+                            <li class="list-in-i"><span>01-02</span>
+                                <p>计算机的硬件组成</p></li>
+                            <li class="list-in-i"><span>01-03</span>
+                                <p>完整的计算机系统</p></li>
+                            <li class="list-in-i"><span>01-04</span>
+                                <p>计算机的工作过程和主要的性能指标</p></li>
+                            <li class="list-in-i"><span>01-05</span>
+                                <p>计算机系统结构初步</p></li>
+                        </ul>
+                    </li>
+
+                    <li class="list-out-i">第2讲
+                        数据的机器层次表示
+                        <ul class="list-in-l">
+
+                            <li class="list-in-i"><span>02-01</span>
+                                <p>进位计数制</p></li>
+
+                            <li class="list-in-i"><span>02-02</span>
+                                <p>数值数据的表示</p></li>
+
+                            <li class="list-in-i"><span>02-03</span>
+                                <p>数的定点表示与浮点表示</p></li>
+
+                            <li class="list-in-i"><span>02-04</span>
+                                <p>非数值数据的表示</p></li>
+
+                            <li class="list-in-i"><span>02-05</span>
+                                <p>十进制数据的表示</p></li>
+
+                            <li class="list-in-i"><span>02-06</span>
+                                <p>数据校验码</p></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="list-out-i">第3讲
+                        计算机中的逻辑部件
+                        <ul class="list-in-l">
+
+                            <li class="list-in-i"><span>03-01</span>
+                                <p>基本门电路</p></li>
+
+                            <li class="list-in-i"><span>03-02</span>
+                                <p>组合逻辑电路</p></li>
+
+                            <li class="list-in-i"><span>03-03</span>
+                                <p>时序逻辑电路</p></li>
+
+                            <li class="list-in-i"><span>03-04</span>
+                                <p>总线电路</p></li>
+
+                            <li class="list-in-i"><span>03-05</span>
+                                <p>可编程逻辑器件PLD</p></li>
+                        </ul>
+                    </li>
+
+                    <li class="list-out-i">第4讲
+                        指令系统
+                        <ul class="list-in-l">
+
+                            <li class="list-in-i"><span>04-01</span>
+                                <p>指令格式</p></li>
+
+                            <li class="list-in-i"><span>04-02</span>
+                                <p>寻址方式</p></li>
+
+                            <li class="list-in-i"><span>04-03</span>
+                                <p>堆栈与堆栈操作</p></li>
+
+                            <li class="list-in-i"><span>04-04</span>
+                                <p>指令类型</p></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="list-out-i">第5讲
+                        数值的机器运算
+                        <ul class="list-in-l">
+
+                            <li class="list-in-i"><span>05-01</span>
+                                <p>基本算术运算的实现</p></li>
+
+                            <li class="list-in-i"><span>05-02</span>
+                                <p>定点加减运算</p></li>
+
+                            <li class="list-in-i"><span>05-03</span>
+                                <p>带符号数的移位和舍入操作</p></li>
+
+                            <li class="list-in-i"><span>05-04</span>
+                                <p>定点乘法运算</p></li>
+
+                            <li class="list-in-i"><span>05-05</span>
+                                <p>定点除法运算</p></li>
+
+                            <li class="list-in-i"><span>05-06</span>
+                                <p>规格化浮点运算</p></li>
+
+                            <li class="list-in-i"><span>05-07</span>
+                                <p>运算器的基本组成与实例</p></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="list-out-i">第6讲
+                        存储系统和结构
+                        <ul class="list-in-l">
+
+                            <li class="list-in-i"><span>06-01</span>
+                                <p>存储系统的组成</p></li>
+
+                            <li class="list-in-i"><span>06-02</span>
+                                <p>主存储器的组织</p></li>
+
+                            <li class="list-in-i"><span>06-03</span>
+                                <p>半导体随机存储器和半导体只读存储器</p></li>
+
+                            <li class="list-in-i"><span>06-04</span>
+                                <p>主存储器的连接和控制</p></li>
+
+                            <li class="list-in-i"><span>06-05</span>
+                                <p>高速缓存存储器</p></li>
+
+                            <li class="list-in-i"><span>06-06</span>
+                                <p>虚拟存储器（上）</p></li>
+
+                            <li class="list-in-i"><span>06-07</span>
+                                <p>虚拟存储器（下）</p></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="list-out-i">第7讲
+                        中央处理器
+                        <ul class="list-in-l">
+
+                            <li class="list-in-i"><span>07-01</span>
+                                <p>中央处理器的功能和组成</p></li>
+
+                            <li class="list-in-i"><span>07-02</span>
+                                <p>控制器的组成与实现方法</p></li>
+
+                            <li class="list-in-i"><span>07-03</span>
+                                <p>时序系统与控制方式</p></li>
+
+                            <li class="list-in-i"><span>07-04</span>
+                                <p>微程序控制原理</p></li>
+
+                            <li class="list-in-i"><span>07-05</span>
+                                <p>流水线技术</p></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="list-out-i">第8讲
+                        外部设备
+                        <ul class="list-in-l">
+
+                            <li class="list-in-i"><span>08-01</span>
+                                <p>外部设备概述</p></li>
+
+                            <li class="list-in-i"><span>08-02</span>
+                                <p>磁介质存储器的性能和原理</p></li>
+
+                            <li class="list-in-i"><span>08-03</span>
+                                <p>磁介质存储设备</p></li>
+
+                            <li class="list-in-i"><span>08-04</span>
+                                <p>光盘存储器</p></li>
+
+                            <li class="list-in-i"><span>08-05</span>
+                                <p>输入设备</p></li>
+
+                            <li class="list-in-i"><span>08-06</span>
+                                <p>打印输出设备</p></li>
+
+                            <li class="list-in-i"><span>08-07</span>
+                                <p>显示输出设备</p></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="list-out-i">第9讲
+                        输入输出系统
+                        <ul class="list-in-l">
+
+                            <li class="list-in-i"><span>09-01</span>
+                                <p>主机与外设的连接</p></li>
+
+                            <li class="list-in-i"><span>09-02</span>
+                                <p>程序查询方式及其接口</p></li>
+
+                            <li class="list-in-i"><span>09-03</span>
+                                <p>中断系统和程序中断方式</p></li>
+
+                            <li class="list-in-i"><span>09-04</span>
+                                <p>DMA方式及其接口</p></li>
+
+                            <li class="list-in-i"><span>09-05</span>
+                                <p>通道控制技术</p></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="list-out-i">第10讲
+                        计算机系统结构
+                        <ul class="list-in-l">
+
+                            <li class="list-in-i"><span>10-01</span>
+                                <p>计算机系统结构的并行性</p></li>
+
+                            <li class="list-in-i"><span>10-02</span>
+                                <p>精简指令系统计算机（RISC）</p></li>
+
+                            <li class="list-in-i"><span>10-03</span>
+                                <p>超标量、超流水线处理机、超长指令字处理机</p></li>
+
+                            <li class="list-in-i"><span>10-04</span>
+                                <p>向量流水处理机</p></li>
+
+                            <li class="list-in-i"><span>10-05</span>
+                                <p>并行处理机</p></li>
+
+                            <li class="list-in-i"><span>10-06</span>
+                                <p>多处理机系统</p></li>
+
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- 教材-->
+        <div class="course-teaching-material">
+            <div class="title">教材</div>
+            <div class="content-material">
+                <ul class="course-teaching-material-l clearfix">
+                    <li class="course-teaching-material-i pull-left">
+                        <div class="teaching-material clearfix">
+                            <div class="teaching-material-img">
+                                <img src="/static/images/front/book.jpg">
+                            </div>
+                            <div class="teaching-material-content">
+                                <div class="teaching-material-content-title">主教材</div>
+                                <div class="teaching-material-content-level">计算机组成原理第2版</div>
+                                <div class="teaching-material-content-isbn">
+                                    <span>ISBN:9787302181491</span>
+                                </div>
+                                <div class="teaching-material-content-editor">
+                                    <span>主编:蒋本珊</span>
+                                </div>
+                                <div class="teaching-material-content-from">清华大学出版社</div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="teacher-team-btn course-materials-btn">
+                    <a id="more-materials" class="teacher-team-btn-more hide" href="javascritp:void(0);">查看更多</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="course-side pull-right">
+        <div class="course-information boxstyle">
+            <div class="title">课程信息</div>
+            <div class="content-course">
+                <div class="course-detail-box ">
+                    <span class="course-right-span">课程类型: 理论课（含实验、实践）</span>
+                </div>
+                <div class="course-detail-box">
+                    <span class="course-right-span">课程属性: 专业基础课/技术基础课</span>
+                </div>
+                <div class="course-detail-box">
+                    <span class="course-right-span">课程学时: 64.0</span>
+                </div>
+                <div class="course-detail-box">
+                    <span class="course-right-span">学校: 宁夏大学信息工程学院</span>
+                </div>
+                <div class="course-detail-box">
+                    <span class="course-right-span">学科门类: 工学</span>
+                </div>
+                <div class="course-detail-box">
+                    <span class="course-right-span">专业大类: 计算机类</span>
+                </div>
+                <div class="course-detail-box">
+                    <span class="course-right-span">专业类: 软件工程（云计算、大数据）</span>
+                </div>
+                <div class="course-detail-box">
+                    <span class="course-right-span">适用专业: 软件工程/计算机学科</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!--资料--文章-->
 <div class="row second-row">
     <div class="col-sm-6">
         <div class="panel panel-info">
@@ -29,23 +388,13 @@
             </div>
         </div>
     </div>
-    <div id="bulletin-block" class="col-sm-6">
+    <div class="col-sm-6">
         <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3 class="panel-title">公告</h3>
-            </div>
+            <div class="panel-heading">最新文章</div>
             <div class="panel-body">
-                <ul id="bulletin-ul">
-                    {% for bulletin in bulletins_top%}
-                        <li><a href="bulletin_detail?id={{ bulletin['_id'] }}">[{{ bulletin['top_time'] }}]&nbsp;&nbsp;{{ bulletin['title'] }}</a><span class="iconfont">&#xe604;</span></li>
-                    {% end%}
-                    {% for bulletin in bulletins_untop%}
-                         <li><a href="bulletin_detail?id={{ bulletin['_id'] }}">[{{ bulletin['pub_time'] }}]&nbsp;&nbsp;{{ bulletin['title'] }}</a></li>
-                    {% end %}
+                <ul class="list-group" id="artilce-list">
+
                 </ul>
-                <div class="bulletin-more">
-                    <a href="/bulletin">查看更多&gt;</a>
-                </div>
             </div>
         </div>
     </div>
@@ -55,12 +404,12 @@
 {% block frontfootjs %}
 <script type="text/javascript" src="/static/js/front/jquery.flexslider-min.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	$('.flexslider').flexslider({
-		directionNav: true,
-		pauseOnAction: false
-	});
-});
+    $(document).ready(function(){
+        $('.flexslider').flexslider({
+            directionNav: true,
+            pauseOnAction: false
+        });
+    });
 </script>
 <script src="/static/js/front/front_index.js"></script>
 {% end %}

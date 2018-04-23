@@ -52,7 +52,19 @@ class Articles_info():
             all_articles.append(a_article)
         return all_articles
 
-
+    @property
+    def by_is_active_sort(self):
+        coll = self._articles_collection.find({'is_active': True}).sort([('up_time', -1)]).limit(5)
+        if coll:
+            article_list = []
+            for i in coll:
+                i['id'] = str(i['_id'])
+                i['pub_time'] = time_formatting(i['pub_time'])
+                del i['_id']
+                article_list.append(i)
+            return article_list
+        else:
+            return None
 
 if __name__ == "__main__":
     a = Articles_info()

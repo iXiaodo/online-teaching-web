@@ -26,7 +26,7 @@
 
 #bulletin-block{
     width: 390px;
-    margin: 0;
+    margin: 60px 0 0 0;
     position: relative;
 }
 .bulletin-more{
@@ -58,7 +58,7 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
 
 /*第二行内容渲染-start*/
 .row.second-row{
-    width: 1100px;
+    width: 1159px;
     margin: 33px auto;
     min-width: 1080px;
 }
@@ -73,15 +73,203 @@ span.update-time i.iconfont{
     color:#1b809e;
 }
 .banner-box{
-    width: 242px;
     width: 1130px;
     margin: 0 auto;
 }
-#all,#bulletin-block{
+#bulletin-block{
     float: left;
-    margin-left: 17px;
 }
 #all{
     margin-right: 16px;
 }
 /*第二行内容渲染*/
+
+/*首页课程信息渲染*/
+.course-introduction{
+    width: 1129px;
+    height: 332px;
+    margin: 30px auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.pull-left{
+    width: 700px;
+    float: left;
+}
+.course-title {
+    font-size: 20px;
+    margin-top: 20px;
+    color: #333;
+}
+.course-title p.title-p {
+    display: inline-block;
+    float: left;
+}
+.course-title span.title-rank{
+    width: 42px;
+    border-radius: 4px;
+    float: left;
+}
+.course-title.clearfix{
+    width: 350px;
+    margin: 42px 0 43px 36px;
+}
+.course-title span {
+    background: #ff0000;
+    font-size: 12px;
+    color: #fff;
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 3px;
+    margin: -1px 0 0 10px;
+}
+#course-btn{
+    width: 200px;
+    height: 100px;
+    margin: 0 0 0 35px;
+}
+.course-btn-style {
+    width: 165px;
+    height: 50px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 17px;
+    display: block;
+    background-color: #0e7079;
+    line-height: 50px;
+    text-decoration: none;
+    color:#ffffff;
+}
+.course-btn-style:hover{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+}
+.course-text {
+    color: #666;
+    font-size: 15px;
+    margin: 0 0 0 40px;
+    letter-spacing: 1px;
+}
+.course-primary{
+    width:800px;
+    float: left;
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.course-primary .title {
+    padding-left: 40px;
+}
+
+.title {
+    color: #333;
+    font-size: 18px;
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px solid #ddd;
+    padding-left: 25px;
+}
+.content-course{
+    margin: 18px 0 0 0;
+}
+.course-side {
+    width: 300px;
+}
+.pull-right {
+    float: right;
+}
+.course-information {
+    height: 329px;
+    margin-bottom: 15px;
+    color: #666;
+    line-height: 28px;
+    font-size: 13px;
+}
+.course-information.boxstyle{
+    height: 363px;
+}
+.boxstyle {
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.course-information .title {
+    color: #333;
+    font-size: 18px;
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px solid #ddd;
+    padding-left: 25px;
+}
+.course-side.pull-right{
+    width: 300px;
+}
+.course-right-span{
+    float: left;
+}
+
+.course-detail-box{
+    height: 30px;
+    display: block;
+    margin: 4px 0 0 26px;
+}
+.course-primary-main{
+    width: 1129px;
+    min-height: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.course-primary-text .content-intro{
+    width: 719px;
+    margin: 25px auto;
+}
+.course-primary-text .content-intro p{
+    font-size: 14px;
+    text-align: justify;
+    color: #666;
+    letter-spacing: 1px;
+}
+/*教材信息-start*/
+.course-teaching-material-i {
+    margin: 0 30px 30px 0;
+    width: 270px;
+}
+.teaching-material {
+    font-size: 12px;
+    line-height: 22px;
+    color: #666;
+}
+.teaching-material .teaching-material-img {
+    width: 90px;
+    height: 120px;
+    margin: 31px 21px 0 40px;
+    float: left;
+}
+.teaching-material .teaching-material-content {
+    margin-top: 35px;
+    float: left;
+}
+/*教材信息-end*/
+
+/*教学单元-start*/
+.content-unit{
+    margin: 23px 0 0 41px;
+}
+.list-in-l{
+    margin:10px 0 0 34px;
+}
+.list-in-l .list-in-i{
+    overflow: hidden;
+}
+.list-in-l .list-in-i span{
+    float: left;
+    margin-right:10px;
+}
+.list-in-l .list-in-i p{
+    float: left;
+}
+/*教学单元-end*/
