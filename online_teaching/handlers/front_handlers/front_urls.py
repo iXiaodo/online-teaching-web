@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from front_handlers import IndexHandler,SignInHandler,FrontRegistHandler,ForgetPwdHandler, SignupHandler,testHandler,\
  frontBulletinsHandler, bulletinDetailHandler, courseDevelopHandler, courseIntroHandler, courseTeachersHandler, fileDownLoadPageHandle, fileDownLoadInfoHandler,\
-getSortLimitFileHandler, communityHandler, addArticleHandler, articleDetailHandler,getSortLimitArticlesHandler
+getSortLimitFileHandler, communityHandler, addArticleHandler, articleDetailHandler,getSortLimitArticlesHandler, ResetPwdHandler
 
 frontUrls = [
     (r"^/$",IndexHandler),
@@ -22,5 +22,6 @@ frontUrls = [
     (r"^/add_article/",addArticleHandler),
     (r"^/article_detail",articleDetailHandler),
     (r"^/get_articles",getSortLimitArticlesHandler),
+    (r"^/reset_pwd",ResetPwdHandler),
 
 ]

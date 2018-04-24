@@ -1,27 +1,63 @@
-{% extends "front_sign_base.html" %}
+{% extends "front_base.html" %}
 
-{% block css_child_block %}
-    <link rel="stylesheet" href="/static/css/front/front_reset_pwd.css">
+{% block title %}
+修改密码
 {% end %}
 
-{% block formblock %}
-	<a href="#" class="btn btn-primary btn-lg disabled" id="reset-pwd">重置密码</a>
-	<div class="form-group form-set">
-		<div class="input-group">
-			<span class="input-group-addon glyphicon glyphicon-lock"></span>
-			<input type="password" class="form-control" name="password" placeholder="请输入新密码">
-		</div>
-	</div>
-	<div class="form-group">
-		<div class="input-group">
-			<span class="input-group-addon glyphicon glyphicon-lock"></span>
-			<input type="password" class="form-control" name="repeat_password" placeholder="请再次输入密码">
-		</div>
-	</div>
-	{% include "../common/captcha_base.html" %}
-	<div class="form-group">
-		<div class="input-group">
-			<button class="btn btn-primary btn-block">确认修改</button>
-		</div>
-	</div>
+{% block cssblock%}
+<style>
+    .reset-pwd-box{
+        width: 1129px;
+        height: 400px;
+        display: block;
+        margin: 0 auto;
+    }
+    .header-h3{
+        text-align: center;
+    }
+    .boundary {
+        height: 2px;
+        width: 100%;
+        margin: 10px 0 30px 0;
+        background: linear-gradient(to right,#525869,#ffffff);
+    }
+    #modify_password_form{
+        margin: 0 0 0 167px;
+        line-height: 70px;
+    }
+</style>
+{% end %}
+{% block content %}
+<div class="reset-pwd-box">
+    <div class="row col-sm-12">
+        <h3 class="header-h3">修改用户密码</h3>
+        <div class="boundary"></div>
+    </div>
+    <div class="row col-sm-10 col-xs-10">
+        <form  class="form-horizontal" id="modify_password_form" target="hidden-form" onsubmit="return false">
+            <div class="form-group">
+                <label  class="col-sm-2 col-sm-offset-1 control-label" for="old_password">原密码</label>
+                <div class="col-sm-4"><input type="password" class="form-control" name="old_password" id="old_password" placeholder="请输入原密码"></div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 col-sm-offset-1 control-label" for="new_password">新密码</label>
+                <div class="col-sm-4"><input type="password" class="form-control" name="new_password" id="new_password" placeholder="请输入新密码"></div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 col-sm-offset-1 control-label" for="repeat_password">确认新密码</label>
+                <div class="col-sm-4"><input type="password" class="form-control" name="repeat_password" id="repeat_password" placeholder="请输入确认密码"></div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 col-sm-offset-3">
+                    <button type="submit" class="btn btn-primary" id="reset-pwd-submit">确认修改</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% end %}
+
+{% block frontfootjs %}
+<script src="/static/js/front/reset_pwd.js"></script>
 {% end %}

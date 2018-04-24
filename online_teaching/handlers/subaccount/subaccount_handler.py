@@ -138,14 +138,15 @@ class SubAccountHandler(BaseHandler):
                 insert_doc = {
                     "_id": email,
                     "status": True,
-                    "avator":'',
-                    "create_time": int(time.time()),
-                    "tel": tel,
-                    "permission": permission,
-                    "role": role,
                     "password": make_password(password),
+                    "avator": "",
+                    "create_time": int(time.time()),
+                    "permission": permission,
+                    "tel": tel,
+                    "role": role,
                     "user_name": username,
-                    "user_email": email
+                    "user_email": email,
+                    "stu_num": ""
                 }
                 if permission != 'student':
                     try:

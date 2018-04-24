@@ -304,8 +304,75 @@ class SignupHandler(BaseHandler):
         self.redirect('/signin')
 
 
+class ResetPwdHandler(BaseHandler):
 
+    @front_login_auth
+    @coroutine
+    def get(self):
+        email = self.get_session('current_email')
+        name = self.get_session("username") if self.get_session("username") else email
+        role = self.get_session('role') if self.get_session('role') else ''
+        args = {
+            'user': email,
+            'role': role,
+            'username': name
+        }
+        self.render("front/front_resetpwd.html", **args)
 
+    @coroutine
+    @front_login_auth
+    def post(self):
+        post_data = self.request.body
+        try:
+            data = json.loads(post_data)
+        except (TypeError, ValueError):
+            self.write_response({}, 0, '参数格式错误')
+            return
+        try:
+            action = data.get("action", None)
+            if not action:
+                self.write_response({}, 0, _err='没有相应的操作方法！')
+            elif action == 'reset_pwd':
+                email = self.get_session('current_email')
+                if not email:
+                    self.write_response({},0,'账户获取出错，无法修改密码！')
+                    return
+                try:
+                    old_password = data.get('old_password',None)
+                    new_password = data.get('new_password',None)
+                    repeat_password = data.get('repeat_password',None)
+                    if not(old_password and new_password and repeat_password):
+                        self.write_response({},0,'获取密码信息出错！')
+                        return
+                    front_user_coll = BaseMotor().client[MongoBasicInfoDb][STUDENTS]
+                    front_user_doc = yield front_user_coll.find_one({'user_email': email})
+                    password = front_user_doc['password']
+                    if not password:
+                        self.write_response({}, 0, '密码验证获取错误！')
+                        return
+                    if not front_user_doc:
+                        self.write_response({}, 0, '此邮箱账户未注册使用！')
+                        return
+                    if make_password(old_password) != password:
+                        self.write_response({},0,'原密码错误！无法修改密码！')
+                        return
+                    if new_password != repeat_password:
+                        self.write_response({},0,'两次密码输入不一致,无法修改密码')
+                    res = front_user_coll.update_one({'user_email': email},{
+                        '$set':{
+                            '{0}'.format('password'):make_password(new_password)
+                        }
+                    })
+                    if not res:
+                        self.write_response({},0,'密码修改失败！')
+                    self.write_response({})
+                except Exception as e:
+                    logging.exception(e)
+            else:
+                pass
+
+        except Exception as e:
+            logging.exception(e)
 #----------------------------------------------------------课程中心
 class courseIntroHandler(BaseHandler):
     @coroutine
