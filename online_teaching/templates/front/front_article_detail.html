@@ -5,7 +5,7 @@
 {% block cssblock %}
 <style>
     .article-detail-box{
-        width: 700px;
+        width: 730px;
         min-height: 600px;
         margin: 0 auto;
         margin-bottom: 60px;
@@ -48,11 +48,12 @@
             {% end %}
             <li><i class="iconfont">&#xe673;</i>&nbsp;作者：{{ author }}</li>
             <li><i class="iconfont">&#xe638;</i>&nbsp;发表时间：{{ pub_time }}</li>
+            <li><i class="iconfont"></i>&nbsp;<a href="/community?page=1">回到社区首页</a></li>
         </ul>
         {% raw content %}
     </div>
     <div class="foot-author-info">
-        <p>文章版权：本教学网站所有，如有侵权，请联系下方微信会QQ，我们会及时删除！</p>
+        <p>文章版权：本教学网站所有，如有侵权，请联系下方微信或QQ，我们会及时删除！</p>
     </div>
 {% end %}
 

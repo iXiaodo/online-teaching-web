@@ -641,6 +641,7 @@ class communityHandler(BaseHandler):
 
 #----------------------------------------------------------------------笔记
 class addArticleHandler(BaseHandler):
+
     @front_login_auth
     @coroutine
     def get(self):
@@ -697,7 +698,7 @@ class addArticleHandler(BaseHandler):
                         'content':content,
                         'category':category
                     }
-                    res = article_coll.insert_one(insert_html)
+                    res = yield article_coll.insert_one(insert_html)
                     if not res:
                         self.write_response({},0,'添加文章失败！')
                         return
@@ -745,6 +746,35 @@ class articleDetailHandler(BaseHandler):
 
 #----------------------------------------------------------------------文章详情页面
 #----------------------------------------------------------------------笔记-end
+
+
+#------------------------------------------------------------前台个人中心
+class profileHandler(BaseHandler):
+    @front_login_auth
+    @coroutine
+    def get(self):
+        email = self.get_session('current_email')
+        name = self.get_session("username") if self.get_session("username") else email
+        role = self.get_session('role') if self.get_session('role') else ''
+        try:
+            stu_coll = BaseMotor().client[MongoBasicInfoDb][STUDENTS]
+            stu_doc = yield stu_coll.find_one({'user_email': email })
+            if stu_doc:
+                stu_info = stu_doc
+                stu_info['id'] = stu_info['_id']
+                del stu_info['_id']
+                args = {
+                    'user': email,
+                    'role': role,
+                    'username': name,
+                }
+                for k,v in stu_info.items():
+                    args[k] = v
+                args['create_time'] = time_formatting(args['create_time'])
+                self.render("front/front_profile.html", **args)
+        except Exception as e:
+            logging.exception(e)
+
 
 
 class testHandler(BaseHandler):

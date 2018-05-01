@@ -63,4 +63,5 @@ $(function () {
         });
     }
     render_article_list();
+
 });

@@ -44,6 +44,8 @@ class Bulletin_info():
             return coll
         else:
             return None
+
+
     #通过公告id获取公告信息
     @property
     def by_id(self):

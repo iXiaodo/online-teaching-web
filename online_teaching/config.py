@@ -10,12 +10,12 @@ COOKIE_SECRET = base64.b64encode(uuid.uuid4().bytes)
 
 PORT = 8000
 DEBUG = False
-BIND_IP = "192.168.147.132"
+BIND_IP = "127.0.0.1"
 
 MONGO_USE_RS = True
 MONGO_RS_HOST_PORT = [
     # ("192.168.1.182", 27017)
-    ("192.168.147.128", 27017)
+    ("192.168.147.132", 27017)
 ]
 
 #七牛配置

@@ -145,8 +145,7 @@ class SubAccountHandler(BaseHandler):
                     "tel": tel,
                     "role": role,
                     "user_name": username,
-                    "user_email": email,
-                    "stu_num": ""
+                    "user_email": email
                 }
                 if permission != 'student':
                     try:
@@ -166,12 +165,13 @@ class SubAccountHandler(BaseHandler):
                     except Exception as e:
                         logging.exception(e)
 
-                #其它用户
+                #学生用户
                 else:
                     try:
                         stu_coll = BaseMotor().client[MongoBasicInfoDb][STUDENTS]
                         stu_doc = yield stu_coll.find_one({'email': email})
                         if not stu_doc:
+                            insert_doc["stu_num"] = ""
                             res = stu_coll.insert_one(insert_doc)
                             if not res:
                                 self.write_response({},0,'用户添加失败!')

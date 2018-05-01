@@ -12,7 +12,7 @@ def make_app():
 if __name__ == "__main__":
     app = make_app()
     print u'the online teaching web service running'
-    app.listen(PORT,BIND_IP)
+    app.listen(PORT, BIND_IP)
     try:
         ioloop.IOLoop.current().start()
     except Exception as e:

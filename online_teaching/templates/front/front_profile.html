@@ -1,0 +1,55 @@
+{% extends "front_base.html" %}
+
+{% block title %}
+个人中心
+{% end %}
+
+{% block cssblock%}
+<style>
+    .boundary {
+        height: 2px;
+        width: 100%;
+        margin: 10px 0 30px 0;
+        background: linear-gradient(to right,#525869,#ffffff);
+    }
+    .profile-box{
+        width: 1129px;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+    .profile-span{
+        margin: 3px 0 0 260px;
+    }
+    .profile-li li{
+        list-style: none;
+        margin: 25px 0 0 12px;
+    }
+    .profile-li{
+        margin:  0 0 0 67px;
+    }
+</style>
+{% end %}
+{% block content %}
+<div class="profile-box">
+    <div class="row col-sm-12">
+        <h3 class="header-profile">个人中心</h3>
+        <div class="boundary"></div>
+    </div>
+    <div class="row col-sm-10 col-xs-10">
+        <ul class="profile-li">
+            <li><span class="profile-span">用户名：</span><span>{% if user_name == '' %} <input type="text" class="form-group" placeholder="请输入你的用户名"> {% else %}{{ user_name }}{% end %}</span></li>
+            <li><span class="profile-span">学号：</span><span>{% if stu_num == '' %} <input type="text" class="form-group" placeholder="请输入你的学号"> {% else %}{{ stu_num }} {% end %}</span></li>
+            <li><span class="profile-span">电话:</span><span>{% if tel == '' %} <input type="text" class="form-group" placeholder="请输入你的手机号码"> {% else %}{{ tel }} {% end %}</span></li>
+            <li><span class="profile-span">加入时间：</span><span>{{ create_time }}</span></li>
+            <li><span class="profile-span">角色：</span><span>{{ role }}</span></li>
+            <li><span class="profile-span">邮箱：</span><span>{{ user_email }}</span></li>
+            <li><span class="profile-span">当前账户状态：</span><span>{% if status == True %}可用{% else %}不可用{% end %}</span></li>
+        </ul>
+    </div>
+</div>
+
+{% end %}
+
+{% block frontfootjs %}
+<!--<script src="/static/js/front/reset_pwd.js"></script>-->
+{% end %}

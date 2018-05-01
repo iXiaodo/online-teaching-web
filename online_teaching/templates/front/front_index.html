@@ -29,7 +29,7 @@
                 {% if username %}
                 <a class="course-btn-style btn-alreadyjoin" href="/resource?page=1">已加入，开始学习</a>
                 {% else %}
-                <a class="course-btn-style btn-join active" href="/signin" target="_blank">加入学习</a>
+                <a class="course-btn-style btn-join active" href="/regist" target="_blank">加入学习</a>
                 {% end %}
             </div>
             <div class="course-text">
@@ -265,52 +265,63 @@
                     </li>
 
                     <li class="list-out-i">第9章
-                        输入输出系统
+                        并行组织与结构
                         <ul class="list-in-l">
 
                             <li class="list-in-i"><span>9.1</span>
-                                <p>主机与外设的连接</p></li>
+                                <p>体系结构中的并行性</p></li>
 
                             <li class="list-in-i"><span>9.2</span>
-                                <p>程序查询方式及其接口</p></li>
+                                <p>多线程与超线程处理机</p></li>
 
                             <li class="list-in-i"><span>9.3</span>
-                                <p>中断系统和程序中断方式</p></li>
+                                <p>多处理机</p></li>
 
                             <li class="list-in-i"><span>9.4</span>
-                                <p>DMA方式及其接口</p></li>
+                                <p>多核处理机</p></li>
 
                             <li class="list-in-i"><span>9.5</span>
-                                <p>通道控制技术</p></li>
+                                <p>多核处理机实例</p></li>
 
                         </ul>
                     </li>
 
                     <li class="list-out-i">第10章
-                        计算机系统结构
+                        课程教学实验设计
                         <ul class="list-in-l">
 
                             <li class="list-in-i"><span>10.1</span>
-                                <p>计算机系统结构的并行性</p></li>
+                                <p>TEC-8实验系统平台</p></li>
 
                             <li class="list-in-i"><span>10.2</span>
-                                <p>精简指令系统计算机（RISC）</p></li>
+                                <p>TEC-8实验系统结构与操作</p></li>
 
                             <li class="list-in-i"><span>10.3</span>
-                                <p>超标量、超流水线处理机、超长指令字处理机</p></li>
+                                <p>运算器组成实验</p></li>
 
                             <li class="list-in-i"><span>10.4</span>
-                                <p>向量流水处理机</p></li>
+                                <p>双端口存储器实验</p></li>
 
                             <li class="list-in-i"><span>10.5</span>
-                                <p>并行处理机</p></li>
+                                <p>数据通路实验</p></li>
 
                             <li class="list-in-i"><span>10.6</span>
-                                <p>多处理机系统</p></li>
+                                <p>微程序控制器实验</p></li>
 
+                            <li class="list-in-i"><span>10.7</span>
+                                <p>CPU组成与机器指令的执行实验</p></li>
                         </ul>
                     </li>
+                    <li class="list-out-i">第11章
+                        课程综合设计
+                        <ul class="list-in-l">
 
+                            <li class="list-in-i"><span>11.1</span>
+                                <p>硬连线控制器的常规CPU设计</p></li>
+                            <li class="list-in-i"><span>11.1</span>
+                                <p>还有阵列乘法器的ALU设计</p></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -420,14 +431,14 @@
 {% end %}
 
 {% block frontfootjs %}
-<script type="text/javascript" src="/static/js/front/jquery.flexslider-min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('.flexslider').flexslider({
-            directionNav: true,
-            pauseOnAction: false
-        });
-    });
-</script>
+<!--<script type="text/javascript" src="/static/js/front/jquery.flexslider-min.js"></script>-->
+<!--<script type="text/javascript">-->
+    <!--$(document).ready(function(){-->
+        <!--$('.flexslider').flexslider({-->
+            <!--directionNav: true,-->
+            <!--pauseOnAction: false-->
+        <!--});-->
+    <!--});-->
+<!--</script>-->
 <script src="/static/js/front/front_index.js"></script>
 {% end %}
