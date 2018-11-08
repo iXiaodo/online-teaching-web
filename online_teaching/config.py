@@ -8,23 +8,22 @@ import uuid,base64
 COOKIE_SECRET = base64.b64encode(uuid.uuid4().bytes)
 
 
-PORT = 8000
+PORT = port
 DEBUG = False
-BIND_IP = "127.0.0.1"
+BIND_IP = ""
 
 MONGO_USE_RS = True
 MONGO_RS_HOST_PORT = [
-    # ("192.168.1.182", 27017)
-    ("192.168.147.132", 27017)
+   
 ]
 
 #七牛配置
 AK = ""
 SK = ""
 
-MongodbHost = '192.168.1.182'
-MongodbPort = 27017
-MongodbAuthDb = "admin"
+MongodbHost = ''
+MongodbPort = 
+MongodbAuthDb = ""
 MongodbUser = ''
 MongodbPassword = ''
 MongoBasicInfoDb = ""
