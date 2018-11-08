@@ -2,11 +2,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 # 连接数据库的数据
-DATABASE = 'online_teaching'
-USERNAME = 'xiaodong'
-PASSWORD = 'xiaoxiao'
-HOSTNAME = '127.0.0.1'
-PORT = '3306'
+DATABASE = ''
+USERNAME = ''
+PASSWORD = ''
+HOSTNAME = '.0.0.1'
+PORT = ''
 DATABASE = DATABASE
 USERNAME = USERNAME
 PASSWORD = PASSWORD
