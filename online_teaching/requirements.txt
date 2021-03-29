@@ -49,7 +49,7 @@ pyasn1==0.4.2
 pycket==0.3.0
 pycparser==2.18
 pycrypto==2.6.1
-Pygments==2.2.0
+Pygments==2.7.4
 pygobject==3.20.0
 pymongo==3.6.0
 PyMySQL==0.8.0
