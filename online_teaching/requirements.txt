@@ -73,7 +73,7 @@ tornado-session==1.0.1
 tornadomail==0.1.2
 torndsession==1.1.5.1
 unity-lens-photos==1.0
-urllib3==1.22
+urllib3==1.26.5
 vine==1.1.4
 WTForms==2.1
 xlrd==1.1.0
