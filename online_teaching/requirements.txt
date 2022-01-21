@@ -28,7 +28,7 @@ influxdb==5.0.0
 influxtor==1.0.4
 ipaddress==1.0.19
 IPy==0.83
-ipython==2.4.1
+ipython==7.16.3
 Jinja2==2.8
 kombu==4.1.0
 lxml==4.1.1
